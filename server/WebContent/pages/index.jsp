@@ -10,6 +10,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>Test Web Service</title>
 </head>
 <body>
-This is the index page of Test Web Service
+欢迎，这是Hi捞送sever应用的首页面！
 </body>
 </html>
