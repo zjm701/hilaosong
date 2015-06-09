@@ -1,0 +1,3 @@
+server/target/hilaosong-server.war
+server/target/maven-archiver/pom.properties
+*.jar
