@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Test Web Service</title>
+<title>Hi捞送</title>
 </head>
 <body>
 欢迎，这是Hi捞送sever应用的首页面！
