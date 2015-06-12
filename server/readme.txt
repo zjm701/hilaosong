@@ -1,3 +1,8 @@
 # hilaosong
-hi捞送
-方案一：前后台独立，分别是client和server，最终打包文件部署在同一个tomcat中。
+hi lao song
+Plan A: there are two projects , one is client, two is server
+
+test url of web service
+http://localhost:8082/delivery/rest/helloservice/sayHelloString?name=gg
+http://localhost:8082/delivery/rest/helloservice/sayHelloJson?name=gg
+http://localhost:8082/delivery/rest/helloservice/sayHelloXml?name=gg

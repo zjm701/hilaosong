@@ -40,6 +40,9 @@
         <param-value>/WEB-INF/deploy-context.xml</param-value>
     </context-param>
 
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -66,4 +69,8 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+	<session-config>
+		<session-timeout>1200</session-timeout>
+	</session-config>  
 </web-app>
+	

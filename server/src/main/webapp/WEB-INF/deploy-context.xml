@@ -25,10 +25,12 @@
 
     <jaxrs:server id="indexService" address="/">
         <jaxrs:serviceBeans>
+			<ref bean="helloServiceBean" />
             <ref bean="indexAction" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 
+	<bean id="helloServiceBean" class="com.hi.webservice.HelloWorldImpl" />
     <bean id="indexAction" class="com.hi.control.IndexAction" />
 
     <context:property-placeholder location="classpath*:/appConfig.properties" />
