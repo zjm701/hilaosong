@@ -15,3 +15,8 @@ run 'mvn:clean' at first time, to install oracle jdbc jar to maven repository
 1, get all support delivery cities:
 request: http://localhost:8080/delivery/rest/getcities
 response: [{"id":8221,"cityId":"110000","city":"北京市","provinceId":"110000"},{"id":9831,"cityId":"130100","city":"石家庄市","provinceId":"130000"}]
+
+2, 菜品分类
+request: http://localhost:8080/delivery/rest/getcategories
+response: [{"dishTypeId":"003","dishTypeName":"荤菜","parentId":"0","isRequired":"0"},{"dishTypeId":"004","dishTypeName":"素菜","parentId":"0","isRequired":"0"}]
+
