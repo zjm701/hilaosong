@@ -27,11 +27,13 @@
         <jaxrs:serviceBeans>
 			<ref bean="helloServiceBean" />
             <ref bean="indexAction" />
+            <ref bean="mainAction" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 
 	<bean id="helloServiceBean" class="com.hi.webservice.HelloWorldImpl" />
     <bean id="indexAction" class="com.hi.control.IndexAction" />
+    <bean id="mainAction" class="com.hi.control.TakeOutAction" />
 
     <context:property-placeholder location="classpath*:/appConfig.properties" />
     
@@ -69,7 +71,7 @@
 	<context:annotation-config />
 	
 	<security:global-method-security secured-annotations="enabled" />
- 
+<!--  
     <security:authentication-manager>
         <security:authentication-provider>
             <security:jdbc-user-service
@@ -77,6 +79,15 @@
                     users-by-username-query="select name, password, 1 from User where name = ?"
                     authorities-by-username-query="select u.name as login, u.role as role from User u where u.name = ?" />
         </security:authentication-provider>
+    </security:authentication-manager>
+-->    
+    <security:authentication-manager>  
+        <security:authentication-provider>  
+            <security:user-service>  
+                <security:user name="admin" authorities="ROLE_ADMIN,ROLE_USER" password="admin" />  
+                <security:user name="user" authorities="ROLE_USER" password="user" />  
+			</security:user-service>  
+        </security:authentication-provider>  
     </security:authentication-manager>
    
     <security:http auto-config="true" use-expressions="true">

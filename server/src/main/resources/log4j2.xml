@@ -15,5 +15,8 @@
       <AppenderRef ref="MyFile" level="error"/>
       <AppenderRef ref="console"/>
     </Root>
+    <logger name="org.hibernate.property.BasicPropertyAccessor" level="trace">
+         <appender-ref ref="console"/>
+     </logger>
   </Loggers>
 </Configuration>

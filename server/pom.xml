@@ -91,6 +91,29 @@
 			            <server>tomcat</server>
 			        </configuration>
 		       </plugin>
+		       <plugin>
+				    <groupId>org.apache.maven.plugins</groupId>
+				    <artifactId>maven-install-plugin</artifactId>
+				    <version>2.3.1</version>
+				    <executions>
+				        <execution>
+				            <id>install-oracle-jdbc</id>
+				            <goals>
+				                <goal>install-file</goal>
+				            </goals>
+				            <phase>clean</phase>
+				            <configuration>
+				                <groupId>com.oracle</groupId>
+				                <artifactId>ojdbc14</artifactId>
+				                <version>10.2.0.2</version>
+				                <packaging>jar</packaging>
+				                <generatePom>true</generatePom>
+				                <createChecksum>true</createChecksum>
+				                <file>${project.basedir}/src/lib/ojdbc14-10.2.0.2.jar</file>
+				            </configuration>
+				        </execution>
+				    </executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -236,6 +259,11 @@
 	        <groupId>commons-io</groupId>
 	        <artifactId>commons-io</artifactId>
 	        <version>2.0.1</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.2</version>
 	    </dependency>
     </dependencies>    
 </project>

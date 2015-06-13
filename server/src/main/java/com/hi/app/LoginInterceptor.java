@@ -14,8 +14,8 @@ import com.hi.service.UserService;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-	@Autowired
-	private UserService userService;
+	//@Autowired
+	//private UserService userService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request,
@@ -27,7 +27,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			Authentication auth = SecurityContextHolder.getContext()
 					.getAuthentication();
 
-			user = userService.getUserByName(auth.getName());
+			//user = userService.getUserByName(auth.getName());
+			user = new User();
+			user.setName(auth.getName());
 			session.setAttribute("user", user);
 		}
 
