@@ -11,16 +11,16 @@ import javax.ws.rs.core.Response;
 public interface HelloWorld {
 	@GET
 	@Path(value = "/sayHelloString")
-	@Produces({ MediaType.TEXT_PLAIN })
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response sayHelloString(@QueryParam("name") String name);
 
 	@GET
 	@Path(value = "/sayHelloJson")
-	@Produces({ MediaType.APPLICATION_JSON })
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response sayHelloJson(@QueryParam("name") String name);
 
 	@GET
 	@Path(value = "/sayHelloXml")
-	@Produces({ MediaType.APPLICATION_XML })
+	@Produces(MediaType.APPLICATION_XML)
 	public Response sayHelloXml(@QueryParam("name") String name);
 }
