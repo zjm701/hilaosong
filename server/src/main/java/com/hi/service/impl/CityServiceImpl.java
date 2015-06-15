@@ -8,18 +8,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hi.dao.CityDao;
 import com.hi.model.City;
+import com.hi.model.Store;
 import com.hi.service.CityService;
 
 @Service("cityService")
 @Transactional
 public class CityServiceImpl implements CityService {
-	
+	private static final String CITY_BEIJING = "110000";
+
 	@Autowired
 	private CityDao dao;
-	
+
 	public List<City> getDeliveryCities() {
 		List<City> cities = dao.getDeliveryCities();
 		return cities;
+	}
+
+	public Store getDefaultStore(String cityId) {
+		if (cityId == null) {
+			cityId = CITY_BEIJING;
+		}
+
+		return dao.getDefaultStore(cityId);
 	}
 
 }

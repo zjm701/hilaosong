@@ -20,3 +20,5 @@ response: [{"id":8221,"cityId":"110000","city":"北京市","provinceId":"110000"
 request: http://localhost:8080/delivery/rest/getcategories
 response: [{"dishTypeId":"003","dishTypeName":"荤菜","parentId":"0","isRequired":"0"},{"dishTypeId":"004","dishTypeName":"素菜","parentId":"0","isRequired":"0"}]
 
+3, 菜品分类 -> 菜品
+request: http://localhost:8080/delivery/rest/getdishes?catId=003
