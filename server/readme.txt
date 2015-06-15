@@ -22,3 +22,7 @@ response: [{"dishTypeId":"003","dishTypeName":"荤菜","parentId":"0","isRequire
 
 3, 菜品分类 -> 菜品
 request: http://localhost:8080/delivery/rest/getdishes?catId=003
+
+4. 用户登录
+post  request： http://localhost:8080/delivery/rest/login
+test page： http://localhost:8082/delivery/views/test/login.jsp

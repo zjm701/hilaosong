@@ -28,12 +28,14 @@
 			<ref bean="helloServiceBean" />
             <ref bean="indexAction" />
             <ref bean="mainAction" />
+            <ref bean="userAction" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 
 	<bean id="helloServiceBean" class="com.hi.webservice.HelloWorldImpl" />
     <bean id="indexAction" class="com.hi.control.IndexAction" />
     <bean id="mainAction" class="com.hi.control.TakeOutAction" />
+    <bean id="userAction" class="com.hi.control.UserAction" />
 
     <context:property-placeholder location="classpath*:/appConfig.properties" />
     
