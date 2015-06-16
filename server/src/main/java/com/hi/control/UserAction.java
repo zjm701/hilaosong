@@ -9,9 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
 import com.google.gson.Gson;
+import com.hi.common.SnsProvider;
 import com.hi.json.LoginForm;
 import com.hi.json.ReqForm;
 import com.hi.json.TerminalUserLoginReq;
@@ -26,7 +26,7 @@ public class UserAction extends BaseAction {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(String content) {
-		System.out.println("==>content:" + content);
+		System.out.println("==> content:" + content);
 		Gson gson = new Gson();
 		LoginForm form = gson.fromJson(content, LoginForm.class);
 		String username = form.getUsername();
@@ -40,7 +40,7 @@ public class UserAction extends BaseAction {
 			return getFailedJsonResult(message);
 		} else {
 			password = MD5.getMd5(form.getPassword().getBytes());
-			System.out.println("==>username:" + username + ", password:" + password);
+			System.out.println("==> username:" + username + ", password:" + password);
 			try {
 				TerminalUserLoginReq terminalUserLoginReq = new TerminalUserLoginReq();
 				ReqForm reqForm = new ReqForm();
@@ -62,9 +62,9 @@ public class UserAction extends BaseAction {
 				String loginReqString = gson.toJson(terminalUserLoginReq);
 
 				// 调用SNS接口验证用户名
-				SnsTerminalInterface interService = new SnsProvider().getSNSJsonCxfClient();
+				SnsTerminalInterface interService = SnsProvider.getSNSJsonCxfClient();
 				String response = interService.terminalUserLogin(loginReqString);
-				System.out.println("<==response:" + response);
+				System.out.println("<== response:" + response);
 				return response;
 				// object = JSONObject.fromObject(response);
 				//
@@ -109,25 +109,5 @@ public class UserAction extends BaseAction {
 			}
 		}
 		return null;
-	}
-
-	private class SnsProvider {
-
-		private static final String SNS_JSON_ADDRESS = "http://114.247.120.164:7070/haidilao/services/SnsTerminalInterface";
-
-		public SnsProvider() {
-		}
-
-		public synchronized SnsTerminalInterface getSNSJsonCxfClient() {
-			// 定义客户端代理
-			JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
-
-			// 设置服务端地址和服务类
-			factory.setAddress(SNS_JSON_ADDRESS);
-			factory.setServiceClass(SnsTerminalInterface.class);
-			SnsTerminalInterface service = (SnsTerminalInterface) factory.create();
-
-			return service;
-		}
 	}
 }
