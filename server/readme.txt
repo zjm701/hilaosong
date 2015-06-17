@@ -26,8 +26,12 @@ response: [{"dishTypeId":"003","dishTypeName":"荤菜","parentId":"0","isRequire
 request: http://localhost:8080/delivery/rest/getdishes?catId=003
 request: http://182.92.195.126:8080/delivery/rest/getdishes?catId=003
 
-4. 用户登录
+4. 用户登录验证
 post  request： http://localhost:8080/delivery/rest/login
 test page： http://localhost:8082/delivery/views/test/login.jsp
 http://182.92.195.126:8080/delivery/rest/login
 http://182.92.195.126:8082/delivery/views/test/login.jsp
+
+5. 用户信息
+request: http://localhost:8080/delivery/rest/getuserinfo?userId=23675
+request: http://182.92.195.126:8080/delivery/rest/getuserinfo?userId=23657

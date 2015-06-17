@@ -1,85 +1,87 @@
 package com.hi.json;
 
+import java.util.Date;
+
+import com.hi.tools.StringTools;
 import com.hi.tools.annotation.XMLMapping;
 
-
-/**
- * [简要描述]:<br />
- * 
- * @author wupei
- * @version 1.0, 2011-12-6
- */
 @XMLMapping("reqInfo")
-public class ReqForm
-{
-    @XMLMapping("msgName")
-    private String msgName;
+public class ReqForm {
+	@XMLMapping("msgName")
+	private String msgName;
 
-    @XMLMapping("license")
-    private String license = "123123123123";
+	@XMLMapping("license")
+	private String license = "123123123123";
 
-    @XMLMapping("req_time")
-    private String req_time;
+	@XMLMapping("req_time")
+	private String req_time;
 
-    /**
-     * 1:web 2:iphone 3:ipad
-     */
-    @XMLMapping("req_device")
-    private String req_device;
+	/**
+	 * 1:web 2:iphone 3:ipad
+	 */
+	@XMLMapping("req_device")
+	private String req_device;
 
-    /**
-     * 请求语言 1中文 2 英文
-     */
-    @XMLMapping("req_language")
-    private String req_language;
+	/**
+	 * 请求语言 1中文 2 英文
+	 */
+	@XMLMapping("req_language")
+	private String req_language;
 
-    public String getMsgName()
-    {
-        return msgName;
-    }
+	public ReqForm() {
+	}
 
-    public void setMsgName(String msgName)
-    {
-        this.msgName = msgName;
-    }
+	public ReqForm(String msgName) {
+		// web user
+		// 中文
+		this(msgName, "1", "1", StringTools.date2TimeStr(new Date(), StringTools.DATETIME_PATTERN));
+	}
 
-    public String getLicense()
-    {
-        return license;
-    }
+	public ReqForm(String msgName, String req_device, String req_language, String req_time) {
+		super();
+		this.msgName = msgName;
+		this.req_device = req_device;
+		this.req_language = req_language;
+		this.req_time = req_time;
+	}
 
-    public void setLicense(String license)
-    {
-        this.license = license;
-    }
+	public String getMsgName() {
+		return msgName;
+	}
 
-    public String getReq_time()
-    {
-        return req_time;
-    }
+	public void setMsgName(String msgName) {
+		this.msgName = msgName;
+	}
 
-    public void setReq_time(String reqTime)
-    {
-        req_time = reqTime;
-    }
+	public String getLicense() {
+		return license;
+	}
 
-    public String getReq_device()
-    {
-        return req_device;
-    }
+	public void setLicense(String license) {
+		this.license = license;
+	}
 
-    public void setReq_device(String reqDevice)
-    {
-        req_device = reqDevice;
-    }
+	public String getReq_time() {
+		return req_time;
+	}
 
-    public String getReq_language()
-    {
-        return req_language;
-    }
+	public void setReq_time(String reqTime) {
+		req_time = reqTime;
+	}
 
-    public void setReq_language(String reqLanguage)
-    {
-        req_language = reqLanguage;
-    }
+	public String getReq_device() {
+		return req_device;
+	}
+
+	public void setReq_device(String reqDevice) {
+		req_device = reqDevice;
+	}
+
+	public String getReq_language() {
+		return req_language;
+	}
+
+	public void setReq_language(String reqLanguage) {
+		req_language = reqLanguage;
+	}
 }

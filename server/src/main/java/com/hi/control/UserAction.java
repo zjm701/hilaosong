@@ -1,8 +1,8 @@
 package com.hi.control;
 
-import java.util.Date;
-
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,15 +12,18 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.gson.Gson;
 import com.hi.common.SnsProvider;
+import com.hi.json.GetUserInfoReq;
 import com.hi.json.LoginForm;
 import com.hi.json.ReqForm;
 import com.hi.json.TerminalUserLoginReq;
 import com.hi.tools.MD5;
-import com.hi.tools.StringTools;
-import com.hi.webservice.SnsTerminalInterface;
 
 @Path("/")
 public class UserAction extends BaseAction {
+
+	/**
+	 * 用户登录
+	 */
 	@POST
 	@Path(value = "/login")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -42,72 +45,45 @@ public class UserAction extends BaseAction {
 			password = MD5.getMd5(form.getPassword().getBytes());
 			System.out.println("==> username:" + username + ", password:" + password);
 			try {
-				TerminalUserLoginReq terminalUserLoginReq = new TerminalUserLoginReq();
-				ReqForm reqForm = new ReqForm();
-
-				// 调用sns进行登录
-				String status = "1";
-
 				// 调用SNS接口验证用户名
-				reqForm.setMsgName("terminalUserLoginReq");
-				reqForm.setReq_device("1");// web user
-				reqForm.setReq_language("1");// 中文
-				reqForm.setReq_time(StringTools.date2TimeStr(new Date(), StringTools.DATETIME_PATTERN));
+				TerminalUserLoginReq loginReq = new TerminalUserLoginReq();
+				loginReq.setReqInfo(new ReqForm("terminalUserLoginReq"));
+				loginReq.setAccountName(username);
+				loginReq.setPwd(password);
+				loginReq.setStatus("1");
 
-				terminalUserLoginReq.setReqInfo(reqForm);
-				terminalUserLoginReq.setAccountName(username);
-				terminalUserLoginReq.setPwd(password);
-				terminalUserLoginReq.setStatus(status);
+				String loginReqString = gson.toJson(loginReq);
 
-				String loginReqString = gson.toJson(terminalUserLoginReq);
+				String respString = SnsProvider.getSNSJsonCxfClient().terminalUserLogin(loginReqString);
+				System.out.println("<== login response:" + respString);
 
-				// 调用SNS接口验证用户名
-				SnsTerminalInterface interService = SnsProvider.getSNSJsonCxfClient();
-				String response = interService.terminalUserLogin(loginReqString);
-				System.out.println("<== response:" + response);
-				return response;
-				// object = JSONObject.fromObject(response);
-				//
-				// TerminalUserLoginResp resp = (TerminalUserLoginResp)
-				// JSONObject
-				// .toBean(object, TerminalUserLoginResp.class);
-				// Map<String, Object> classMap = new HashMap<String, Object>();
-				// classMap.put("user", UserForm.class);
-				// GetUserInfoResp resp1 = (GetUserInfoResp)
-				// JSONObject.toBean(object,
-				// GetUserInfoResp.class, classMap);
-				// session.setAttribute("userInfo", resp1.getUser());
-				// "sns-login-resp");
-				// if (resp.getRespInfo().getResult_code() != null
-				// && resp.getRespInfo().getResult_code()
-				// .equals(Common.RESULTCODE_300)) {
-				// session.setAttribute("customerId", resp.getLoginID());
-				// session.setAttribute("customerkey", resp.getCustomerKey());
-				// session.setAttribute("mailCount",resp.getMailCount());
-				// session.setAttribute("friendsCount",resp.getFriendsCount());
-				// session.setAttribute("photoCount",resp.getPhotoCount());
-				// // 个人信息
-				// IphoneUserForm iphoneUserForm = getCustomerInfo(resp
-				// .getLoginID());
-				// UserBaseInfo userBaseInfo = new UserBaseInfo();
-				// userBaseInfo.setRealName(iphoneUserForm.getRealname());
-				// userBaseInfo.setNickName(iphoneUserForm.getNickname());
-				// userBaseInfo.setMobileNo(iphoneUserForm.getMobile());
-				// userBaseInfo.setGender(iphoneUserForm.getSex());
-				// customerInfo.setUserBaseInfo(userBaseInfo);
-				// session.setAttribute("customerInfo", customerInfo);
-				// session.setAttribute("userPhone",iphoneUserForm.getMobile());
-				//
-				// message = "success";
-				//
-				// } else {
-				// message = resp.getRespInfo().getResult_desc();
-				// }
-				//
+				return respString;
 			} catch (Exception ex) {
-				message = "fail";
+				return getFailedJsonResult("fail");
 			}
 		}
-		return null;
+	}
+
+	/**
+	 * 用户登录
+	 */
+	@GET
+	@Path(value = "/getuserinfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getUserInfo(@FormParam("userId") String userId) {
+		System.out.println("==> userId:" + userId);
+		Gson gson = new Gson();
+
+		// 调用sns查询用户信息
+		GetUserInfoReq userInfoReq = new GetUserInfoReq();
+		userInfoReq.setReqInfo(new ReqForm("getUserInfoReq"));
+		userInfoReq.setFromUid(Long.valueOf(userId));
+		userInfoReq.setToUid(Long.valueOf(userId));
+
+		String userInfoReqString = gson.toJson(userInfoReq);
+
+		String respString = SnsProvider.getSNSJsonCxfClient().getUserInfo(userInfoReqString);
+		System.out.println("<== getuserinfo response:" + respString);
+		return respString;
 	}
 }
