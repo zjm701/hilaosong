@@ -37,3 +37,5 @@ request: http://localhost:8080/delivery/rest/getuserinfo?userId=23675
 request: http://182.92.195.126:8080/delivery/rest/getuserinfo?userId=23675
 
 20. 历史订单
+request: http://localhost:8080/delivery/rest/gethistoryorders?userId=0100000053215312
+request: http://182.92.195.126:8080/delivery/rest/gethistoryorders?userId=0100000053215312
