@@ -1,5 +1,6 @@
 package com.hi.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -64,6 +65,11 @@ public class Order {
 	 * 外送种类,0-外送 1-自助 2-豪华 3-上门自取
 	 */
 	private String deliveryType;
+	
+	/**
+	 * 用于oracle，分页，必须带，否则报错
+	 */
+	private BigDecimal ROWNUM_;
 
 	public String getSerialId() {
 		return serialId;
@@ -151,5 +157,13 @@ public class Order {
 
 	public void setCreated_dt(Date created_dt) {
 		this.created_dt = created_dt;
+	}
+
+	public BigDecimal getROWNUM_() {
+		return ROWNUM_;
+	}
+
+	public void setROWNUM_(BigDecimal rOWNUM_) {
+		ROWNUM_ = rOWNUM_;
 	}
 }

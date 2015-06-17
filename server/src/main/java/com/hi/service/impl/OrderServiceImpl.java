@@ -17,8 +17,8 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDao dao;
 
-	public List<Order> getHistoryOrders(String userId) {
-		List<Order> orders = dao.getHistoryOrders(userId);
+	public List<Order> getHistoryOrders(String userId, int pageIndex) {
+		List<Order> orders = dao.getHistoryOrders(userId, pageIndex);
 		return orders;
 	}
 }

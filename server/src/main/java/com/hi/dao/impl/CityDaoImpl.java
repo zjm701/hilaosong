@@ -18,7 +18,7 @@ public class CityDaoImpl extends AbstractDao implements CityDao {
 		String sql = "select id as \"id\", cityId as \"cityId\", cityname as \"city\", provinceId as \"provinceId\" from T_CATER_SORTCITY c " +
 				" where exists (select 1 from T_CATER_STORE s where s.cityId = c.cityId and s.DEPTTYPE='4' and (s.MEMO3 = '1' or s.MEMO4 = '1') ) " +
 				" and ordertype = '0' and isavail = '1' order by sortnum ";
-		List<City> cities = this.getBeansBySql(City.class, sql, null);
+		List<City> cities = this.getBeansBySql(City.class, sql);
 		return cities;
 	}
 

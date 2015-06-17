@@ -23,8 +23,8 @@ public class OrderAction extends BaseAction {
 	@GET
 	@Path("/gethistoryorders")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getHistoryOrders(@FormParam("userId") String userId) {
-		List<Order> orders = orderService.getHistoryOrders(userId);
+	public Response getHistoryOrders(@FormParam("userId") String userId, @FormParam("pageIndex") int pageIndex) {
+		List<Order> orders = orderService.getHistoryOrders(userId, pageIndex);
 		return getSuccessJsonResponse(orders);
 	}
 }

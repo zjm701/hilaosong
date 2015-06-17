@@ -17,7 +17,7 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	public List<DishType> getCategories() {
 		String sql = "select dishtypeid as \"dishTypeId\", dishtypename as \"dishTypeName\", parentid as \"parentId\", isrequired as \"isRequired\" from T_CATER_DISHTYPE " +
 				" where parentid = 0 and identifier = 1 order by typesort ";
-		List<DishType> categories = this.getBeansBySql(DishType.class, sql, null);
+		List<DishType> categories = this.getBeansBySql(DishType.class, sql);
 		return categories;
 	}
 
