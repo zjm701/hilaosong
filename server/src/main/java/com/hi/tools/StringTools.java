@@ -1,13 +1,3 @@
-/*
- * 文 件 名:  StringTools.java
- * 版    权:  Huawei Technologies Co., Ltd. Copyright YYYY-YYYY,  All rights reserved
- * 描    述:  <描述>
- * 修 改 人:  h00101670
- * 修改时间:  2009-2-12
- * 跟踪单号:  <跟踪单号>
- * 修改单号:  <修改单号>
- * 修改内容:  <修改内容>
- */
 package com.hi.tools;
 
 import java.io.IOException;

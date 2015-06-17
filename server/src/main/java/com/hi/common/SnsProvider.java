@@ -2,8 +2,6 @@ package com.hi.common;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
-import com.hi.webservice.SnsTerminalInterface;
-
 public class SnsProvider {
 
 	public SnsProvider() {
