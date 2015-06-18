@@ -2,5 +2,8 @@ server/bin/*.*
 server/target/*.*
 server/target/classes/*.*
 server/target/maven-archiver/pom.properties
+server/WebContent/*.*
+server/WebContent/WEB-INF/*.*
+server/WebContent/WEB-INF/lib/*.*
 *.jar
 *.class
