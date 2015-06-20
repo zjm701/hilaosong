@@ -1,9 +1,11 @@
 package com.hi.control;
 
-import java.util.Date;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.GsonBuilder;
 
@@ -18,5 +20,10 @@ public abstract class BaseAction {
 	
 	protected String getFailedJsonResult(String msg) {
 		return "{\"respMsg\":\""+msg+"\"}";
+	}
+	
+	protected HttpServletRequest getRequest(){
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		return request;
 	}
 }

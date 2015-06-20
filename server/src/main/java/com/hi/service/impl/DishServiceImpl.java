@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hi.dao.DishDao;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
+import com.hi.model.DishVO;
 import com.hi.service.DishService;
 
 @Service("dishService")
@@ -22,9 +23,12 @@ public class DishServiceImpl implements DishService {
 		return dao.getCategories();
 	}
 
-	public List<Dish> getDishes(String storeId, String catId) {
-		// TODO combined half and one dish as one
-		return dao.getDishes(storeId, catId);
+	public List<DishVO> getDishes(String storeId, String catId, int pageIndex) {
+		return dao.getDishes(storeId, catId, pageIndex);
+	}
+
+	public Dish getDishDetail(String dishId, String storeId) {
+		return dao.getDishDetail(dishId, storeId);
 	}
 
 }
