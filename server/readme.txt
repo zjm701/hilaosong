@@ -43,9 +43,9 @@ test : http://182.92.195.126:8080/delivery/rest/gethistoryorders?userId=01000000
 test : http://182.92.195.126:8080/delivery/rest/gethistoryorders?userId=0100000053215312&pageIndex=2
 
 6, 套餐
-local: http://localhost:8080/delivery/rest/getdishes?catId=011
+local: http://localhost:8080/delivery/rest/getdishes?catId=012
 
 7. 套餐详情
-local: http://localhost:8080/delivery/rest/getpackdishes?dishId=82123_0201
+local: http://localhost:8080/delivery/rest/getpackdishes?dishId=82192_0201
 
 
