@@ -32,4 +32,8 @@ public class CityServiceImpl implements CityService {
 		return dao.getDefaultStore(cityId);
 	}
 
+	public Store getAreaStore(String storeId) {
+		return dao.getAreaStore(storeId);
+	}
+
 }

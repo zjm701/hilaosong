@@ -9,4 +9,6 @@ public interface CityService {
 	List<City> getDeliveryCities();
 	
 	Store getDefaultStore(String cityId);
+	
+	Store getAreaStore(String storeId);
 }

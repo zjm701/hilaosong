@@ -10,4 +10,6 @@ public interface CityDao {
 	
 	Store getDefaultStore(String cityId);
 	
+	Store getAreaStore(String storeId);
+	
 }

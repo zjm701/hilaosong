@@ -1,6 +1,8 @@
 package com.hi.model;
 
-public class DishVO {
+public class DishVO extends Pagenation{
+	private String dishId;
+	
 	private String storeDishId;
 
 	private String storeDishName;
@@ -14,6 +16,14 @@ public class DishVO {
 
 	// if this dish has half, then set the price of half dish
 	private String halfPrice;
+	
+	public String getDishId() {
+		return dishId;
+	}
+
+	public void setDishId(String dishId) {
+		this.dishId = dishId;
+	}
 
 	public String getStoreDishId() {
 		return storeDishId;
