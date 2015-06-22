@@ -18,7 +18,11 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDao dao;
 
 	public List<Order> getHistoryOrders(String userId, int pageIndex) {
-		List<Order> orders = dao.getHistoryOrders(userId, pageIndex);
-		return orders;
+		return dao.getHistoryOrders(userId, pageIndex);
+	}
+
+	@Override
+	public Order getOrderInfo(String orderId) {
+		return dao.getOrderInfo(orderId);
 	}
 }

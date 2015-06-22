@@ -20,11 +20,33 @@ public class OrderAction extends BaseAction {
 	@Autowired
 	private OrderService orderService;
 
+	/**
+	 * "/wap/historyOrderList" (Mobile version)
+	 * 
+	 * @param userId
+	 * @param pageIndex
+	 * @return
+	 */
 	@GET
 	@Path("/gethistoryorders")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getHistoryOrders(@FormParam("userId") String userId, @FormParam("pageIndex") int pageIndex) {
 		List<Order> orders = orderService.getHistoryOrders(userId, pageIndex);
 		return getSuccessJsonResponse(orders);
+	}
+	
+	/**
+	 * "/wap/historyOrderDetail" (Mobile version)
+	 * 
+	 * @param userId
+	 * @param pageIndex
+	 * @return
+	 */
+	@GET
+	@Path("/getorderinfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrderInfo(@FormParam("orderId") String orderId) {
+		Order order = orderService.getOrderInfo(orderId);
+		return getSuccessJsonResponse(order);
 	}
 }

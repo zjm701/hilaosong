@@ -13,6 +13,8 @@ import com.hi.common.Pagination;
 
 public abstract class AbstractDao {
 
+	protected String DT_FORMAT = "'yyyy-mm-dd hh24:mi:ss'";
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -26,6 +28,19 @@ public abstract class AbstractDao {
 
 	public void delete(Object entity) {
 		getSession().delete(entity);
+	}
+
+	public <T> T getBeanBySql(Class<T> clazz, String sql) {
+		return getBeanBySql(clazz, sql, null);
+	}
+
+	public <T> T getBeanBySql(Class<T> clazz, String sql, Map<String, Object> params) {
+		List<T> list = getBeansBySql(clazz, sql, params);
+		if (list != null && list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	public <T> List<T> getBeansBySql(Class<T> clazz, String sql) {

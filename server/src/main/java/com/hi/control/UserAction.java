@@ -20,8 +20,9 @@ import com.hi.tools.MD5;
 
 @Path("/")
 public class UserAction extends BaseAction {
-
+	
 	/**
+	 * "/wap/login" (Mobile version)
 	 * 用户登录
 	 */
 	@POST
@@ -65,6 +66,8 @@ public class UserAction extends BaseAction {
 	}
 
 	/**
+	 * function getCustomerInfo()  (Mobile version)
+	 * 
 	 * 用户登录
 	 */
 	@GET
