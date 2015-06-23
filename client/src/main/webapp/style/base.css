@@ -1,7 +1,7 @@
 ﻿@charset "utf-8";
 /* CSS Document */
 
-body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dt,dd,dl,input{margin:0;padding:0;border:0; font:12px/1.5 "\5b8b\4f53","Microsoft YaHei","宋体";  font-family:"Microsoft YaHei","宋体";}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dt,dd,dl,input{margin:0;padding:0;border:0; font:12px/1.5 "\5b8b\4f53","宋体";  font-family:"宋体";}
 ol,ul{ list-style:none;}
 a{ text-decoration:none; cursor:pointer;}
 a:hover{ text-decoration:none;}
@@ -31,6 +31,8 @@ a:hover{ text-decoration:underline;}
 .m_t_30{ margin-top:30px;}
 .m_t_35{ margin-top:35px;}
 .m_t_40{ margin-top:40px;}
+.m_t_50{ margin-top:50px;}
+.m_t_60{ margin-top:60px;}
 .m_l_10{ margin-left:10px;}
 .m_l_15{ margin-left:15px;}
 .m_r_20{ margin-right:20px;}
@@ -51,6 +53,8 @@ a:hover{ text-decoration:underline;}
 .f_red{ color:#ff0000;}
 .f_c6000a{ color:#c6000a;}
 .f_a9a6a6{ color:#a9a6a6;}
+.f_70716c{ color:#70716c;}
+.tc{ text-align:center;}
 
 /*头部*/
 

@@ -3,14 +3,35 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
-<title>菜品浏览</title>
+<title>DIY锅底</title>
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
 <link rel="stylesheet" type="text/css" href="style/index.css"/>
+<link rel="stylesheet" type="text/css" href="style/fancybox.css"/>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script language="javascript" src="js/jquery.fancybox-1.3.1.pack.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#modal").fancybox({
+                'modal': false,
+                'overlayShow': true,
+                'hideOnOverlayClick': false,
+                'hideOnContentClick': false,
+                'enableEscapeButton': false,
+                'showCloseButton': false,
+                'centerOnScroll': true,
+                'autoScale': false
+            });
+        });
+</script>
 <script type="text/javascript">
 function ceng()
-{document.getElementById("id_left_01").style.display="none";}
+{
+	document.getElementById("id_left_01").style.display="none";
+}
 function right_ceng()
-{document.getElementById("id_right_01").style.display="none";}
+{
+	document.getElementById("id_right_01").style.display="none";
+}
 
 </script>
 </head>
@@ -38,7 +59,7 @@ function right_ceng()
     <li><a href="#">关于我们</a></li>
     <li><a href="#">诚聘英才</a></li>
     </ul></div>
-    <div class="clear"></div>
+    
     <div class="nav">
     <ul><li class="li_hover"><a href="#">浏览</a></li>
     <li><a href="#">填写信息</a></li>
@@ -82,70 +103,31 @@ function right_ceng()
 </div>
 </div>
 <div class="mid_mid left">
-<ul class="cp_list">
-<li><img src="images/tc_img.jpg" width="171" /><div class="cp_titel">
-<span class="f_c6000a f14px fB">海底捞A套餐（2-3人）</span><br />
-<span class="f_c6000a f14px">265元/份</span>
+<div class="m_nav ">海底捞D套餐（2-3人）</div>
+<div class="m_input left"><input type="text" width="320px" height="36px" value="输入套餐份数" /></div>
+<div class="left d_num"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" id="btn-type"/></span>
+</div>
 <div class="clear"></div>
-<div class=" p_t_35">
-<div class="left f_c6000a f14px m_t_15" >一份</div>
-<div class=" right cp_num">
-<span><img src="images/img_jian.gif" /></span>
-<span class="f12px fB f_c6000a" style="line-height:20px;">1</span>
-<span><img src="images/img_jia.gif" /></span>
-</div>
-<div class="clear"></div></div>
-
-</div>
-</li>
-<li><img src="images/tc_img.jpg" width="171" /><div class="cp_titel">
-<span class="f_c6000a f14px fB">海底捞A套餐（2-3人）</span><br />
-<span class="f_c6000a f14px">265元/份</span>
+<div class="gd_bg" ><span class="f14px"><a id="modal" href="#id_gd_list">选择锅底</a></span><span>(每份套餐只能选择一份锅底）</span></div>
+<div class="m_input left"><input type="text" value="番茄鸳鸯锅底" style="width:485px; text-align:center;"/></div>
 <div class="clear"></div>
-<div class=" p_t_35">
-<div class="left f_c6000a f14px m_t_15" >一份</div>
-<div class=" right cp_num">
-<span><img src="images/img_jian.gif" /></span>
-<span class="f12px fB f_c6000a" style="line-height:20px;">1</span>
-<span><img src="images/img_jia.gif" /></span>
-</div>
-<div class="clear"></div></div>
-
-</div>
-</li>
-<li><img src="images/tc_img.jpg" width="171" /><div class="cp_titel">
-<span class="f_c6000a f14px fB">海底捞A套餐（2-3人）</span><br />
-<span class="f_c6000a f14px">265元/份</span>
+<div class="gd_bg"><span class="f14px">选择小料</span><span>(每份套餐只能选择5份小料）</span></div>
+<div class="m_input left" style="margin-bottom:20px;"><input type="text" value="豆腐乳酱（1） 风味豆豉（1） 海鲜酱（1） 精品牛肉酱（1） 香油蒜泥（1）" style="width:485px;"/></div>
 <div class="clear"></div>
-<div class=" p_t_35">
-<div class="left f_c6000a f14px m_t_15" >一份</div>
-<div class=" right cp_num">
-<span><img src="images/img_jian.gif" /></span>
-<span class="f12px fB f_c6000a" style="line-height:20px;">1</span>
-<span><img src="images/img_jia.gif" /></span>
+<div class="mu_list">
+<dl><dd>澳洲肥牛</dd><dt>*1</dt></dl>
+<dl><dd>冻虾</dd><dt>*1</dt></dl>
+<dl><dd>精品肥牛</dd><dt>*1</dt></dl>
+<dl><dd>老牌羊肚</dd><dt>*1</dt></dl>
+<dl><dd>墨鱼仔</dd><dt>*1</dt></dl>
+<dl><dd>内蒙古羔羊肉</dd><dt>*1</dt></dl>
+<dl><dd>手工墨鱼丸</dd><dt>*1</dt></dl>
+<dl><dd>丸类组合</dd><dt>*1</dt></dl>
+<dl><dd>虾滑</dd><dt>*1</dt></dl>
 </div>
-<div class="clear"></div></div>
-
-</div>
-</li>
-<li><img src="images/tc_img.jpg" width="171" /><div class="cp_titel">
-<span class="f_c6000a f14px fB">海底捞A套餐（2-3人）</span><br />
-<span class="f_c6000a f14px">265元/份</span>
-<div class="clear"></div>
-<div class=" p_t_35">
-<div class="left f_c6000a f14px m_t_15" >一份</div>
-<div class=" right cp_num">
-<span><img src="images/img_jian.gif" /></span>
-<span class="f12px fB f_c6000a" style="line-height:20px;">1</span>
-<span><img src="images/img_jia.gif" /></span>
-</div>
-<div class="clear"></div></div>
-
-</div>
-</li>
-
-</ul>
-
+<div><img src="images/btn_queren.jpg" /></div>
 </div>
 <div class="mid_right m_t_15" >
 <div class="title">购物篮</div>
@@ -155,6 +137,11 @@ function right_ceng()
 <span class="m_t_10"><img src="images/btn_delete.jpg" /></span>
 
 <div class="xyh_box">
+<span class="f_c6000a f16px fB">享优惠</span>
+<span class="sp_hx"></span>
+<span class="left">9折加点</span><span class="right"><img src="images/btn_jiaru.gif" /></span>
+<div class="clear"></div>
+<span class="left">+5元享缤纷美味</span><span class="right"><img src="images/btn_chakan.gif" /></span>
 <div class="clear"></div>
 <span class="sp_hx"></span>
 <table cellpadding="0" cellspacing="0" border="0">
@@ -176,8 +163,45 @@ function right_ceng()
 <span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸥达（北京）餐饮管理有限公司，All rights reserved</span>
 <span class="p_l_15"><select></select></span>
 </div>
-
+<div style="display:none;">
+<div class="gd_list" id="id_gd_list" >
+<div class="gd_nav">
+<span class="left" style="width:100px;">DIY锅底</span>
+<span class="right" style=" margin-top:7px; margin-right:10px;"><img src="images/btn_colse.jpg" height="26" onclick="$.fancybox.close();"></span>
 </div>
+<div class="diy_gd_box">
+<ul class="diy_ul">
+<li><img src="images/qingyou_img.jpg" />
+<p class="f16px f_70716c">牛油锅底</p>
+<span class="sp_quan">全</span><span>68.00元</span>
+</li>
+<li><img src="images/qingyou_img.jpg" />
+<p class="f16px f_70716c">牛油锅底</p>
+<span class="sp_quan">全</span><span>68.00元</span>
+</li>
+<li><img src="images/qingyou_img.jpg" />
+<p class="f16px f_70716c">牛油锅底</p>
+<span class="sp_quan">全</span><span>68.00元</span>
+</li>
+<li><img src="images/qingyou_img.jpg" />
+<p class="f16px f_70716c">牛油锅底</p>
+<span class="sp_quan">全</span><span>68.00元</span>
+</li>
+<li><img src="images/qingyou_img.jpg" />
+<p class="f16px f_70716c">牛油锅底</p>
+<span class="sp_quan">全</span><span>68.00元</span>
+</li>
+<li><img src="images/qingyou_img.jpg" />
+<p class="f16px f_70716c">牛油锅底</p>
+<span class="sp_quan">全</span><span>68.00元</span>
+</li>
+</ul>
+<div class="clear"></div>
+</div>
+<div class="tc g_img"><img src="images/diy_guo.jpg" /></div>
+<div class="tc g_img"><img src="images/btn_xz.gif" /></div>
+</div>
+</div></div>
 
 <div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
   <map name="id_right_01Map" id="id_right_01Map">

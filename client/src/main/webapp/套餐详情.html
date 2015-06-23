@@ -3,9 +3,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
-<title>菜品浏览</title>
+<title>套餐详情</title>
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
 <link rel="stylesheet" type="text/css" href="style/index.css"/>
+<link rel="stylesheet" type="text/css" href="style/fancybox.css"/>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script language="javascript" src="js/jquery.fancybox-1.3.1.pack.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#modal").fancybox({
+                'modal': false,
+                'overlayShow': true,
+                'hideOnOverlayClick': false,
+                'hideOnContentClick': false,
+                'enableEscapeButton': false,
+                'showCloseButton': false,
+                'centerOnScroll': true,
+                'autoScale': false
+            });
+        });
+</script>
 <script type="text/javascript">
 function ceng()
 {document.getElementById("id_left_01").style.display="none";}
@@ -83,7 +100,7 @@ function right_ceng()
 </div>
 <div class="mid_mid left">
 <ul class="cp_list">
-<li><img src="images/tc_img.jpg" width="171" /><div class="cp_titel">
+<li><a id="modal" href="#id_gd_list"><img src="images/tc_img.jpg" width="171" /></a><div class="cp_titel">
 <span class="f_c6000a f14px fB">海底捞A套餐（2-3人）</span><br />
 <span class="f_c6000a f14px">265元/份</span>
 <div class="clear"></div>
@@ -176,7 +193,67 @@ function right_ceng()
 <span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸥达（北京）餐饮管理有限公司，All rights reserved</span>
 <span class="p_l_15"><select></select></span>
 </div>
+<div style="display:none;">
+<div class="tc_list" id="id_gd_list" >
+<div class="tc_01" style="width:160px;"><img src="images/tc_img_02.jpg" width="151" /></div>
+<div class="tc_01">
+<p>小料>><br />每份套餐只能选择4份小料</p>
+<p>精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+</p>
+</div>
+<div class="tc_01">
+<p>锅底>><br />每份套餐只能选择1份锅底</p>
+<p>精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+</p>
+</div>
+<div class="tc_01">
+<p>荤菜>></p>
+<p>精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+精品牛肉酱*1<br />
 
+</p>
+</div>
+<div class="tc_01">
+<p>素菜>></p>
+<p>精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+</p>
+</div>
+<div class="tc_01" style="border:none; position:relative;">
+<p>小吃>></p> <p style="position:absolute; right:0px; top:0px;"><img src="images/ico_close.gif" onclick="$.fancybox.close();" /></p>
+<p>精品牛肉酱*1<br />
+精品牛肉酱*1<br />
+</p>
+</div>
+<div class="clear"></div>
+<div class="tc m_t_60"><img src="images/btn_xz.gif" /></div>
+<!--<div class="gd_nav">
+<span class="right" style=" margin-top:7px; margin-right:10px;"><img src="images/btn_colse.jpg" height="26" onclick="$.fancybox.close();"></span>
+</div>-->
+</div>
+</div>
 </div>
 
 <div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>

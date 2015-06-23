@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
-<title>锅底选择</title>
+<title>小料选择</title>
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
 <link rel="stylesheet" type="text/css" href="style/index.css"/>
 <link rel="stylesheet" type="text/css" href="style/fancybox.css"/>
@@ -21,18 +21,23 @@
                 'centerOnScroll': true,
                 'autoScale': false
             });
+			    $("#modal_01").fancybox({
+                'modal_01': false,
+                'overlayShow': true,
+                'hideOnOverlayClick': false,
+                'hideOnContentClick': false,
+                'enableEscapeButton': false,
+                'showCloseButton': false,
+                'centerOnScroll': true,
+                'autoScale': false
+            });
         });
 </script>
 <script type="text/javascript">
 function ceng()
-{
-	document.getElementById("id_left_01").style.display="none";
-}
+{document.getElementById("id_left_01").style.display="none";}
 function right_ceng()
-{
-	document.getElementById("id_right_01").style.display="none";
-}
-
+{document.getElementById("id_right_01").style.display="none";}
 </script>
 </head>
 
@@ -113,7 +118,7 @@ function right_ceng()
 <div class="gd_bg" ><span class="f14px"><a id="modal" href="#id_gd_list">选择锅底</a></span><span>(每份套餐只能选择一份锅底）</span></div>
 <div class="m_input left"><input type="text" value="番茄鸳鸯锅底" style="width:485px; text-align:center;"/></div>
 <div class="clear"></div>
-<div class="gd_bg"><span class="f14px">选择小料</span><span>(每份套餐只能选择5份小料）</span></div>
+<div class="gd_bg"><span class="f14px"><a id="modal_01" href="#id_gd_list_01">选择小料</a></span><span>(每份套餐只能选择5份小料）</span></div>
 <div class="m_input left" style="margin-bottom:20px;"><input type="text" value="豆腐乳酱（1） 风味豆豉（1） 海鲜酱（1） 精品牛肉酱（1） 香油蒜泥（1）" style="width:485px;"/></div>
 <div class="clear"></div>
 <div class="mu_list">
@@ -244,6 +249,89 @@ function right_ceng()
 </div>
 </div>
 </div>
+
+<div style="display:none;">
+<div class="gd_list" id="id_gd_list_01" >
+<div class="gd_nav">
+<span class="left" style=" margin:10px;"><input type="checkbox" /></span>
+<span class="left" style="width:100px;">自备小料</span>
+<span class="right" style=" margin-top:7px; margin-right:10px;"><img src="images/btn_colse.jpg" height="26" onclick="$.fancybox.close();"></span>
+</div>
+<div class="gd_box">
+<ul>
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+
+
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+
+<li><div class="left"><img src="images/df_img.jpg" width="103" /></div>
+<div class="left m_l_15 p_t_10 m_r_20"><span class="f_c6000a fB f14px" >豆腐乳酱</span><br /><br /><span  class="f_c6000a f14px">68元</span><span class="f_a9a6a6">/份</span></div>
+<div class="left d_num p_t_45"><span><img src="images/img_jian.gif" /></span>
+<span class="f12px fB f_c6000a">1</span>
+<span><img src="images/img_jia.gif" /></span>
+</div><div class="clear"></div>
+</li>
+
+</ul>
+<div class="clear"></div>
+<div class="right gd_page"><a href="#">首页</a> <a href="#">上一页</a>
+<a href="#" class="a_hover">1</a> <a href="#">2</a> <a href="#">下一页</a> <a href="#">最后一页</a></div>
+<div class="right m_t_20 m_r_20"><img src="images/btn_xz.gif" /></div>
+</div>
+</div>
+</div>
+
 
 </div>
 
