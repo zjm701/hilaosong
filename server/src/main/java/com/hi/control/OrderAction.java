@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hi.model.Order;
+import com.hi.model.OrderAddress;
 import com.hi.service.OrderService;
 
 @Path("/")
@@ -19,7 +20,15 @@ public class OrderAction extends BaseAction {
 
 	@Autowired
 	private OrderService orderService;
-
+	
+	@GET
+	@Path("/getlatestaddress")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getLatestAddress(@FormParam("userId") String userId) {
+		OrderAddress address = orderService.getLatestAddress(userId);
+		return getSuccessJsonResponse(address);
+	}
+	
 	/**
 	 * "/wap/historyOrderList" (Mobile version)
 	 * 

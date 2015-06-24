@@ -19,26 +19,39 @@ import com.hi.model.OrderPackDish;
 @Repository("orderDao")
 public class OrderDaoImpl extends AbstractDao implements OrderDao {
 
+	@Override
+	public OrderAddress getLatestAddress(String userId){
+		String sql = "select addressId as \"addressId\", customerPhone as \"customerPhone\", "
+				+ " provinceId as \"provinceId\", cityId as \"cityId\", regionId as \"regionId\", "
+				+ " detailAddress as \"detailAddress\", postCode as \"postCode\", village as \"village\" "
+				+ " from T_CATER_DELIVERYADDRESS a "
+				+ " where a.customerId = :userId and a.provinceid is not null and a.cityid is not null "
+				+ " 	and a.detailaddress is not null and a.isdel = '0' "
+				+ " order by a.addressid desc";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		return this.getBeanBySql(OrderAddress.class, sql, params);
+	}
+	
 	/*
 	 * refer to query:findOrdersHasDishByCustIdAndPage of cater-order-hql.xml
 	 */
 	@Override
 	public List<Order> getHistoryOrders(String userId, int pageIndex) {
-		String sql = "select serialId as \"serialId\", orderId as \"orderId\", customerId as \"customerId\", "
-				+ " o.storeId as \"storeId\", s.storename as \"storeName\", contactName as \"contactName\", contactPhone as \"contactPhone\", "
+		String sql = "select serialId as \"serialId\", o.orderId as \"orderId\", customerId as \"customerId\", "
+				+ " o.storeId as \"storeId\", s.storename as \"storeName\", contactName as \"contactName\", "
+				+ " contactPhone as \"contactPhone\", participantNumber as \"participantNumber\", "
 				+ " to_char(dinningTime, " + DT_FORMAT + ") as \"dinningTime\", status as \"status\", "
 				+ " orderType as \"orderType\", deliveryType as \"deliveryType\", "
 				+ " payChannel as \"payChannel\", custMemo as \"custMemo\", "
 				+ " orderNature as \"orderNature\", payStatus as \"payStatus\", "
-				+ " to_char(created_dt, " + DT_FORMAT + ") as \"createdDt\" "
+				+ " to_char(created_dt, " + DT_FORMAT + ") as \"createdDt\", e.totalPrice as \"totalPrice\" "
 				+ " from T_CATER_ORDERMAININFO o "
-				+ " left outer join T_CATER_STORE s ON o.storeid = s.storeid "
-				+ " where o.status not in ('11','12') and o.order_Src in ('W','S') "
-				+ "		and o.orderid in "
-				+ "			(	select distinct(d.orderid) from T_CATER_ORDERDISHES d "
-				+ "				inner join T_CATER_ORDERMAININFO o on d.orderid = o.orderid "
-				+ "				where o.customerId = :userId )"
-//				+ "				where o.customerId = :userId and o.created_by = :userId)"
+				+ " inner join T_CATER_ORDEREXPENSESINFO e on e.orderid = o.orderid "
+				+ " inner join T_CATER_STORE s ON o.storeid = s.storeid "
+				+ " where o.status not in ('11','12') and o.orderType in ('0', '2') and o.order_Src in ('W','S') "
+				+ "		and o.customerId = :userId "
+//				+ "		and o.customerId = :userId and o.created_by = :userId "
 				+ " order by created_dt desc";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -51,7 +64,8 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 	
 	public Order getOrderInfo(String orderId){
 		String ordersql = "select o.serialId as \"serialId\", o.orderId as \"orderId\", o.customerId as \"customerId\", "
-				+ " o.storeId as \"storeId\", s.storename as \"storeName\", o.contactName as \"contactName\", o.contactPhone as \"contactPhone\", "
+				+ " o.storeId as \"storeId\", s.storename as \"storeName\", o.contactName as \"contactName\", "
+				+ " o.contactPhone as \"contactPhone\", participantNumber as \"participantNumber\", "
 				+ " to_char(o.dinningTime, " + DT_FORMAT + ") as \"dinningTime\", o.status as \"status\", "
 				+ " o.potStatus as \"potStatus\", o.orderType as \"orderType\", o.deliveryType as \"deliveryType\", "
 				+ " o.recieptDept as \"recieptDept\", o.payChannel as \"payChannel\", o.custMemo as \"custMemo\", "

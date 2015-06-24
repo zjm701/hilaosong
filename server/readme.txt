@@ -3,6 +3,7 @@ hi lao song
 Plan A: there are two projects , one is client, two is server
 
 Test Environment: http://182.92.195.126:8080/
+loginID = userId = user_entity_id = customerId
 
 test url of web service
 local: http://localhost:8082/delivery/rest/helloservice/sayHelloString?name=gg
@@ -13,11 +14,11 @@ local: http://localhost:8082/delivery/rest/helloservice/sayHelloXml?name=gg
 run 'mvn:clean' at first time, to install oracle jdbc jar to maven repository
 
 #add backend api
+
 1, get all support delivery cities:
 http://localhost:8080/delivery/rest/getcities
 response: [{"id":8221,"cityId":"110000","city":"北京市","provinceId":"110000"},{"id":9831,"cityId":"130100","city":"石家庄市","provinceId":"130000"}]
 #返回支持外卖的城市列表，id主键， cityId城市id， provinceId省份直辖市id
-
 
 2, 菜品分类
 http://localhost:8080/delivery/rest/getcategories
@@ -34,9 +35,29 @@ response： [{"dishId":"30043_020111","storeDishId":"30043","storeDishName":"牛
 4, 用户登录验证
 http://localhost:8080/delivery/rest/login
 test page： http://localhost:8082/delivery/views/test/login.jsp
+#request： {"username":"13585947701","password":"123456"} （密码现在是明文）
+#返回用户验证结果  
+#成功response：   {"respInfo":{"msgName":"terminalUserLoginResp","resp_time":"2015-06-16 09:53:41","result_code":"300","result_desc":"success"},
+				"loginID":"23675",
+				"ssoid":"0100000064540217",
+				"customerKey":"0100000064540217",
+				"tabCount":"0",
+				"mailCount":"0",
+				"friendsCount":"0",
+				"photoCount":"0"}
+loginID就是userId
+#失败response：   {"respInfo":{"msgName":"terminalUserLoginResp","resp_time":"2015-06-16 10:00:31","result_code":"311","result_desc":"user  defind"}}
 
 5, 用户信息
 http://localhost:8080/delivery/rest/getuserinfo?userId=23675
+response：     {"respInfo":{"msgName":"getUserInfoResp","resp_time":"2015-06-24 10:32:29","result_code":"300","result_desc":"success"},
+			"user":{"user_entity_id":23675,"hits":"","nickname":"大宝","sex":0,"mobile":"13585947701",
+    				"usertype":0,"intro":"","area_code":0,"createtime":"2015-06-16 09:51:09","follow_num":1,
+    				"followed_num":0,"report_num":0,"fav_num":0,"at_num":0,"waiter":"无","userDiscount":"",
+    				"storeId":"","mealtimes":"0","individualNeeds":"","expoints":"0","userLevel":"1星客户",
+    				"receivemsg":0,"address":"null","postCode":"null","hi_laobi":0,"isFriend":0,"taste":""}
+    		}
+#返回用户信息, user用户所有信息user_entity_id就是userId
 
 6, 套餐
 http://localhost:8080/delivery/rest/getpacks?catId=012
@@ -53,11 +74,39 @@ http://localhost:8080/delivery/rest/getdishdetail?dishId=30043_020111
 response： {"dishId":"30043_020111","dishName":"牛领肉","unitPrice":"60.0000","description":"牛脖子部位的肉，肉质细嫩，牛肉味浓郁","isRequired":"0","dishUnit":"份","dishWeight":"0.00","dishShareType":"1","isRecommend":"0","type":"1","bigImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_1.png","mediumImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_2.png","storeDishId":"30043"}
 #返回菜品详情， dishId菜品主键， dishName菜品名， unitPrice菜品单价， description菜品描述， isRequired是否必选， dishUnit菜品单位， dishWeight菜品分量， dishShareType菜品半份属性（1一份，2半份， 3没有特指）， isRecommend是否推荐， type是否是套餐， bigImageAddress菜品图片， storeDishId菜品id
 
+18, 最近的订单地址
+http://localhost:8080/delivery/rest/getlatestaddress?userId=0200000045250449
+response:  {"addressId":203113,"customerPhone":"15201007041","provinceId":"110000","cityId":"110000","detailAddress":"十店测试","village":"朝阳 十店 十店测试"}
+#返回最近的订单地址
+
+19, 门店列表
+http://localhost:8080/delivery/rest/getstores?cityId=110108
+response:  [{"storeId":"020102","storeName":"牡丹园店","storeAddress":"海淀区花园东路2号(牡丹宾馆北) ","storeTele":"01062033112,01062033113","storeCode":"BJ02","storeType":"4","provinceId":"110000","cityId":"110108","coordinate":"116.375007,39.984875","baiduIid":"1","deptType":"4"},
+			{"storeId":"020112","storeName":"紫竹桥店","storeAddress":"海淀区紫竹院路北洼路4号1区195号楼苏宁电器4楼(香格里拉饭店西) ","storeTele":"01068717926,01068716676","storeCode":"BJ12","storeType":"5","provinceId":"110000","cityId":"110108","coordinate":"116.311342,39.950911","baiduIid":"1","deptType":"4"}]
+#返回"支持外卖"的所有门店列表
 
 20, 历史订单
-http://localhost:8080/delivery/rest/gethistoryorders?userId=0100000053215312
-http://localhost:8080/delivery/rest/gethistoryorders?userId=0100000053215312&pageIndex=2
+http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449
+http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449&pageIndex=2分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
+response:  [{"serialId":"2013091805003","orderId":"WBJ162013091805003","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-19 18:00:00","status":"7","orderType":"1","deliveryType":"0","custMemo":"请王龙飞为我们服务。谢谢。","createdDt":"2013-09-18 21:22:37","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]},
+			{"serialId":"2013083103588","orderId":"WBJ162013083103588","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-01 18:00:00","status":"2","orderType":"1","deliveryType":"0","custMemo":"找王龙飞服务 网订 L","createdDt":"2013-08-31 18:08:18","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]}]
+#返回历史订单列表, serialId流水号，orderId订单号，customerId用户号（就是userId），storeId门店号，status：订单状态（0-待审核1-待打印2-待配菜3-已派送4-待收锅5-已收锅6-已删除7-作废8-待下发9-下发失败），orderType：订单类型：（0表示外送,1表示订座,2表示外带），deliveryType外送种类（0-外送 1-自助 2-豪华 3-上门自取）
 
 21, 订单详情
 http://localhost:8080/delivery/rest/getorderinfo?orderId=153376
 http://localhost:8080/delivery/rest/getorderinfo?orderId=ZBJ182012060900024
+response:  {"serialId":"2012060900024","orderId":"ZBJ182012060900024","customerId":"0100000051165276","storeId":"020119","storeName":"潮青汇海底捞","contactName":"系统升级测试","contactPhone":"186581011351","dinningTime":"2012-06-09 23:40:00","status":"7","potStatus":"0","orderType":"0","deliveryType":"0","createdDt":"2012-06-09 06:32:19",
+			"address":{"addressId":199516,"cityId":"110000","regionId":"110101","detailAddress":"系统升级测试","village":"系统升级测试"},
+			"expenses":{"expensesId":259773,"deliveryFee":"0","dishPrice":1120,"totalPrice":1120},
+			"packs":[
+				{"packId":"82124_0201","packName":"海底捞套餐E","packPrice":"878.0000","packCount":"1",
+				 "dishes":[
+				 	{"packId":"82124_0201","innerId":"1","dishId":"10001_0201","dishName":"鸳鸯火锅","unitPrice":"49.0000","dishNumber":1,"dishType":"1"},
+				 	{"packId":"82124_0201","innerId":"2","dishId":"61008_0201","dishName":"麻酱","unitPrice":"5.0000","dishNumber":10,"dishType":"1"}]
+				}],
+			"dishes":[
+				{"dishId":"20015_0201","dishName":"捞派毛肚","unitPrice":"36.0000","dishNumber":1,"dishType":"0"},
+				{"dishId":"82061_0201","dishName":"专人服务","unitPrice":"99.0000","dishNumber":1,"dishType":"0"}]
+			}
+#返回订单详情, 支持多套餐，address地址信息，expenses金额信息，packs套餐列表{某个pack的dishes:套餐内的菜品列表}，dishes订单中的非套餐菜品列表
+
