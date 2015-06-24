@@ -35,7 +35,8 @@ public abstract class AbstractDao {
 	}
 
 	public <T> T getBeanBySql(Class<T> clazz, String sql, Map<String, Object> params) {
-		List<T> list = getBeansBySql(clazz, sql, params);
+		Pagination pagn = new Pagination(2);
+		List<T> list = getBeansBySql(clazz, sql, params, pagn);
 		if (list != null && list.size() > 0) {
 			return list.get(0);
 		} else {
