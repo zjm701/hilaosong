@@ -41,4 +41,13 @@ public class CityDaoImpl extends AbstractDao implements CityDao {
 		return stores.size() > 0 ? stores.get(0) : null;
 	}
 
+	public City getCity(String cityId) {
+		String sql = "select id as \"id\", cityId as \"cityId\", cityname as \"city\", provinceId as \"provinceId\" from T_CATER_SORTCITY c " +
+				" where cityId = :cityId ";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("cityId", cityId);
+		List<City> cities = this.getBeansBySql(City.class, sql);
+		return cities.size() > 0 ? cities.get(0) : null;
+	}
+
 }

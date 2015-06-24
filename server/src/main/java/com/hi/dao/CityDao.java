@@ -8,6 +8,8 @@ import com.hi.model.Store;
 public interface CityDao {
 	List<City> getDeliveryCities();
 	
+	City getCity(String cityId);
+	
 	Store getDefaultStore(String cityId);
 	
 	Store getAreaStore(String storeId);

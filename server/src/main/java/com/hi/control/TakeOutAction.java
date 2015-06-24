@@ -94,6 +94,18 @@ public class TakeOutAction extends BaseAction {
 		return getSuccessJsonResponse(dishes);
 	}
 	
+	@GET
+	@Path("/switchcity")
+	@Produces("application/json")
+	public Response switchCity(@FormParam("cityId") String cityId) {
+		City city = cityService.getCity(cityId);
+		if(city == null){
+			return this.getFailedJsonResponse("not valid city");
+		}else{
+			getSession().setAttribute("cityId", cityId);
+			return this.getSuccessJsonResponse(city);
+		}
+	}
 
 	private HttpSession getSession() {
 		return getRequest().getSession();

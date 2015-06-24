@@ -18,6 +18,13 @@ public abstract class BaseAction {
 		return b.build();
 	}
 	
+	protected Response getFailedJsonResponse(Object obj) {
+		Response.ResponseBuilder b = Response.status(Status.BAD_REQUEST);
+		GsonBuilder gb = new GsonBuilder();
+		b.entity(gb.create().toJson(obj));
+		return b.build();
+	}
+	
 	protected String getFailedJsonResult(String msg) {
 		return "{\"respMsg\":\""+msg+"\"}";
 	}
