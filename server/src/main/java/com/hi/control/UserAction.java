@@ -11,11 +11,13 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang.StringUtils;
 
 import com.google.gson.Gson;
+import com.hi.common.HIConstants;
 import com.hi.common.SnsProvider;
 import com.hi.json.GetUserInfoReq;
 import com.hi.json.LoginForm;
 import com.hi.json.ReqForm;
 import com.hi.json.TerminalUserLoginReq;
+import com.hi.json.TerminalUserLoginResp;
 import com.hi.tools.MD5;
 
 @Path("/")
@@ -57,6 +59,11 @@ public class UserAction extends BaseAction {
 
 				String respString = SnsProvider.getSNSJsonCxfClient().terminalUserLogin(loginReqString);
 				System.out.println("<== login response:" + respString);
+
+				TerminalUserLoginResp resp = gson.fromJson(respString,
+						TerminalUserLoginResp.class);
+				
+				this.getRequest().getSession().setAttribute(HIConstants.LOGIN_ID, resp.getLoginID());
 
 				return respString;
 			} catch (Exception ex) {

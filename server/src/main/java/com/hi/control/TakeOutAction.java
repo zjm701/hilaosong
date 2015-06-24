@@ -1,6 +1,9 @@
 package com.hi.control;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.FormParam;
@@ -11,13 +14,18 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.hi.common.HIConstants;
 import com.hi.model.City;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
 import com.hi.model.DishVO;
+import com.hi.model.Order;
+import com.hi.model.OrderDish;
+import com.hi.model.OrderPack;
 import com.hi.model.PackDish;
 import com.hi.service.CityService;
 import com.hi.service.DishService;
+import com.hi.service.OrderService;
 
 @Path("/")
 public class TakeOutAction extends BaseAction {
@@ -27,6 +35,9 @@ public class TakeOutAction extends BaseAction {
 	
 	@Autowired
 	private DishService dishService;
+	
+	@Autowired
+	private OrderService orderService;
 
 	@GET
 	@Path("/getcities")
@@ -106,7 +117,136 @@ public class TakeOutAction extends BaseAction {
 			return this.getSuccessJsonResponse(city);
 		}
 	}
+	
+	
+	
 
+	public boolean showNotice(String userId, boolean checkHisOrder) {
+		Boolean isNoticeReaded = (Boolean) getSession().getAttribute(
+				HIConstants.IS_NOTICE_READED);
+		if (isNoticeReaded == null || !isNoticeReaded) {
+			boolean hasOrdered = checkHisOrder && orderService.getHistoryOrders(userId, 1)
+					.isEmpty();
+			if (hasOrdered) {
+				getSession().setAttribute(HIConstants.IS_NOTICE_READED, true);
+				return false;
+			}
+		}else{
+			return false;
+		}
+		getSession().setAttribute(HIConstants.IS_NOTICE_READED, true);
+		return true;
+
+	}
+
+	@GET
+	@Path("/user/adddish")
+	@Produces("application/json")
+	public Response addDish(@FormParam("dishId") String dishId, @FormParam("fromNotice") String fromNotice, @FormParam("noticeTest") String noticeTest) {
+		String userId = (String) getSession().getAttribute(
+				HIConstants.LOGIN_ID);
+		if(userId == null){
+			return this.getFailedJsonResponse("please login first");
+		}
+		
+		boolean showNotice = false;
+		if(fromNotice == null || !fromNotice.equals("true")){
+			showNotice = showNotice(userId, (noticeTest==null||noticeTest.equals(0))?true:false);
+		}
+		
+		if(showNotice){
+			Map<String, String> result = new HashMap<String, String>();
+			result.put("showNotice", "true");
+			result.put("directURL", "/user/adddish?dishId="+dishId+"&fromNotice=true");
+			return this.getSuccessJsonResponse(result);
+		}
+		
+		Order dummy =  (Order)getSession().getAttribute(
+				HIConstants.DUMMY_ORDER);
+		if(dummy == null){
+			dummy = new Order();
+		}
+		
+		OrderDish newDish = null;
+		List<OrderDish> dishes = dummy.getDishes();
+		for(OrderDish d : dishes){
+			if(d.getDishId() == dishId){
+				newDish = d;
+				break;
+			}
+		}
+		
+		if(newDish != null){
+			newDish.setDishNumber(newDish.getDishNumber().add(BigDecimal.ONE));
+		}else{
+			newDish = new OrderDish();
+			newDish.setDishId(dishId);
+			newDish.setDishNumber(BigDecimal.ONE);
+			dummy.addDish(newDish);
+		}
+		
+		getSession().setAttribute(
+				HIConstants.DUMMY_ORDER, dummy);
+		return this.getSuccessJsonResponse(dummy);
+
+	}
+	
+	@GET
+	@Path("/user/addpack")
+	@Produces("application/json")
+	public Response addPack(@FormParam("packId") String packId, @FormParam("fromNotice") String fromNotice, @FormParam("noticeTest") String noticeTest) {
+		String userId = (String) getSession().getAttribute(
+				HIConstants.LOGIN_ID);
+		if(userId == null){
+			return this.getFailedJsonResponse("please login first");
+		}
+		
+		boolean showNotice = false;
+		if(fromNotice == null || !fromNotice.equals("true")){
+			showNotice = showNotice(userId, (noticeTest==null||noticeTest.equals(0))?true:false);
+		}
+		
+		if(showNotice){
+			Map<String, String> result = new HashMap<String, String>();
+			result.put("showNotice", "true");
+			result.put("directURL", "/user/addpack?packId="+packId+"&fromNotice=true");
+			return this.getSuccessJsonResponse(result);
+		}
+		
+		Order dummy =  (Order)getSession().getAttribute(
+				HIConstants.DUMMY_ORDER);
+		if(dummy == null){
+			dummy = new Order();
+		}
+		
+		OrderPack newPack = null;
+		List<OrderPack> dishes = dummy.getPacks();
+		for(OrderPack d : dishes){
+			if(d.getPackId() == packId){
+				newPack = d;
+				break;
+			}
+		}
+		
+		if(newPack != null){
+			newPack.setPackCount(String.valueOf((Integer.valueOf(newPack.getPackCount())+1)));
+		}else{
+			newPack = new OrderPack();
+			newPack.setPackId(packId);
+			newPack.setPackCount("1");
+			dummy.addPack(newPack);
+		}
+		OrderPack pack = new OrderPack();
+		pack.setPackId(packId);
+		dummy.addPack(pack);
+		
+		getSession().setAttribute(
+				HIConstants.DUMMY_ORDER, dummy);
+		return this.getSuccessJsonResponse(dummy);
+
+	}
+	
+	
 	private HttpSession getSession() {
 		return getRequest().getSession();
 	}
