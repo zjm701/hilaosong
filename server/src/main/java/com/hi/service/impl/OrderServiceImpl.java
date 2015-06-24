@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hi.dao.OrderDao;
 import com.hi.model.Order;
+import com.hi.model.OrderAddress;
 import com.hi.service.OrderService;
 
 @Service("orderService")
@@ -17,6 +18,10 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDao dao;
 
+	public OrderAddress getLatestAddress(String userId) {
+		return dao.getLatestAddress(userId);
+	}
+	
 	public List<Order> getHistoryOrders(String userId, int pageIndex) {
 		return dao.getHistoryOrders(userId, pageIndex);
 	}

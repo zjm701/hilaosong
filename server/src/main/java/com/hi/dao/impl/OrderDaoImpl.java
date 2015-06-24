@@ -19,6 +19,20 @@ import com.hi.model.OrderPackDish;
 @Repository("orderDao")
 public class OrderDaoImpl extends AbstractDao implements OrderDao {
 
+	@Override
+	public OrderAddress getLatestAddress(String userId){
+		String sql = "select addressId as \"addressId\", customerPhone as \"customerPhone\", "
+				+ " provinceId as \"provinceId\", cityId as \"cityId\", regionId as \"regionId\", "
+				+ " detailAddress as \"detailAddress\", postCode as \"postCode\", village as \"village\" "
+				+ " from T_CATER_DELIVERYADDRESS a "
+				+ " where a.customerId = :userId and a.provinceid is not null and a.cityid is not null "
+				+ " 	and a.detailaddress is not null and a.isdel = '0' "
+				+ " order by a.addressid desc";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		return this.getBeanBySql(OrderAddress.class, sql, params);
+	}
+	
 	/*
 	 * refer to query:findOrdersHasDishByCustIdAndPage of cater-order-hql.xml
 	 */

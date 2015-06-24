@@ -14,7 +14,7 @@ import com.hi.service.CityService;
 @Service("cityService")
 @Transactional
 public class CityServiceImpl implements CityService {
-	private static final String CITY_BEIJING = "110000";
+	public static final String CITY_BEIJING = "110000";
 
 	@Autowired
 	private CityDao dao;

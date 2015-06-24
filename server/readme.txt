@@ -5,7 +5,6 @@ Plan A: there are two projects , one is client, two is server
 Test Environment: http://182.92.195.126:8080/
 loginID = userId = user_entity_id = customerId
 
-
 test url of web service
 local: http://localhost:8082/delivery/rest/helloservice/sayHelloString?name=gg
 local: http://localhost:8082/delivery/rest/helloservice/sayHelloJson?name=gg
@@ -15,11 +14,11 @@ local: http://localhost:8082/delivery/rest/helloservice/sayHelloXml?name=gg
 run 'mvn:clean' at first time, to install oracle jdbc jar to maven repository
 
 #add backend api
+
 1, get all support delivery cities:
 http://localhost:8080/delivery/rest/getcities
 response: [{"id":8221,"cityId":"110000","city":"北京市","provinceId":"110000"},{"id":9831,"cityId":"130100","city":"石家庄市","provinceId":"130000"}]
 #返回支持外卖的城市列表，id主键， cityId城市id， provinceId省份直辖市id
-
 
 2, 菜品分类
 http://localhost:8080/delivery/rest/getcategories
@@ -75,8 +74,19 @@ http://localhost:8080/delivery/rest/getdishdetail?dishId=30043_020111
 response： {"dishId":"30043_020111","dishName":"牛领肉","unitPrice":"60.0000","description":"牛脖子部位的肉，肉质细嫩，牛肉味浓郁","isRequired":"0","dishUnit":"份","dishWeight":"0.00","dishShareType":"1","isRecommend":"0","type":"1","bigImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_1.png","mediumImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_2.png","storeDishId":"30043"}
 #返回菜品详情， dishId菜品主键， dishName菜品名， unitPrice菜品单价， description菜品描述， isRequired是否必选， dishUnit菜品单位， dishWeight菜品分量， dishShareType菜品半份属性（1一份，2半份， 3没有特指）， isRecommend是否推荐， type是否是套餐， bigImageAddress菜品图片， storeDishId菜品id
 
+18, 最近的订单地址
+http://localhost:8080/delivery/rest/getlatestaddress?userId=0200000045250449
+response:  {"addressId":203113,"customerPhone":"15201007041","provinceId":"110000","cityId":"110000","detailAddress":"十店测试","village":"朝阳 十店 十店测试"}
+#返回最近的订单地址
+
+19, 门店列表
+http://localhost:8080/delivery/rest/getstores?cityId=110108
+response:  [{"storeId":"020102","storeName":"牡丹园店","storeAddress":"海淀区花园东路2号(牡丹宾馆北) ","storeTele":"01062033112,01062033113","storeCode":"BJ02","storeType":"4","provinceId":"110000","cityId":"110108","coordinate":"116.375007,39.984875","baiduIid":"1","deptType":"4"},
+			{"storeId":"020112","storeName":"紫竹桥店","storeAddress":"海淀区紫竹院路北洼路4号1区195号楼苏宁电器4楼(香格里拉饭店西) ","storeTele":"01068717926,01068716676","storeCode":"BJ12","storeType":"5","provinceId":"110000","cityId":"110108","coordinate":"116.311342,39.950911","baiduIid":"1","deptType":"4"}]
+#返回支持外卖的所有门店列表
+
 20, 历史订单
-http://localhost:8080/delivery/rest/gethistoryorders?userId=0100000053215312
+http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449
 http://localhost:8080/delivery/rest/gethistoryorders?userId=0100000053215312&pageIndex=2分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response:  [{"serialId":"2013091805003","orderId":"WBJ162013091805003","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","dinningTime":"2013-09-19 18:00:00","status":"7","orderType":"1","deliveryType":"0","custMemo":"请王龙飞为我们服务。谢谢。","createdDt":"2013-09-18 21:22:37","address":{},"expenses":{},"packs":[],"dishes":[]},
 			{"serialId":"2013083103588","orderId":"WBJ162013083103588","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","dinningTime":"2013-09-01 18:00:00","status":"2","orderType":"1","deliveryType":"0","custMemo":"找王龙飞服务 网订 L","createdDt":"2013-08-31 18:08:18","address":{},"expenses":{},"packs":[],"dishes":[]}]

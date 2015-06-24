@@ -30,6 +30,7 @@
             <ref bean="mainAction" />
             <ref bean="userAction" />
             <ref bean="orderAction" />
+            <ref bean="storeAction" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 
@@ -38,6 +39,7 @@
     <bean id="mainAction" class="com.hi.control.TakeOutAction" />
     <bean id="userAction" class="com.hi.control.UserAction" />
     <bean id="orderAction" class="com.hi.control.OrderAction" />
+    <bean id="storeAction" class="com.hi.control.StoreAction" />
 
     <context:property-placeholder location="classpath*:/appConfig.properties" />
     
