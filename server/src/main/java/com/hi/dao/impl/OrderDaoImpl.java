@@ -33,7 +33,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " to_char(created_dt, " + DT_FORMAT + ") as \"createdDt\" "
 				+ " from T_CATER_ORDERMAININFO o "
 				+ " left outer join T_CATER_STORE s ON o.storeid = s.storeid "
-				+ " where o.status not in ('11','12') and o.order_Src in ('W','S') "
+				+ " where o.status not in ('11','12') and o.orderType in ('0', '2') and o.order_Src in ('W','S') "
 				+ "		and o.orderid in "
 				+ "			(	select distinct(d.orderid) from T_CATER_ORDERDISHES d "
 				+ "				inner join T_CATER_ORDERMAININFO o on d.orderid = o.orderid "
