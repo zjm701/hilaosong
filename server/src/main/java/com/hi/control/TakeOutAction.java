@@ -170,7 +170,7 @@ public class TakeOutAction extends BaseAction {
 		OrderDish newDish = null;
 		List<OrderDish> dishes = dummy.getDishes();
 		for(OrderDish d : dishes){
-			if(d.getDishId() == dishId){
+			if(d.getDishId().equals(dishId)){
 				newDish = d;
 				break;
 			}
@@ -222,7 +222,7 @@ public class TakeOutAction extends BaseAction {
 		OrderPack newPack = null;
 		List<OrderPack> dishes = dummy.getPacks();
 		for(OrderPack d : dishes){
-			if(d.getPackId() == packId){
+			if(d.getPackId().equals(packId)){
 				newPack = d;
 				break;
 			}

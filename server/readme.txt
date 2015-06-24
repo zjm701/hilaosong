@@ -74,6 +74,20 @@ http://localhost:8080/delivery/rest/getdishdetail?dishId=30043_020111
 response： {"dishId":"30043_020111","dishName":"牛领肉","unitPrice":"60.0000","description":"牛脖子部位的肉，肉质细嫩，牛肉味浓郁","isRequired":"0","dishUnit":"份","dishWeight":"0.00","dishShareType":"1","isRecommend":"0","type":"1","bigImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_1.png","mediumImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_2.png","storeDishId":"30043"}
 #返回菜品详情， dishId菜品主键， dishName菜品名， unitPrice菜品单价， description菜品描述， isRequired是否必选， dishUnit菜品单位， dishWeight菜品分量， dishShareType菜品半份属性（1一份，2半份， 3没有特指）， isRecommend是否推荐， type是否是套餐， bigImageAddress菜品图片， storeDishId菜品id
 
+9, 切换城市，以便获取不同城市的菜品
+http://localhost:8080/delivery/rest/switchcity?cityId=130100
+
+10， 下单菜品（正式生成订单之前，保持到session）
+http://localhost:8080/delivery/rest/user/adddish?dishId=30043_020111
+必须login（先登录， 才可以做后续的操作）， 
+如果有阅读过订餐须知，就直接显示下单的结果(同一菜品添加2次)：{"address":{},"expenses":{},"packs":[],"dishes":[{"dishId":"30043_020111","dishNumber":2}]}
+如果没有阅读过订餐须知，那么需要阅读， 前台处理： {"showNotice":"true","directURL":"/user/adddish?dishId\u003d30043_020111\u0026fromNotice\u003dtrue"}
+
+11， 下单套餐（正式生成订单之前，保持到session）
+http://localhost:8080/delivery/rest/user/addpack?packId=82192_0201
+同上
+
+
 18, 最近的订单地址
 http://localhost:8080/delivery/rest/getlatestaddress?userId=0200000045250449
 response:  {"addressId":203113,"customerPhone":"15201007041","provinceId":"110000","cityId":"110000","detailAddress":"十店测试","village":"朝阳 十店 十店测试"}
