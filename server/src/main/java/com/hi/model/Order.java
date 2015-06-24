@@ -48,6 +48,11 @@ public class Order extends Pagenation {
 	private String contactPhone;
 
 	/**
+	 * 用餐人数
+	 */
+	private BigDecimal participantNumber;
+
+	/**
 	 * 用餐时间(外送的送餐时间、预订的到店时间、餐带的取餐时间)
 	 */
 	private String dinningTime;
@@ -111,6 +116,11 @@ public class Order extends Pagenation {
 	 */
 	private String createdDt;
 
+	/**
+	 * 订单总价
+	 */
+	private BigDecimal totalPrice;
+	
 	/**
 	 * 送餐地址
 	 */
@@ -176,6 +186,14 @@ public class Order extends Pagenation {
 
 	public void setContactPhone(String contactPhone) {
 		this.contactPhone = contactPhone;
+	}
+
+	public BigDecimal getParticipantNumber() {
+		return participantNumber;
+	}
+
+	public void setParticipantNumber(BigDecimal participantNumber) {
+		this.participantNumber = participantNumber;
 	}
 
 	public String getDinningTime() {
@@ -280,6 +298,14 @@ public class Order extends Pagenation {
 
 	public void setCreatedDt(String createdDt) {
 		this.createdDt = createdDt;
+	}
+
+	public BigDecimal getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(BigDecimal totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public OrderAddress getAddress() {
