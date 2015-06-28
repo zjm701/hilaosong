@@ -18,6 +18,7 @@ import com.hi.model.Category;
 import com.hi.model.Product;
 import com.hi.service.CategoryService;
 import com.hi.service.ProductService;
+import com.hi.tools.BaiduTools;
 
 @Path("/")
 public class IndexAction {
@@ -61,6 +62,21 @@ public class IndexAction {
 		int packageId = productService.getProductPackageId(productId);
 		List<Product> products = productService.getProductsByPackageId(packageId);
 		b.entity(gb.create().toJson(products));
+		return b.build();
+	}
+	
+	@GET
+	@Path("/testbaidu")
+	@Produces("application/json")
+	public Response testbaiduapi() {
+		System.out.println(BaiduTools.getDIstance("40.056878,116.30815", "39.915285,116.403857"));
+		
+		System.out.println(BaiduTools.getDescByLocation("116.420593,40.076381"));
+		
+		//System.out.println(BaiduTools.getCusPointByAddress("北京市 海淀区 学院南路"));
+		Response.ResponseBuilder b = Response.status(Status.OK);
+		GsonBuilder gb = new GsonBuilder();
+		b.entity(gb.create().toJson("good"));
 		return b.build();
 	}
 }

@@ -31,4 +31,8 @@ public class SystemSetting {
 	public static String getSnsJsonAddress() {
 		return getProperties().getProperty(SNS_JSON_ADDRESS);
 	}
+	
+	public static String getSetting(String key){
+		return getProperties().getProperty(key);
+	}
 }
