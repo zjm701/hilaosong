@@ -1,6 +1,7 @@
 package com.hi.control;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -25,12 +26,16 @@ public abstract class BaseAction {
 		return b.build();
 	}
 	
-	protected String getFailedJsonResult(String msg) {
+	protected String getMessageJsonResult(String msg) {
 		return "{\"respMsg\":\""+msg+"\"}";
 	}
 	
-	protected HttpServletRequest getRequest(){
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+	protected HttpSession getSession() {
+		return getRequest().getSession();
+	}
+	
+	protected HttpServletRequest getRequest() {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		return request;
 	}
 }

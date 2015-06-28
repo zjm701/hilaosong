@@ -15,6 +15,7 @@ import com.hi.model.OrderDish;
 import com.hi.model.OrderExpenses;
 import com.hi.model.OrderPack;
 import com.hi.model.OrderPackDish;
+import com.hi.tools.StringTools;
 
 @Repository("orderDao")
 public class OrderDaoImpl extends AbstractDao implements OrderDao {
@@ -67,7 +68,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " o.storeId as \"storeId\", s.storename as \"storeName\", o.contactName as \"contactName\", "
 				+ " o.contactPhone as \"contactPhone\", participantNumber as \"participantNumber\", "
 				+ " to_char(o.dinningTime, " + DT_FORMAT + ") as \"dinningTime\", o.status as \"status\", "
-				+ " o.potStatus as \"potStatus\", o.orderType as \"orderType\", o.deliveryType as \"deliveryType\", "
+				+ " o.potNumber as \"potNumber\", o.potStatus as \"potStatus\", o.orderType as \"orderType\", o.deliveryType as \"deliveryType\", "
 				+ " o.recieptDept as \"recieptDept\", o.payChannel as \"payChannel\", o.custMemo as \"custMemo\", "
 				+ " o.orderNature as \"orderNature\", o.payStatus as \"payStatus\", "
 				+ " to_char(created_dt, " + DT_FORMAT + ") as \"createdDt\" "
@@ -86,7 +87,9 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " where a.orderid = :orderId ";
 
 		OrderAddress address = this.getBeanBySql(OrderAddress.class, addresssql, params);
-		order.setAddress(address);
+		if (address != null) {
+			order.setAddress(address);
+		}
 
 		String expensessql = "select id as \"expensesId\", deposit as \"deposit\", "
 				+ " waiterFee as \"waiterFee\", deliveryFee as \"deliveryFee\", feeMemo as \"feeMemo\", "
@@ -97,7 +100,9 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " where e.orderid = :orderId ";
 
 		OrderExpenses expenses = this.getBeanBySql(OrderExpenses.class, expensessql, params);
-		order.setExpenses(expenses);
+		if (expenses != null) {
+			order.setExpenses(expenses);
+		}
 
 		String packsql = "select h.dishId as \"packId\", h.dishname as \"packName\", "
 				+ " h.unitPrice as \"packPrice\", d.packCount as \"packCount\" "
@@ -133,8 +138,33 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " inner join T_CATER_DISH h on d.dishid = h.dishid "
 				+ " where d.orderid = :orderId and d.dishtype in ('0', '2')";
 		List<OrderDish> dishes = this.getBeansBySql(OrderDish.class, dishsql, params);
-		order.setDishes(dishes);
+		if (dishes != null && dishes.size() > 0) {
+			order.setDishes(dishes);
+		}
 		
 		return order;
+	}
+
+	@Override
+	public long getOrderSerialId() {
+		return this.getNextvalBySeqName("SEQ_CATER_ORDERSERIEID");
+	}
+
+	@Override
+	public boolean createOrder(Order o) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("insert into t_cater_ordermaininfo ")
+				.append("(serialId, orderId, customerId, storeId, contactName, contactPhone, sex, participantNumber, dinningTime, order_dinning_time_type, ")
+				.append(" status, potNumber, potStatus, orderType, deliveryType, recieptDept, payChannel, payStatus, custMemo, order_src, created_by, ")
+				.append(" created_dt, ordernature, feedbackable, channel, arrived) values ('").append(o.getSerialId()).append("', '")
+				.append(o.getOrderId()).append("', '").append(o.getCustomerId()).append("', '").append(o.getStoreId()).append("', '")
+				.append(o.getContactName()).append("', '").append(o.getContactPhone()).append("', '").append(o.getSex()).append("', '")
+				.append(o.getParticipantNumber()).append("', to_date('").append(o.getDinningTime()).append("', ").append(DT_FORMAT).append("), '")
+				.append(o.getDinningTimeType()).append("', '").append(o.getStatus()).append("', '").append(o.getPotNumber()).append("', '")
+				.append(o.getPotStatus()).append("', '").append(o.getOrderType()).append("', '").append(o.getDeliveryType()).append("', '")
+				.append(o.getRecieptDept()).append("', '").append(o.getPayChannel()).append("', '").append(o.getPayStatus()).append("', '")
+				.append(o.getCustMemo()).append("', '").append(o.getOrderSrc()).append("', '").append(o.getCustomerId()).append("', sysdate, '2', '1', '0', '0') ");
+
+		return this.executiveSql(sb.toString(), null) == 1;
 	}
 }

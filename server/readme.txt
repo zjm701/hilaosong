@@ -99,14 +99,19 @@ response:  [{"storeId":"020102","storeName":"牡丹园店","storeAddress":"海�
 			{"storeId":"020112","storeName":"紫竹桥店","storeAddress":"海淀区紫竹院路北洼路4号1区195号楼苏宁电器4楼(香格里拉饭店西) ","storeTele":"01068717926,01068716676","storeCode":"BJ12","storeType":"5","provinceId":"110000","cityId":"110108","coordinate":"116.311342,39.950911","baiduIid":"1","deptType":"4"}]
 #返回"支持外卖"的所有门店列表
 
-20, 历史订单
+20, 下单
+http://localhost:8080/delivery/rest/createorder
+test page： http://localhost:8082/delivery/views/test/createorder.jsp 
+#必须先登录
+
+21, 历史订单
 http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449
 http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449&pageIndex=2分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response:  [{"serialId":"2013091805003","orderId":"WBJ162013091805003","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-19 18:00:00","status":"7","orderType":"1","deliveryType":"0","custMemo":"请王龙飞为我们服务。谢谢。","createdDt":"2013-09-18 21:22:37","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]},
 			{"serialId":"2013083103588","orderId":"WBJ162013083103588","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-01 18:00:00","status":"2","orderType":"1","deliveryType":"0","custMemo":"找王龙飞服务 网订 L","createdDt":"2013-08-31 18:08:18","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]}]
 #返回历史订单列表, serialId流水号，orderId订单号，customerId用户号（就是userId），storeId门店号，status：订单状态（0-待审核1-待打印2-待配菜3-已派送4-待收锅5-已收锅6-已删除7-作废8-待下发9-下发失败），orderType：订单类型：（0表示外送,1表示订座,2表示外带），deliveryType外送种类（0-外送 1-自助 2-豪华 3-上门自取）
 
-21, 订单详情
+22, 订单详情
 http://localhost:8080/delivery/rest/getorderinfo?orderId=153376
 http://localhost:8080/delivery/rest/getorderinfo?orderId=ZBJ182012060900024
 response:  {"serialId":"2012060900024","orderId":"ZBJ182012060900024","customerId":"0100000051165276","storeId":"020119","storeName":"潮青汇海底捞","contactName":"系统升级测试","contactPhone":"186581011351","dinningTime":"2012-06-09 23:40:00","status":"7","potStatus":"0","orderType":"0","deliveryType":"0","createdDt":"2012-06-09 06:32:19",

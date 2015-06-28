@@ -10,6 +10,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hi.common.Pagination;
+import com.hi.model.Nextval;
 
 public abstract class AbstractDao {
 
@@ -30,12 +31,20 @@ public abstract class AbstractDao {
 		getSession().delete(entity);
 	}
 
+	public long getNextvalBySeqName(String seqName) {
+		String sql = "select " + seqName + ".nextval as id from dual";
+		return this.getBeanBySql(Nextval.class, sql, null, null).getID().longValue();
+	}
+
 	public <T> T getBeanBySql(Class<T> clazz, String sql) {
 		return getBeanBySql(clazz, sql, null);
 	}
 
 	public <T> T getBeanBySql(Class<T> clazz, String sql, Map<String, Object> params) {
-		Pagination pagn = new Pagination(2);
+		return getBeanBySql(clazz, sql, params, new Pagination(2));
+	}
+	
+	private <T> T getBeanBySql(Class<T> clazz, String sql, Map<String, Object> params, Pagination pagn) {
 		List<T> list = getBeansBySql(clazz, sql, params, pagn);
 		if (list != null && list.size() > 0) {
 			return list.get(0);
@@ -50,10 +59,6 @@ public abstract class AbstractDao {
 
 	public <T> List<T> getBeansBySql(Class<T> clazz, String sql, Map<String, Object> params) {
 		return getBeansBySql(clazz, sql, params, null);
-	}
-
-	public <T> List<T> getBeansBySql(Class<T> clazz, String sql, Pagination pagn) {
-		return getBeansBySql(clazz, sql, null, pagn);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,5 +76,15 @@ public abstract class AbstractDao {
 		List<T> list = query.setResultTransformer(Transformers.aliasToBean(clazz)).list();
 
 		return list;
+	}
+	
+	public int executiveSql(String sql, Map<String, Object> params) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		if (params != null) {
+			for (Map.Entry<String, Object> entry : params.entrySet()) {
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+		return query.executeUpdate();
 	}
 }

@@ -1,12 +1,12 @@
 package com.hi.tools;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
+import java.sql.Clob;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -20,7 +20,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.crypto.Cipher;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -1010,4 +1009,33 @@ public class StringTools
 		String result = uri.substring(0, lind+1)+type+"/"+uri.substring(lind+1);
 		return result;
 	}
+    
+    public static String clobToString(Clob clob) {
+        String reString = "";
+        BufferedReader br = null;
+        try {
+        	br = new BufferedReader(clob.getCharacterStream());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // 得到流
+        String s = null;
+        try {
+            s = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        StringBuffer sb = new StringBuffer();
+        while (s != null) {
+            //执行循环将字符串全部取出付值给StringBuffer由StringBuffer转成STRING
+            sb.append(s);
+            try {
+                s = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        reString = sb.toString();
+        return reString;
+    }
 }

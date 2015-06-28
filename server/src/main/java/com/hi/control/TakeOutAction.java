@@ -247,8 +247,5 @@ public class TakeOutAction extends BaseAction {
 	}
 	
 	
-	private HttpSession getSession() {
-		return getRequest().getSession();
-	}
 
 }

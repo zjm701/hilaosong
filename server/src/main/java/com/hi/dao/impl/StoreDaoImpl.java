@@ -25,4 +25,17 @@ public class StoreDaoImpl extends AbstractDao implements StoreDao {
 		params.put("cityId", cityId);
 		return this.getBeansBySql(Store.class, sql, params);
 	}
+	
+	public Store getStore(String storeId){
+		String sql = "select s.storeid as \"storeId\", s.storeName as \"storeName\", s.storeAddress as \"storeAddress\", "
+				+ " s.storeTele as \"storeTele\", s.storeCode as \"storeCode\", s.storeType as \"storeType\", "
+				+ " s.provinceId as \"provinceId\", s.cityId as \"cityId\", s.postCode as \"postCode\", "
+				+ " s.coordinate as \"coordinate\", s.baiduIid as \"baiduIid\", s.deptType as \"deptType\" "
+				+ " from T_CATER_STORE s "
+				+ " where s.storeid = :storeId ";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);
+		return this.getBeanBySql(Store.class, sql, params);
+	}
+	
 }

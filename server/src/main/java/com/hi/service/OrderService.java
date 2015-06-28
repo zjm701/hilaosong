@@ -12,4 +12,6 @@ public interface OrderService {
 	List<Order> getHistoryOrders(String userId, int pageIndex);
 	
 	Order getOrderInfo(String orderId);
+	
+	String createOrder(Order order);
 }
