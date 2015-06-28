@@ -29,6 +29,7 @@ $(function() {
 			contentType: "application/json;charset=utf-8", 
 			success: function(msg){//msg为返回的数据，在这里做数据绑定
 				alert("login response:"+JSON.stringify(msg));
+				location.href = "welcome.jsp";
 			}
 		});
 	});
@@ -41,18 +42,18 @@ $(function() {
 		<div class="main-wrap">
 	        <div class="result-wrap">
             	<div class="result-title">
-               		<h1>Hi捞送登录</h1>
+               		<h1>Hi捞送登录（测试）</h1>
             	</div>
 	            <div class="result-content">
 					<div id="top">
 						<table class="insert-tab" width="100%">
 							<tr>
 								<th width="120">用户名:</th>
-								<td><input type="text" name="username" style="width: 440px" ></td>
+								<td><input type="text" name="username" style="width: 440px" >13585947701</td>
 							</tr>
 							<tr>
 								<th width="120">密码:</th>
-								<td><input type="password" name="password" style="width: 440px" ></td>
+								<td><input type="password" name="password" style="width: 440px" >123456</td>
 							</tr>
 							<tr>
 								<th></th>

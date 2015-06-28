@@ -29,7 +29,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 			//user = userService.getUserByName(auth.getName());
 			user = new User();
-			user.setName(auth.getName());
+			user.setNickname(auth.getName());
 			session.setAttribute("user", user);
 		}
 

@@ -8,4 +8,5 @@ public interface StoreDao {
 
 	List<Store> getStores(String cityId);
 
+	Store getStore(String storeId);
 }

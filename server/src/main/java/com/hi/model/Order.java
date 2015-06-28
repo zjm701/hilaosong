@@ -10,6 +10,10 @@ import java.util.List;
  * @author jimmy.zhang
  * 
  */
+/**
+ * @author jimmy.zhang
+ *
+ */
 public class Order extends Pagenation {
 
 	/**
@@ -48,6 +52,11 @@ public class Order extends Pagenation {
 	private String contactPhone;
 
 	/**
+	 * 联系人性别
+	 */
+	private String sex;
+	
+	/**
 	 * 用餐人数
 	 */
 	private BigDecimal participantNumber;
@@ -56,6 +65,11 @@ public class Order extends Pagenation {
 	 * 用餐时间(外送的送餐时间、预订的到店时间、餐带的取餐时间)
 	 */
 	private String dinningTime;
+	
+	/**
+	 * 用餐时间类型 "1"-午市， "2"-晚市，"3"-夜市
+	 */
+	private String dinningTimeType;
 
 	/**
 	 * 订单状态
@@ -120,7 +134,7 @@ public class Order extends Pagenation {
 	 * 订单总价
 	 */
 	private BigDecimal totalPrice;
-	
+
 	/**
 	 * 送餐地址
 	 */
@@ -188,6 +202,14 @@ public class Order extends Pagenation {
 		this.contactPhone = contactPhone;
 	}
 
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	public BigDecimal getParticipantNumber() {
 		return participantNumber;
 	}
@@ -202,6 +224,14 @@ public class Order extends Pagenation {
 
 	public void setDinningTime(String dinningTime) {
 		this.dinningTime = dinningTime;
+	}
+
+	public String getDinningTimeType() {
+		return dinningTimeType;
+	}
+
+	public void setDinningTimeType(String dinningTimeType) {
+		this.dinningTimeType = dinningTimeType;
 	}
 
 	public String getStatus() {
