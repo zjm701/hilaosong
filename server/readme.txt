@@ -87,6 +87,11 @@ http://localhost:8080/delivery/rest/user/adddish?dishId=30043_020111
 http://localhost:8080/delivery/rest/user/addpack?packId=82192_0201
 同上
 
+12/13, 更改临时订单（session中，下单的内容，正式生成订单之前）的菜品/套餐数量
+http://localhost:8080/delivery/rest/user/changenumofdish?dishId=30043_020111&num=0 去除所选菜品
+http://localhost:8080/delivery/rest/user/changenumofpack?packId=82192_0201&num=3 订购3份一样的所选套餐
+
+14，baidu map api test only: http://localhost:8080/delivery/rest/testbaidu
 
 18, 最近的订单地址
 http://localhost:8080/delivery/rest/getlatestaddress?userId=0200000045250449

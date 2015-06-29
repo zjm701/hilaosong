@@ -108,8 +108,9 @@ public class BaiduTools {
 			String apiurl = SystemSetting.getSetting("baidu.geocodingUrl");
 			String ak = SystemSetting.getSetting("baidu.apiKey");
 			try {
-				apiurl += "?ak=" + ak + "&address=" + address
+				apiurl += "?ak=" + ak + "&address=" + URLEncoder.encode(address, "UTF-8")
 						+ "&output=json";
+				System.out.println(apiurl);
 				response = HttpUtil.sendGet(apiurl);
 				System.out.println(response);
 				JSONObject object = JSONObject.fromObject(response);

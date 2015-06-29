@@ -1,5 +1,6 @@
 package com.hi.control;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -69,14 +70,16 @@ public class IndexAction {
 	@Path("/testbaidu")
 	@Produces("application/json")
 	public Response testbaiduapi() {
-		System.out.println(BaiduTools.getDIstance("40.056878,116.30815", "39.915285,116.403857"));
+		List<String> result = new ArrayList<String>();
+		result.add(""+BaiduTools.getDIstance("40.056878,116.30815", "39.915285,116.403857"));
 		
-		System.out.println(BaiduTools.getDescByLocation("116.420593,40.076381"));
+		String desc = BaiduTools.getDescByLocation("116.420593,40.076381");
+		result.add(desc);
 		
-		//System.out.println(BaiduTools.getCusPointByAddress("北京市 海淀区 学院南路"));
+		result.add(BaiduTools.getCusPointByAddress(desc));
 		Response.ResponseBuilder b = Response.status(Status.OK);
 		GsonBuilder gb = new GsonBuilder();
-		b.entity(gb.create().toJson("good"));
+		b.entity(gb.create().toJson(result));
 		return b.build();
 	}
 }
