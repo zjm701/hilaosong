@@ -19,7 +19,7 @@ public class StoreDaoImpl extends AbstractDao implements StoreDao {
 				+ " s.provinceId as \"provinceId\", s.cityId as \"cityId\", s.postCode as \"postCode\", "
 				+ " s.coordinate as \"coordinate\", s.baiduIid as \"baiduIid\", s.deptType as \"deptType\" "
 				+ " from T_CATER_STORE s "
-				+ " where s.cityId = :cityId and s.deptType='4' and s.memo4 = '1' "
+				+ " where s.cityId = :cityId and s.deptType='4' and s.memo4 = '1' and s.isactive = 'Y'"
 				+ " order by storeid ";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cityId", cityId);

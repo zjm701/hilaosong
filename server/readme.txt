@@ -108,6 +108,31 @@ response:  [{"storeId":"020102","storeName":"牡丹园店","storeAddress":"海�
 http://localhost:8080/delivery/rest/createorder
 test page： http://localhost:8082/delivery/views/test/createorder.jsp 
 #必须先登录
+输入样例：	{"storeId":"020102",
+			 "contactName":"Jimmy",
+			 "contactPhone":"13585947701",
+			 "participantNumber":"4",
+			 "dinningTime":"2015-07-02 20:30:00",
+			 "recieptDept":"***",
+			 "custMemo":"***",
+			 "payChannel":"0",
+			 "potNumber":"1",
+			 "orderType":"0",
+			 "address":{"provinceId":"110000","cityId":"110105","detailAddress":"***"},
+			 "expenses":{"waiterFee":"10","deliveryFee":"20","dishPrice":"88","totalPrice":"118"},
+			 "packs":[ {"packId":"82192_0201",
+			 			"packCount":"1",
+			 			"dishes":[  {"dishId":"10001_0201"},
+			 						{"dishId":"61008_0201"},
+			 						{"dishId":"20014_0201"},
+			 						{"dishId":"32014_0201"},
+			 						{"dishId":"41006_0201"},
+			 						{"dishId":"20026_0201"} ]
+			 			} ],
+			 "dishes":[ {"dishId":"20014_0201","dishNumber":"1"},
+			 			{"dishId":"30012_0201","dishNumber":"2"},
+			 			{"dishId":"41066_0201","dishNumber":"3"} ]
+			 }
 
 21, 历史订单
 http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449

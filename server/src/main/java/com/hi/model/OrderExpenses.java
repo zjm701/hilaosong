@@ -15,6 +15,11 @@ public class OrderExpenses {
 	private BigDecimal expensesId;
 
 	/**
+	 * 规则订单号
+	 */
+	private String orderId;
+
+	/**
 	 * 炉具押金
 	 */
 	private String deposit;
@@ -77,6 +82,14 @@ public class OrderExpenses {
 		this.expensesId = expensesId;
 	}
 
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	
 	public String getDeposit() {
 		return deposit;
 	}

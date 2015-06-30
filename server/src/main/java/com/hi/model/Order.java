@@ -388,4 +388,29 @@ public class Order extends Pagenation {
 	public void addDish(OrderDish dish) {
 		this.dishes.add(dish);
 	}
+	
+	public int getTotalDishesCount() {
+		int cnt = 0;
+		if (this.dishes != null) {
+			for (OrderDish dish : this.dishes) {
+				if (dish.getDishNumber() != null) {
+					cnt += dish.getDishNumber().intValue();
+				} else {
+					cnt += 1;
+				}
+			}
+		}
+		if (this.packs != null) {
+			for (OrderPack pack : this.packs) {
+				for (OrderPackDish dish : pack.getDishes()) {
+					if (dish.getDishNumber() != null) {
+						cnt += dish.getDishNumber().intValue();
+					} else {
+						cnt += 1;
+					}
+				}
+			}
+		}
+		return cnt;
+	}
 }

@@ -10,7 +10,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>测试login</title>
 
 <script type="text/javascript" src="<%=path%>/static/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="<%=path%>/static/js/jquery-ui.min.js"></script>
 <script type="text/javascript" >
 $(function() {
 	$("input[name='save']").click(function() {

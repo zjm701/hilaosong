@@ -1,5 +1,6 @@
 package com.hi.control;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -16,11 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.hi.common.HIConstants;
+import com.hi.common.OrderType;
 import com.hi.model.Order;
 import com.hi.model.OrderAddress;
 import com.hi.model.User;
 import com.hi.service.OrderService;
+import com.hi.service.RecieptDeptService;
 import com.hi.service.StoreService;
+import com.hi.tools.CalendarTools;
 import com.hi.tools.StringTools;
 
 @Path("/")
@@ -31,6 +35,9 @@ public class OrderAction extends BaseAction {
 
 	@Autowired
 	private StoreService storeService;
+	
+	@Autowired
+	private RecieptDeptService recieptDeptService;
 
 	/**
 	 * @param userId
@@ -74,7 +81,7 @@ public class OrderAction extends BaseAction {
 	}
 
 	/**
-	 * "/wap/createOrder" "/wap3/seatingOrder" (Mobile version)
+	 * "/wap/createOrder" "/wap/deliveringOrder" (Mobile version)
 	 * storeId = 020115
 	 * storeId = 020102
 	 * @param content
@@ -92,17 +99,34 @@ public class OrderAction extends BaseAction {
 		Order order = gson.fromJson(content, Order.class);
 
 		String message = "";
-		if (StringUtils.isEmpty(order.getContactName())) {
-			message = "\u8ba2\u5355\u8054\u7cfb\u4eba\u4e0d\u80fd\u4e3a\u7a7a"; //订单联系人不能为空
-		} else if (StringUtils.isEmpty(order.getContactPhone())) {
-			message = "\u8ba2\u5355\u8054\u7cfb\u7535\u8bdd\u4e0d\u80fd\u4e3a\u7a7a"; //订单联系电话不能为空
-		} else if (StringUtils.isEmpty(order.getDinningTime())) {
+		Date dinningTime = null;
+		if (StringUtils.isEmpty(order.getDinningTime())) {
 			message = "\u8ba2\u9910\u65f6\u95f4\u4e0d\u80fd\u4e3a\u7a7a"; //订餐时间不能为空
-		} else if (storeService.isShutdown(order.getStoreId())) { // 门店停业
-			message = storeService.getShutdownNotice(order.getStoreId());
-		} else if (storeService.isClose(order.getStoreId(), StringTools.timeStr2Date(order.getDinningTime(), StringTools.IPHONETIME))) { // 打样
-			message = order.getDinningTime() + "\u505c\u6b62\u8425\u4e1a"; //停止营业
+		} else {
+			dinningTime = StringTools.timeStr2Date(order.getDinningTime(), StringTools.IPHONETIME);
+			if (dinningTime.before(CalendarTools.now())) {
+				message = "\u8ba2\u9910\u65f6\u95f4\u4e0d\u5f97\u5c0f\u4e8e\u5f53\u524d\u65f6\u95f4"; //订餐时间不得小于当前时间
+			} 
 		}
+		if (StringUtils.isEmpty(message)) {
+			if (StringUtils.isEmpty(order.getContactName())) {
+				message = "\u8ba2\u5355\u8054\u7cfb\u4eba\u4e0d\u80fd\u4e3a\u7a7a"; // 订单联系人不能为空
+			} else if (StringUtils.isEmpty(order.getContactPhone())) {
+				message = "\u8ba2\u5355\u8054\u7cfb\u7535\u8bdd\u4e0d\u80fd\u4e3a\u7a7a"; // 订单联系电话不能为空
+			} else if (StringUtils.isEmpty(order.getStoreId())) {
+				message = "\u9884\u8ba2\u95e8\u5e97id\u4e0d\u80fd\u4e3a\u7a7a"; // 预订门店id不能为空
+			} else if (order.getTotalDishesCount() == 0) {
+				message = "\u8ba2\u5355\u83dc\u54c1\u4e0d\u80fd\u4e3a\u7a7a"; // 订单菜品不能为空
+			} else if (StringUtils.isEmpty(order.getOrderType())) {
+				message = "\u8ba2\u5355\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"; // 订单类型不能为空
+			} else if (OrderType.SEND_OUT.getKey().equals(order.getOrderType()) && order.getAddress() != null
+					&& StringUtils.isEmpty(order.getAddress().getDetailAddress())) {
+				message = "\u5916\u9001\u5730\u5740\u4e0d\u80fd\u4e3a\u7a7a"; // 外送地址不能为空
+			} else if (StringUtils.isEmpty(order.getPayChannel())) {
+				message = "\u652f\u4ed8\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"; // 支付类型不能为空
+			}
+		}
+		
 		if (StringUtils.isEmpty(message)) {
 			order.setCustomerId((String) getSession().getAttribute(HIConstants.LOGIN_ID));
 			order.setSex(((User) getSession().getAttribute(HIConstants.USER)).getSex() + "");
@@ -112,6 +136,9 @@ public class OrderAction extends BaseAction {
 			if(orderId != null ){
 				getSession().setAttribute(HIConstants.ORDER_ID, orderId);
 				message = "\u521b\u5efa\u5b9a\u5355\u6210\u529f, \u8ba2\u5355\u7f16\u53f7: " + orderId; //创建定单成功
+				if (StringUtils.isNotEmpty(order.getRecieptDept())) {
+					recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptDept());
+				}
 			}else{
 				message = "\u521b\u5efa\u5b9a\u5355\u5931\u8d25"; //创建定单失败
 			}

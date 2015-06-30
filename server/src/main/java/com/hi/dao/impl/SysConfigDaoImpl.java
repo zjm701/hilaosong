@@ -19,7 +19,7 @@ public class SysConfigDaoImpl extends AbstractDao implements SysConfigDao {
 				+ " s.paramName as \"paramName\", s.paramSrc as \"paramSrc\", "
 				+ " s.startValue as \"startValue\", s.endValue as \"endValue\" "
 				+ " from T_CATER_SYSCONFIG s "
-				+ " where s.paramType = :paramType and s.paramCode = :paramCode and s.status = '1' ";
+				+ " where s.paramType = :paramType and s.paramCode = :paramCode and s.status = '1' and s.paramSrc in('0', '2') ";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("paramType", paramType);
 		params.put("paramCode", paramCode);
@@ -32,7 +32,7 @@ public class SysConfigDaoImpl extends AbstractDao implements SysConfigDao {
 				+ " s.paramName as \"paramName\", s.paramSrc as \"paramSrc\", "
 				+ " s.startValue as \"startValue\", s.endValue as \"endValue\" "
 				+ " from T_CATER_SYSCONFIG s "
-				+ " where s.paramType = :paramType and s.paramCode = :paramCode and s.status = '1' "
+				+ " where s.paramType = :paramType and s.paramCode = :paramCode and s.status = '1' and s.paramSrc in('0', '2') "
 				+ " order by s.id";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("paramType", paramType);

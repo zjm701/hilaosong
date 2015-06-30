@@ -12,6 +12,11 @@ public class OrderAddress {
 	 * 地址编号ID
 	 */
 	private BigDecimal addressId;
+	
+	/**
+	 * 规则订单号
+	 */
+	private String orderId;
 
 	/**
 	 * 用户手机号
@@ -43,7 +48,6 @@ public class OrderAddress {
 	 */
 	private String postCode;
 
-	private String orderId;
 
 	/**
 	 * 小区/路
@@ -58,6 +62,14 @@ public class OrderAddress {
 		this.addressId = addressId;
 	}
 
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	
 	public String getCustomerPhone() {
 		return customerPhone;
 	}
@@ -104,14 +116,6 @@ public class OrderAddress {
 
 	public void setPostCode(String postCode) {
 		this.postCode = postCode;
-	}
-
-	public String getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
 	}
 
 	public String getVillage() {

@@ -34,7 +34,15 @@ public class StoreServiceImpl implements StoreService {
 		}
 		return sdao.getStores(cityId);
 	}
-
+	
+	/**
+	 * only for orderType = 1 （订座）
+	 * 
+	 * @param storeId
+	 * @param date
+	 * @return
+	 */
+	@Deprecated
 	public boolean isClose(String storeId, Date date) {
 		SysConfig cfg = cdao.getSysConfig(storeId, "105");
 		if (cfg != null) {
@@ -42,23 +50,40 @@ public class StoreServiceImpl implements StoreService {
 			Date startDate = null;
 			Date endDate = null;
 			try {
-				startDate = df.parse(cfg.getStartValue() + ":00");
+				startDate = df.parse(StringTools.clobToString(cfg.getStartValue()) + ":00");
 				endDate = df.parse(cfg.getEndValue() + ":59");
 				if (startDate.before(date) && endDate.after(date)) {
 					return true;
 				}
 			} catch (ParseException e) {
+				e.printStackTrace();
 				return false;
 			}
 		}
 		return false;
 	}
-
+	
+	/**
+	 * only for orderType = 1 （订座）
+	 * 
+	 * @param storeId
+	 * @param date
+	 * @return
+	 */
+	@Deprecated
 	public boolean isShutdown(String storeId) {
 		SysConfig cfg = cdao.getSysConfig(storeId, "107");
 		return (cfg != null);
 	}
-
+	
+	/**
+	 * only for orderType = 1 （订座）
+	 * 
+	 * @param storeId
+	 * @param date
+	 * @return
+	 */
+	@Deprecated
 	public String getShutdownNotice(String storeId) {
 		SysConfig cfg = cdao.getSysConfig(storeId, "107");
 		if (cfg != null) {

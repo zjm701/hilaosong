@@ -15,7 +15,7 @@ public class SystemSetting {
 	private SystemSetting() {
 	}
 
-	private static Properties getProperties() {
+	private static synchronized Properties getProperties() {
 		if (prop == null) {
 			prop = new Properties();
 			try {
@@ -29,7 +29,7 @@ public class SystemSetting {
 	}
 
 	public static String getSnsJsonAddress() {
-		return getProperties().getProperty(SNS_JSON_ADDRESS);
+		return getSetting(SNS_JSON_ADDRESS);
 	}
 	
 	public static String getSetting(String key){
