@@ -53,11 +53,11 @@ $(function() {
 								<td><input type="text" name="guodiName" style="width: 440px" value="大宝的0号锅底"></td>
 							</tr>
 							<tr>
-								<th width="120">门店Id:</th>
+								<th width="120">锅底1 Id:</th>
 								<td><input type="text" name="dishId" style="width: 440px" value="10011_020119">10011_020119,10012_020119</td>
 							</tr>
 							<tr>
-								<th width="120">联系人姓名:</th>
+								<th width="120">锅底2 Id:</th>
 								<td><input type="text" name="dishId2" style="width: 440px" value="10016_020115">10016_020115,10229_020115,10039_020115</td>
 							</tr>
 							<tr>
