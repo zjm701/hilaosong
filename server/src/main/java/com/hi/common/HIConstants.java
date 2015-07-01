@@ -6,6 +6,8 @@ public interface HIConstants {
 	static final String USER = "user";
 	
 	static final String ORDER_ID = "orderId";
+	
+	static final String DIYGUODI_ID = "diyGuodiId";
 
 	static final String IS_NOTICE_READED = "isNoticeReaded";
 

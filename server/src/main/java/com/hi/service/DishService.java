@@ -5,6 +5,7 @@ import java.util.List;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
 import com.hi.model.DishVO;
+import com.hi.model.DiyGuodi;
 import com.hi.model.PackDish;
 
 public interface DishService {
@@ -17,4 +18,12 @@ public interface DishService {
 	List<DishVO> getPacks(String storeId, String catId, int pageIndex);
 	
 	List<PackDish> getPackDishes(String packId);
+	
+	long countDiyGuodis(String userId);
+	
+	List<DiyGuodi> getDiyGuodis(String userId, int pageIndex);
+
+	String createDiyGuodi(DiyGuodi guodi);
+
+	boolean deleteDiyGuodi(long id);
 }

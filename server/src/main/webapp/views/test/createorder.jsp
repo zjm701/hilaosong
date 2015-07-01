@@ -63,7 +63,6 @@ $(function() {
 			contentType: "application/json;charset=utf-8", 
 			success: function(msg){//msg为返回的数据，在这里做数据绑定
 				alert("login response:"+JSON.stringify(msg));
-				location.href = "createresult.jsp";
 			}
 		});
 	});

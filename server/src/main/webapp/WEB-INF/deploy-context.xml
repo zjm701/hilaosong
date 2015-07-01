@@ -31,6 +31,7 @@
             <ref bean="userAction" />
             <ref bean="orderAction" />
             <ref bean="storeAction" />
+            <ref bean="dishAction" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 
@@ -40,6 +41,7 @@
     <bean id="userAction" class="com.hi.control.UserAction" />
     <bean id="orderAction" class="com.hi.control.OrderAction" />
     <bean id="storeAction" class="com.hi.control.StoreAction" />
+    <bean id="dishAction" class="com.hi.control.DishAction" />
 
     <context:property-placeholder location="classpath*:/appConfig.properties" />
     

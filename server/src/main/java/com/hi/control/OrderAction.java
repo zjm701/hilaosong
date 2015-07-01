@@ -82,8 +82,7 @@ public class OrderAction extends BaseAction {
 
 	/**
 	 * "/wap/createOrder" "/wap/deliveringOrder" (Mobile version)
-	 * storeId = 020115
-	 * storeId = 020102
+	 * 
 	 * @param content
 	 * @return
 	 */
@@ -135,7 +134,7 @@ public class OrderAction extends BaseAction {
 			String orderId = orderService.createOrder(order);
 			if(orderId != null ){
 				getSession().setAttribute(HIConstants.ORDER_ID, orderId);
-				message = "\u521b\u5efa\u5b9a\u5355\u6210\u529f, \u8ba2\u5355\u7f16\u53f7: " + orderId; //创建定单成功
+				message = "\u521b\u5efa\u5b9a\u5355\u6210\u529f, \u8ba2\u5355\u7f16\u53f7: " + orderId; //创建定单成功, 订单编号:
 				if (StringUtils.isNotEmpty(order.getRecieptDept())) {
 					recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptDept());
 				}

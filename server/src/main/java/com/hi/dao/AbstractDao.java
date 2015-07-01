@@ -10,6 +10,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hi.common.Pagination;
+import com.hi.model.Count;
 import com.hi.model.Nextval;
 
 public abstract class AbstractDao {
@@ -35,7 +36,15 @@ public abstract class AbstractDao {
 		String sql = "select " + seqName + ".nextval as id from dual";
 		return this.getBeanBySql(Nextval.class, sql, null, null).getID().longValue();
 	}
+	
+	public long countBySql(String sql) {
+		return countBySql(sql, null);
+	}
 
+	public long countBySql(String sql, Map<String, Object> params) {
+		return this.getBeanBySql(Count.class, "select count(*) as \"count\" from (" + sql + ")", params, null).longValue();
+	}
+	
 	public <T> T getBeanBySql(Class<T> clazz, String sql) {
 		return getBeanBySql(clazz, sql, null);
 	}

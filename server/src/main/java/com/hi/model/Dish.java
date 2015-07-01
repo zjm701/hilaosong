@@ -1,6 +1,6 @@
 package com.hi.model;
 
-public class Dish {
+public class Dish extends Pagenation{
 	private String dishId;
 	
 	private String dishName;

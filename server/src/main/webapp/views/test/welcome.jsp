@@ -48,6 +48,7 @@ if(session.getAttribute("user") != null){
 <hr>
 用户昵称： ${sessionScope.user.nickname}
 <hr>
+<a href="createguodi.jsp">创建DIY锅底</a>
 <a href="createorder.jsp">创建定单</a>
 <%}
 %>
