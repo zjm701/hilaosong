@@ -27,9 +27,9 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	public List<DishVO> getDishes(String storeId, String categoryId,
 			int pageIndex) {
 		String sql = "select d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
-				+ " d.bigImageAddr as \"bigImageAddr\", d.type as \"type\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
+				+ " d.bigImageAddr as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
 				+ " from T_CATER_DISH d"
-				+ " left join (select linkStoreDishId, storeDishId, unitPrice from T_CATER_DISH "
+				+ " left join (select linkStoreDishId, dishId, storeDishId, unitPrice from T_CATER_DISH "
 				+ "		where storeId = :storeId and dishcategory = :categoryId and dishShareType = 2) hd"
 				+ "	on hd.linkStoreDishId = d.storeDishId "
 				+ " where storeId = :storeId and dishcategory = :categoryId and dishShareType != 2 "

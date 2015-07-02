@@ -13,7 +13,9 @@ public class DishVO extends Pagenation {
 
 	// 1: normal dish, 2: package dish
 	private String type;
-
+	
+	private String halfDishId;
+	 
 	private String halfStoreDishId;
 
 	// if this dish has half, then set the price of half dish
@@ -65,6 +67,14 @@ public class DishVO extends Pagenation {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getHalfDishId() {
+		return halfDishId;
+	}
+
+	public void setHalfDishId(String halfDishId) {
+		this.halfDishId = halfDishId;
 	}
 
 	public String getHalfStoreDishId() {
