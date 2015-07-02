@@ -31,9 +31,9 @@ public class DishAction extends BaseAction {
 	 * @return
 	 */
 	@GET
-	@Path("/getdiyguodiname")
+	@Path("/getgdname")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getDefaultDiyGuodiName(@FormParam("userId") String userId) {
+	public String getDefaultGuodiName(@FormParam("userId") String userId) {
 		long count = dishService.countDiyGuodis(userId);
 		String name = userId;
 		User u = (User) getSession().getAttribute(HIConstants.USER);
@@ -51,9 +51,9 @@ public class DishAction extends BaseAction {
 	 * @return
 	 */
 	@GET
-	@Path("/getdiyguodis")
+	@Path("/getgds")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDiyGuodis(@FormParam("userId") String userId, @FormParam("pageIndex") int pageIndex) {
+	public Response getGuodis(@FormParam("userId") String userId, @FormParam("pageIndex") int pageIndex) {
 		List<DiyGuodi> guodis = dishService.getDiyGuodis(userId, pageIndex);
 		return getSuccessJsonResponse(guodis);
 	}
@@ -64,7 +64,7 @@ public class DishAction extends BaseAction {
 	 * @return
 	 */
 	@POST
-	@Path("/creatediyguodi")
+	@Path("/creategd")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createGuodi(String content) {
@@ -88,13 +88,38 @@ public class DishAction extends BaseAction {
 	
 	/**
 	 * 
+	 * @param content
+	 * @return
+	 */
+	@POST
+	@Path("/updategd")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateGuodi(String content) {
+		System.out.println("==> content:" + content);
+
+		Gson gson = new Gson();
+		DiyGuodi guodi = gson.fromJson(content, DiyGuodi.class);
+
+		String guodiId = dishService.updateDiyGuodi(guodi);
+		String message = "";
+		if (guodiId != null) {
+			message = "\u66f4\u65b0DIY\u9505\u5e95\u6210\u529f"; // 更新DIY锅底成功
+		} else {
+			message = "\u66f4\u65b0DIY\u9505\u5e95\u5931\u8d25"; // 更新DIY锅底失败
+		}
+		return getMessageJsonResult(message);
+	}
+	
+	/**
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@GET
-	@Path("/deletediyguodi")
+	@Path("/deletegd")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteDiyGuodi(@FormParam("id") long id) {
+	public Response deleteGuodi(@FormParam("id") long id) {
 		boolean s = dishService.deleteDiyGuodi(id);
 		String message = s?"\u5220\u9664DIY\u9505\u5e95\u6210\u529f":"\u5220\u9664DIY\u9505\u5e95\u5931\u8d25"; //删除DIY锅底成功 删除DIY锅底失败
 		return getSuccessJsonResponse(message);

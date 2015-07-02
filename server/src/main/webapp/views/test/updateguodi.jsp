@@ -14,12 +14,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 $(function() {
 	$("input[name='save']").click(function() {
 		var content = {
+				guodiId: $.trim($("input[name='guodiId']").val()),
 				guodiName: $.trim($("input[name='guodiName']").val()),
 				dishId: $.trim($("input[name='dishId']").val()),
 				dishId2: $.trim($("input[name='dishId2']").val())
 			};
 		$.ajax({
-			url: "<%=path%>/rest/creategd",//要访问的后台地址
+			url: "<%=path%>/rest/updategd",//要访问的后台地址
 			data: JSON.stringify(content),//要发送的数据
 			type: "post", //使用post方法访问后台
 			dataType: "json", //返回json格式的数据
@@ -39,26 +40,26 @@ $(function() {
 		<div class="main-wrap">
 	        <div class="result-wrap">
             	<div class="result-title">
-               		<h1>Hi捞送创建DIY锅底（测试）</h1>
+               		<h1>Hi捞送更新DIY锅底（测试）</h1>
             	</div>
 	            <div class="result-content">
 					<div id="top">
 						<table class="insert-tab" width="100%">
 							<tr>
-								<th width="120">用户ID:</th>
-								<td>${sessionScope.loginId}</td>
+								<th width="120">锅底ID:</th>
+								<td><input type="text" name="guodiId" style="width: 440px" value="69134"></td>
 							</tr>
 							<tr>
 								<th width="120">锅底名称:</th>
-								<td><input type="text" name="guodiName" style="width: 440px" value="大宝的0号锅底"></td>
+								<td><input type="text" name="guodiName" style="width: 440px" value="大宝的5号锅底"></td>
 							</tr>
 							<tr>
 								<th width="120">锅底1 Id:</th>
-								<td><input type="text" name="dishId" style="width: 440px" value="10011_020119">10011_020119,10012_020119</td>
+								<td><input type="text" name="dishId" style="width: 440px" value="10012_020119">10011_020119,10012_020119</td>
 							</tr>
 							<tr>
 								<th width="120">锅底2 Id:</th>
-								<td><input type="text" name="dishId2" style="width: 440px" value="10016_020115">10016_020115,10229_020115,10039_020115</td>
+								<td><input type="text" name="dishId2" style="width: 440px" value="10039_020115">10016_020115,10229_020115,10039_020115</td>
 							</tr>
 							<tr>
 								<th width="120"></th>

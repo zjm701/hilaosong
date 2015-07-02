@@ -25,5 +25,7 @@ public interface DishService {
 
 	String createDiyGuodi(DiyGuodi guodi);
 
+	String updateDiyGuodi(DiyGuodi guodi);
+
 	boolean deleteDiyGuodi(long id);
 }

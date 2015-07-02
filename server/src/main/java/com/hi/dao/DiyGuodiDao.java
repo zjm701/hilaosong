@@ -11,6 +11,8 @@ public interface DiyGuodiDao {
 	List<DiyGuodi> getDiyGuodis(String userId, int pageIndex);
 
 	boolean createDiyGuodi(DiyGuodi g);
+	
+	boolean updateDiyGuodi(DiyGuodi g);
 
 	boolean deleteDiyGuodi(long id);
 }

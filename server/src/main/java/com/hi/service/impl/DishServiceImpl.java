@@ -68,6 +68,15 @@ public class DishServiceImpl implements DishService {
 			return null;
 		}
 	}
+	
+	@Override
+	public String updateDiyGuodi(DiyGuodi guodi){
+		if(gdao.updateDiyGuodi(guodi)){
+			return guodi.getGuodiId()+"";
+		}else{
+			return null;
+		}
+	}
 
 	@Override
 	public boolean deleteDiyGuodi(long id) {

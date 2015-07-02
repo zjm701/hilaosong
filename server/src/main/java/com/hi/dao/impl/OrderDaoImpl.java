@@ -133,8 +133,8 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 			}
 		}
 		
-		String dishsql = "select d.dishId as \"dishId\", h.dishname as \"dishName\", "
-				+ " d.unitPrice as \"unitPrice\", d.dishNumber as \"dishNumber\", d.dishType as \"dishType\" "
+		String dishsql = "select d.dishId as \"dishId\", case when (d.guodiId is not null) then d.detail else h.dishname end as \"dishName\", "
+				+ " d.unitPrice as \"unitPrice\", d.dishNumber as \"dishNumber\", d.dishType as \"dishType\", d.guodiId as \"guodiId\" "
 				+ " from T_CATER_ORDERDISHES d "
 				+ " inner join T_CATER_DISH h on d.dishid = h.dishid "
 				+ " where d.orderid = :orderId and d.dishtype in ('0', '2')";
@@ -173,10 +173,10 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				sb.setLength(0);
 				OrderAddress a = o.getAddress();
 				sb.append("insert into T_CATER_DELIVERYADDRESS ")
-						.append("(addressId, customerId, customerPhone, provinceId, cityId, detailAddress, orderId) ")
+						.append("(addressId, customerId, customerPhone, provinceId, cityId, detailAddress, orderId, isdel) ")
 						.append("values (SEQ_CATER_DELIVERYADDRESS.nextval, '").append(o.getCustomerId()).append("', '")
 						.append(a.getCustomerPhone()).append("', '").append(a.getProvinceId()).append("', '").append(a.getCityId())
-						.append("', '").append(a.getDetailAddress()).append("', '").append(o.getOrderId()).append("') ");
+						.append("', '").append(a.getDetailAddress()).append("', '").append(o.getOrderId()).append("', '0') ");
 				saveflag = (this.executiveSql(sb.toString(), null) == 1);
 			}
 		}
@@ -214,14 +214,28 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 		if (saveflag) {
 			if (o.getDishes() != null && o.getDishes().size() > 0) {
 				String part1 = "insert into T_CATER_ORDERDISHES (id, orderid, dishid, dishnumber, dishtype, unitprice) "
-						+ "select SEQ_CATER_ORDERDISHES.Nextval , '" + o.getOrderId() + "', d.dishid, '";
+						+ "select SEQ_CATER_ORDERDISHES.Nextval, '" + o.getOrderId() + "', d.dishid, '";
 				String part2 = "', '0', d.unitprice from T_CATER_DISH d where d.dishId = :dishId ";
+				
+				//with diy guodi
+				String part3 = "insert into T_CATER_ORDERDISHES (id, orderid, dishid, dishnumber, dishtype, unitprice, guodiid, detail) "
+						+ "select SEQ_CATER_ORDERDISHES.Nextval, '" + o.getOrderId() + "', g.main_guodiid, '";
+				String part4 = "', '0', case when (d2.unitprice is null) or (d1.unitprice >= d2.unitprice) then d1.unitprice else d2.unitprice end, "
+						+ "g.id, g.detail from T_CATER_GUODIDIY g "
+						+ "inner join T_CATER_DISH d1 on g.main_guodiid = d1.dishid "
+						+ "left outer join T_CATER_DISH d2 on g.assist_guodiid = d2.dishid where g.id = :guodiId ";
 
 				Map<String, Object> params = new HashMap<String, Object>();
 				for (OrderDish dish : o.getDishes()) {
 					sb.setLength(0);
-					sb.append(part1).append(dish.getDishNumber()).append(part2);
-					params.put("dishId", dish.getDishId());
+					params.clear();
+					if (StringTools.isEmpty(dish.getGuodiId())) {
+						sb.append(part1).append(dish.getDishNumber()).append(part2);
+						params.put("dishId", dish.getDishId());
+					} else {//with diy guodi
+						sb.append(part3).append(dish.getDishNumber()).append(part4);
+						params.put("guodiId", dish.getGuodiId());
+					}
 					saveflag = (this.executiveSql(sb.toString(), params) == 1);
 				}
 			}

@@ -95,17 +95,21 @@ http://localhost:8080/delivery/rest/user/changenumofpack?packId=82192_0201&num=3
 
 
 20, 获取用户的DIY锅底列表，支持分页
-http://localhost:8080/delivery/rest/getdiyguodis?userId=222243
+http://localhost:8080/delivery/rest/getgds?userId=222243
 
 21, 获取DIY锅底默认名
-http://localhost:8080/delivery/rest/getdiyguodiname?userId=222243
+http://localhost:8080/delivery/rest/getgdname?userId=222243
 
 22, 创建DIY锅底, POST方式
-http://localhost:8080/delivery/rest/creatediyguodi
+http://localhost:8080/delivery/rest/creategd
 传入:{"guodiName":"大宝的3号锅底","dishId":"10011_020119","dishId2":"10016_020115"}
 
+22, 更新DIY锅底, POST方式
+http://localhost:8080/delivery/rest/updategd
+传入:{"guodiId":1521, "guodiName":"大宝的4号锅底","dishId":"10011_020119","dishId2":"10016_020115"}
+
 23, 删除DIY锅底
-http://localhost:8080/delivery/rest/deletediyguodi?id=1122
+http://localhost:8080/delivery/rest/deletegd?id=1122
 
 30, 最近的订单地址
 http://localhost:8080/delivery/rest/getlatestaddress?userId=0200000045250449

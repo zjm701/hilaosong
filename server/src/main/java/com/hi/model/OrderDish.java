@@ -27,6 +27,11 @@ public class OrderDish {
 	 * 菜品数量
 	 */
 	private BigDecimal dishNumber;
+	
+	/**
+	 * DIY锅底
+	 */
+	private String guodiId;
 
 	/**
 	 * 菜品类别， 0-菜品; 1-套餐; 2-赠品
@@ -71,5 +76,13 @@ public class OrderDish {
 
 	public void setDishType(String dishType) {
 		this.dishType = dishType;
+	}
+
+	public String getGuodiId() {
+		return guodiId;
+	}
+
+	public void setGuodiId(String guodiId) {
+		this.guodiId = guodiId;
 	}
 }

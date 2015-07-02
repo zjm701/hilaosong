@@ -49,6 +49,7 @@ $(function() {
 						 }
 				       ],
 				dishes: [
+				         {guodiId: $.trim($("input[name='guodiId']").val()), dishNumber: $.trim($("input[name='guodiNumber']").val())},
 				         {dishId: $.trim($("input[name='dishId1']").val()), dishNumber: $.trim($("input[name='dishNumber1']").val())},
 				         {dishId: $.trim($("input[name='dishId2']").val()), dishNumber: $.trim($("input[name='dishNumber2']").val())},
 				         {dishId: $.trim($("input[name='dishId3']").val()), dishNumber: $.trim($("input[name='dishNumber3']").val())}
@@ -159,6 +160,10 @@ $(function() {
 							<tr>
 								<th width="120">套餐中其他菜品</th>
 								<td>32014_0201,20014_0201,41006_0201,20026_0201等不能改，都是1份</td>
+							</tr>
+							<tr>
+								<th width="120">选择DIY锅底</th>
+								<td><input type="text" name="guodiId" style="width: 100px" value="69135">数量<input type="text" name="guodiNumber" style="width: 100px" value="1"></td>
 							</tr>
 							<tr>
 								<th width="120">选择套餐外的菜品</th>
