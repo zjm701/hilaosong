@@ -32,7 +32,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " order by a.addressid desc";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
-		return this.getBeanBySql(OrderAddress.class, sql, params);
+		return this.getFirstBeanBySql(OrderAddress.class, sql, params);
 	}
 	
 	/*
@@ -79,7 +79,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("orderId", orderId);
-		Order order = this.getBeanBySql(Order.class, ordersql, params);
+		Order order = this.getUniqueBeanBySql(Order.class, ordersql, params);
 		
 		String addresssql = "select addressId as \"addressId\", customerPhone as \"customerPhone\", "
 				+ " provinceId as \"provinceId\", cityId as \"cityId\", regionId as \"regionId\", "
@@ -87,7 +87,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " from T_CATER_DELIVERYADDRESS a "
 				+ " where a.orderid = :orderId ";
 
-		OrderAddress address = this.getBeanBySql(OrderAddress.class, addresssql, params);
+		OrderAddress address = this.getUniqueBeanBySql(OrderAddress.class, addresssql, params);
 		if (address != null) {
 			order.setAddress(address);
 		}
@@ -100,7 +100,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " from T_CATER_ORDEREXPENSESINFO e "
 				+ " where e.orderid = :orderId ";
 
-		OrderExpenses expenses = this.getBeanBySql(OrderExpenses.class, expensessql, params);
+		OrderExpenses expenses = this.getUniqueBeanBySql(OrderExpenses.class, expensessql, params);
 		if (expenses != null) {
 			order.setExpenses(expenses);
 		}
@@ -126,7 +126,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				OrderPack pack = order.getPack(packdish.getPackId());
 				if(pack == null){
 					params2.put("dishId", packdish.getDishId());
-					pack = this.getBeanBySql(OrderPack.class, packsql, params2);
+					pack = this.getUniqueBeanBySql(OrderPack.class, packsql, params2);
 					order.addPack(pack);
 				}
 				pack.addDish(packdish);

@@ -1,6 +1,8 @@
 package com.hi.model;
 
-public class Store {
+import java.math.BigDecimal;
+
+public class Store{
 	
 	/**
 	 * 门店Id
@@ -66,7 +68,13 @@ public class Store {
 	 * 部门类型，0-总部、1-部门、2-分公司、3-片区、4-门店
 	 */
 	private String deptType;
-
+	
+	private String deptId;
+	
+	private String deptName;
+	
+	private BigDecimal distance;
+	
 	public String getStoreId() {
 		return storeId;
 	}
@@ -169,5 +177,29 @@ public class Store {
 
 	public void setDeptType(String deptType) {
 		this.deptType = deptType;
+	}
+
+	public String getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public BigDecimal getDistance() {
+		return distance;
+	}
+
+	public void setDistance(BigDecimal distance) {
+		this.distance = distance;
 	}
 }

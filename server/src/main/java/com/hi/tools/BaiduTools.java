@@ -1,15 +1,11 @@
 package com.hi.tools;
 
-import java.net.URLEncoder;
-
 import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.hi.common.SystemSetting;
-
-
 
 public class BaiduTools {
 	private static Logger logger = LogManager.getLogger(BaiduTools.class);
@@ -56,8 +52,8 @@ public class BaiduTools {
 	/**
 	 * 获取某个坐标点的地理位置描述
 	 * @param cuspoint
-	 * 					坐标位置，例(116.420593,40.076381)
-	 * @return  北京市 海淀区 学院南路
+	 * 					坐标位置，例 "116.420593,40.076381"
+	 * @return  北京市-昌平区-立汤路
 	 */
 	public static String getDescByLocation(String cuspoint) {
 		String response = "";
@@ -67,10 +63,10 @@ public class BaiduTools {
 			String apiurl = SystemSetting.getSetting("baidu.geocodingUrl");
 			String ak = SystemSetting.getSetting("baidu.apiKey");
 			try {
-				apiurl += "?ak=" + ak + "&location=" + cuspoint
-						+ "&output=json";
+				apiurl += "?ak=" + ak + "&location=" + cuspoint + "&output=json";
+				System.out.println("==> " + apiurl);
 				response = HttpUtil.sendGet(apiurl);
-				System.out.println(response);
+				System.out.println("<== " + response);
 				JSONObject object = JSONObject.fromObject(response);
 				if (object.getInt("status") == 0) {
 					result = object.getJSONObject("result")
@@ -99,7 +95,7 @@ public class BaiduTools {
 	 * 根据地理位置描述获取某个坐标点
 	 * @param 地理位置描述 
 	 * 					北京市 海淀区 学院南路
-	 * @return  坐标位置，(116.3555855618,39.963757558199)
+	 * @return  坐标位置，"116.3555855618,39.963757558199"
 	 */
 	public static String getCusPointByAddress(String address) {
 		String response = "";
@@ -108,11 +104,10 @@ public class BaiduTools {
 			String apiurl = SystemSetting.getSetting("baidu.geocodingUrl");
 			String ak = SystemSetting.getSetting("baidu.apiKey");
 			try {
-				apiurl += "?ak=" + ak + "&address=" + URLEncoder.encode(address, "UTF-8")
-						+ "&output=json";
-				System.out.println(apiurl);
+				apiurl += "?ak=" + ak + "&address=" + address + "&output=json";
+				System.out.println("==> " + apiurl);
 				response = HttpUtil.sendGet(apiurl);
-				System.out.println(response);
+				System.out.println("<== " + response);
 				JSONObject object = JSONObject.fromObject(response);
 				if (object.getInt("status") == 0) {
 					result = object.getJSONObject("result")

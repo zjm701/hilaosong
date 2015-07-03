@@ -16,7 +16,7 @@ import com.hi.model.Nextval;
 public abstract class AbstractDao {
 
 	protected String DT_FORMAT = "'yyyy-mm-dd hh24:mi:ss'";
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -34,26 +34,34 @@ public abstract class AbstractDao {
 
 	public long getNextvalBySeqName(String seqName) {
 		String sql = "select " + seqName + ".nextval as id from dual";
-		return this.getBeanBySql(Nextval.class, sql, null, null).getID().longValue();
+		return this.getUniqueBeanBySql(Nextval.class, sql, null).getID().longValue();
 	}
-	
+
 	public long countBySql(String sql) {
 		return countBySql(sql, null);
 	}
 
 	public long countBySql(String sql, Map<String, Object> params) {
-		return this.getBeanBySql(Count.class, "select count(*) as \"count\" from (" + sql + ")", params, null).longValue();
-	}
-	
-	public <T> T getBeanBySql(Class<T> clazz, String sql) {
-		return getBeanBySql(clazz, sql, null);
+		return this.getUniqueBeanBySql(Count.class, "select count(*) as \"count\" from (" + sql + ")", params).longValue();
 	}
 
-	public <T> T getBeanBySql(Class<T> clazz, String sql, Map<String, Object> params) {
-		return getBeanBySql(clazz, sql, params, new Pagination(2));
+	public <T> T getFirstBeanBySql(Class<T> clazz, String sql) {
+		return getFirstBeanBySql(clazz, sql, null);
 	}
-	
-	private <T> T getBeanBySql(Class<T> clazz, String sql, Map<String, Object> params, Pagination pagn) {
+
+	public <T> T getFirstBeanBySql(Class<T> clazz, String sql, Map<String, Object> params) {
+		return getFirstBeanBySql(clazz, sql, params, new Pagination(2));
+	}
+
+	public <T> T getUniqueBeanBySql(Class<T> clazz, String sql) {
+		return getUniqueBeanBySql(clazz, sql, null);
+	}
+
+	public <T> T getUniqueBeanBySql(Class<T> clazz, String sql, Map<String, Object> params) {
+		return getFirstBeanBySql(clazz, sql, params, null);
+	}
+
+	private <T> T getFirstBeanBySql(Class<T> clazz, String sql, Map<String, Object> params, Pagination pagn) {
 		List<T> list = getBeansBySql(clazz, sql, params, pagn);
 		if (list != null && list.size() > 0) {
 			return list.get(0);
@@ -86,7 +94,7 @@ public abstract class AbstractDao {
 
 		return list;
 	}
-	
+
 	public int executiveSql(String sql, Map<String, Object> params) {
 		SQLQuery query = getSession().createSQLQuery(sql);
 		if (params != null) {

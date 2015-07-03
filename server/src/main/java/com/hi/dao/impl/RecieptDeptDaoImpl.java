@@ -15,11 +15,11 @@ public class RecieptDeptDaoImpl extends AbstractDao implements RecieptDeptDao {
 	@Override
 	public RecieptDept getRecieptDept(String customerId, String department) {
 		String sql = "select r.deptId as \"deptId\", r.customerId as \"customerId\", r.department as \"department\" "
-				+ " from T_CATER_RECIEPTDEPT r where r.customerId = :customerId and r.department = :department ";
+				+ " from T_CATER_RECIEPTDEPT r where r.customerId = :customerId and r.department = :department order by deptId desc";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("customerId", customerId);
 		params.put("department", department);
-		return this.getBeanBySql(RecieptDept.class, sql, params);
+		return this.getFirstBeanBySql(RecieptDept.class, sql, params);
 	}
 
 	@Override

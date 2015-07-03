@@ -3,6 +3,7 @@ package com.hi.service.impl;
 import java.sql.Clob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -28,11 +29,43 @@ public class StoreServiceImpl implements StoreService {
 	@Autowired
 	private SysConfigDao cdao;
 
-	public List<Store> getStores(String cityId) {
+	/* 
+	 * 不带距离
+	 */
+	public List<Store> getStores(String cityId, String orderType) {
+		return getStores(cityId, orderType, null);
+	}
+
+	/**
+	 * 带距离
+	 * 
+	 * @param cityId
+	 * @param orderType
+	 * @param cuspoint
+	 * @return
+	 */
+	public List<Store> getStores(String cityId, String orderType, String cuspoint) {
 		if (cityId == null) {
 			cityId = CityServiceImpl.CITY_BEIJING;
 		}
-		return sdao.getStores(cityId);
+		return sdao.getStores(cityId, orderType, cuspoint);
+	}
+
+	public Store getStore(String storeId){
+		return sdao.getStore(storeId);
+	}
+
+	public Store getStore(String storeId, String cuspoint){
+		return sdao.getStore(storeId, cuspoint);
+	}
+	
+	public double getDeliveryUnitPrice(String cityId) {
+		SysConfig cfg = cdao.getSysConfig(cityId, "6", "0");
+		if (cfg != null) {
+			return Double.parseDouble(StringTools.clobToString(cfg.getStartValue()));
+		} else {
+			return 0.0D;
+		}
 	}
 	
 	/**
