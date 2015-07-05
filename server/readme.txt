@@ -188,3 +188,60 @@ response:  {"serialId":"2012060900024","orderId":"ZBJ182012060900024","customerI
 			}
 #返回订单详情, 支持多套餐，address地址信息，expenses金额信息，packs套餐列表{某个pack的dishes:套餐内的菜品列表}，dishes订单中的非套餐菜品列表
 
+40, 获取支付渠道
+http://localhost:8080/delivery/rest/user/getpaychannel?orderId=215603&test=1
+可省略orderId,默认用之前保存在session中的订单（即之前创建的订单）； test参数为测试用
+返回样例：
+获得信息成功:
+{
+     "respCode":"1000",
+"respMsg":"查询成功！",                                                                                                                    
+ "payChannelList":[
+{
+  "channelNo":"tenPay",
+  "channelName":"caifutong"
+}
+   ]
+}
+如果请求失败（根据具体情况返回以下四种中的其中一种）:
+{
+  respode:”2000”，respsg:”暂无支付渠道！”}
+}    
+{
+  respode:”1001”，respMsg:”查询出错！”}
+}
+{
+  respode:”1002”，respMsg:”请求参数出错！”}
+}
+{
+  respode:”1003”，respMsg:”查询异常！”}
+}
+
+
+41, 获取支付链接
+http://localhost:8080/delivery/rest/user/getpayurl?channelNo=tenPay&orderId=215603&testPrice=1
+参数必填：channelNo， orderId可省略，默认为之前创建的订单， testPrice为测试用参数，默认1分钱
+返回样例：
+获得信息成功:
+{
+	 "respCode":"1000",
+	 "respMsg":"初始化成功",
+	"wapPayRequestUrl":"https://wap.tenpay.com/cgi-bin/wappayv2.0/wappay_gate.cgi?token_id=b29e36dc018c73985037995914f72fd6"
+}
+
+如果请求失败（根据具体情况返回以下两种中的其中一种）:
+{
+  respode:”2000”，respsg:”暂无支付渠道！”}
+}    
+{
+  respode:”1001”，respMsg:”初始化出错！”}
+}
+{
+  respode:”1002”，respMsg:”请求参数出错！”}
+}
+{
+  respode:”1003”，respMsg:”初始化异常！”}
+}
+
+目前除tenPay外，其他pay channel测试的返回数据都是2000支付订单初始化失败， 此接口调用的是海底捞的支付网关接口
+tenPay的返回需前台额外处理，可参考orderPayWayWap.js, weixin.js

@@ -19,6 +19,12 @@ public abstract class BaseAction {
 		return b.build();
 	}
 	
+	protected Response getSuccessResponse(Object obj) {
+		Response.ResponseBuilder b = Response.status(Status.OK);
+		b.entity(obj);
+		return b.build();
+	}
+	
 	protected Response getFailedJsonResponse(Object obj) {
 		Response.ResponseBuilder b = Response.status(Status.BAD_REQUEST);
 		GsonBuilder gb = new GsonBuilder();
