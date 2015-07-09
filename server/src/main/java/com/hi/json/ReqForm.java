@@ -1,8 +1,6 @@
 package com.hi.json;
 
-import java.util.Date;
-
-import com.hi.tools.StringTools;
+import com.hi.tools.CalendarTools;
 import com.hi.tools.annotation.XMLMapping;
 
 @XMLMapping("reqInfo")
@@ -34,7 +32,7 @@ public class ReqForm {
 	public ReqForm(String msgName) {
 		// web user
 		// 中文
-		this(msgName, "1", "1", StringTools.date2TimeStr(new Date(), StringTools.DATETIME_PATTERN));
+		this(msgName, "1", "1", CalendarTools.nowString(CalendarTools.DATETIME_DEFAULT));
 	}
 
 	public ReqForm(String msgName, String req_device, String req_language, String req_time) {

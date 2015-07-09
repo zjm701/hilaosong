@@ -1,9 +1,6 @@
 package com.hi.service.impl;
 
 import java.sql.Clob;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +14,7 @@ import com.hi.dao.SysConfigDao;
 import com.hi.model.Store;
 import com.hi.model.SysConfig;
 import com.hi.service.StoreService;
+import com.hi.tools.CalendarTools;
 import com.hi.tools.StringTools;
 
 @Service("storeService")
@@ -29,7 +27,7 @@ public class StoreServiceImpl implements StoreService {
 	@Autowired
 	private SysConfigDao cdao;
 
-	/* 
+	/*
 	 * 不带距离
 	 */
 	public List<Store> getStores(String cityId, String orderType) {
@@ -51,14 +49,14 @@ public class StoreServiceImpl implements StoreService {
 		return sdao.getStores(cityId, orderType, cuspoint);
 	}
 
-	public Store getStore(String storeId){
+	public Store getStore(String storeId) {
 		return sdao.getStore(storeId);
 	}
 
-	public Store getStore(String storeId, String cuspoint){
+	public Store getStore(String storeId, String cuspoint) {
 		return sdao.getStore(storeId, cuspoint);
 	}
-	
+
 	public double getDeliveryUnitPrice(String cityId) {
 		SysConfig cfg = cdao.getSysConfig(cityId, "6", "0");
 		if (cfg != null) {
@@ -67,7 +65,7 @@ public class StoreServiceImpl implements StoreService {
 			return 0.0D;
 		}
 	}
-	
+
 	/**
 	 * only for orderType = 1 （订座）
 	 * 
@@ -79,23 +77,17 @@ public class StoreServiceImpl implements StoreService {
 	public boolean isClose(String storeId, Date date) {
 		SysConfig cfg = cdao.getSysConfig(storeId, "105");
 		if (cfg != null) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
-			Date startDate = null;
-			Date endDate = null;
-			try {
-				startDate = df.parse(StringTools.clobToString(cfg.getStartValue()) + ":00");
-				endDate = df.parse(cfg.getEndValue() + ":59");
-				if (startDate.before(date) && endDate.after(date)) {
-					return true;
-				}
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return false;
+			Date startDate = CalendarTools.timeStr2Date(StringTools.clobToString(cfg.getStartValue()) + ":00",
+					CalendarTools.DATETIME_SYSCONFIG);
+			Date endDate = CalendarTools.timeStr2Date(cfg.getEndValue() + ":59", CalendarTools.DATETIME_SYSCONFIG);
+
+			if (startDate.before(date) && endDate.after(date)) {
+				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * only for orderType = 1 （订座）
 	 * 
@@ -108,7 +100,7 @@ public class StoreServiceImpl implements StoreService {
 		SysConfig cfg = cdao.getSysConfig(storeId, "107");
 		return (cfg != null);
 	}
-	
+
 	/**
 	 * only for orderType = 1 （订座）
 	 * 
@@ -121,12 +113,12 @@ public class StoreServiceImpl implements StoreService {
 		SysConfig cfg = cdao.getSysConfig(storeId, "107");
 		if (cfg != null) {
 			return StringTools.clobToString(cfg.getStartValue());
-		}else{
+		} else {
 			return null;
 		}
 	}
-	
-	public String getDinningTimeType(String date,String storeId){
+
+	public String getDinningTimeType(String date, String storeId) {
 		String result = "";
 		String morningTime = "10";
 		String middleTime = "17";
@@ -150,18 +142,18 @@ public class StoreServiceImpl implements StoreService {
 		int intHour = Integer.valueOf(hour);
 		int intMorning = Integer.valueOf(morningTime);
 		int intMiddle = Integer.valueOf(middleTime);
-		int intNight =Integer.valueOf(nightTime);
+		int intNight = Integer.valueOf(nightTime);
 		if (intHour >= intMorning && intHour < intMiddle) {
-			result = "1"; //午市
+			result = "1"; // 午市
 		}
 		if (intHour >= intMiddle && intHour < intNight) {
-			result = "2"; //晚市
+			result = "2"; // 晚市
 		}
 		if (intHour >= intNight || intHour < intMorning) {
-			result = "3"; //夜市
+			result = "3"; // 夜市
 		}
 		return result;
-	} 
+	}
 
 	private String getStartTimeValue(Clob inputValue) {
 		String input = StringTools.clobToString(inputValue);

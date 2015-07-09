@@ -9,8 +9,6 @@ import java.sql.Clob;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -28,40 +26,7 @@ import org.apache.commons.lang.StringUtils;
 
 import sun.misc.BASE64Decoder;
 
-public class StringTools
-{
-    /**
-     * 日期时间格式yyyy-MM-dd HH:mm:ss
-     */
-    public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-
-    public static final String SOTRETIME = "HH:mm";
-
-    public static final String BIRTHDAY = "yyyy-MM-dd";
-    
-    public static final String YEAR = "yyyy";
-    
-    public static final String MONTH = "MM";
-    
-    public static final String DAY = "dd";
-
-    public static final String IPHONETIME = "yyyy-MM-dd HH:mm";
-    
-    public static final String DATEBASE = "yyyy-MM-dd:HH:mm";
-
-    public static final String DATETIME_TIME = "yyyyMMddHHmmss";
-
-    public static final String DATATIME_PARTTERN_FILE = "yyyyMMddHHmmssS";
-
-    /**
-     * 日期格式yyyy-MM-dd
-     */
-    public static final String DATE_PATTERN = "yyyy-MM-dd";
-
-    public StringTools()
-    {
-
-    }
+public class StringTools{
 
     /**
      * 
@@ -396,61 +361,6 @@ public class StringTools
         return value;
     }
 
-
-    /**
-     * 将字符串转换成日期形 参数：time，String，日期字符串 pattern, String, 解析的格式 返回：Date，日期形
-     * 
-     * @param time time
-     * @param pattern pattern
-     * @return Date
-     * @see [类、类#方法、类#成员]
-     */
-    public static Date timeStr2Date(String time, String pattern)
-    {
-        if (null == time)
-        {
-            throw new IllegalArgumentException("time parameter can not be null");
-        }
-        if (null == pattern)
-        {
-            throw new IllegalArgumentException(
-                    "pattern parameter can not be null");
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        try
-        {
-            return sdf.parse(time);
-        }
-        catch (ParseException e)
-        {
-            throw new IllegalArgumentException("using [" + pattern
-                    + "] parse [" + time + "] failed");
-        }
-    }
-
-    /**
-     * 将日期型转换成字符串 参数：time，Date pattern, String, 转换的目标格式<一句话功能简述> <功能详细描述>
-     * 
-     * @param time time
-     * @param pattern pattern
-     * @return String
-     * @see [类、类#方法、类#成员]
-     */
-    public static String date2TimeStr(Date time, String pattern)
-    {
-        if (null == pattern)
-        {
-            throw new IllegalArgumentException(
-                    "pattern parameter can not be null");
-        }
-        if (null == time)
-        {
-            throw new IllegalArgumentException("time parameter can not be null");
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        return sdf.format(time);
-    }
-
     /**
      * 元转分
      * 
@@ -507,110 +417,6 @@ public class StringTools
         else
         {
             return s;
-        }
-    }
-
-    /**
-     * yyyy-MM-ddTHH:mm:ss.SSSzzzzz格式字符串转换成日期类型
-     * 
-     * @param s s
-     * @param errorMessage errorMessage
-     * @return Date
-     * @throws ParameterException ParameterException
-     * @see [类、类#方法、类#成员]
-     */
-    public static Date xmlDateTimeStr2XMLDateTime(String s, String errorMessage)
-            throws Exception
-    {
-        if (isEmpty(s) || s.length() < 19)
-        {
-            throw new Exception(errorMessage);
-        }
-        else
-        {
-            try
-            {
-                // 先验证yyyy-MM-ddTHH:mm:ss格式
-                String tmp = s.substring(0, 19);
-                timeStr2Date(tmp.replace("T", " "), DATETIME_PATTERN);
-
-                XMLGregorianCalendar calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(
-                        s);
-                return calendar.toGregorianCalendar().getTime();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(errorMessage);
-            }
-        }
-    }
-
-    /**
-     * 日期类型转换成yyyy-MM-ddTHH:mm:ss.SSSzzzzz+08.00格式字符串
-     * 
-     * @param date date
-     * @param errorMessage errorMessage
-     * @return String
-     * @throws ParameterException ParameterException
-     * @see [类、类#方法、类#成员]
-     */
-    public static String xmlDateTime2xmlDateTimeStr(Date date,
-            String errorMessage) throws Exception
-    {
-        if (date == null)
-        {
-            throw new Exception(errorMessage);
-        }
-        else
-        {
-            Calendar ca = Calendar.getInstance();
-            ca.setTime(date);
-            XMLGregorianCalendar calendar;
-            try
-            {
-                calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(
-                        (GregorianCalendar) ca);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(errorMessage);
-            }
-            return calendar.toString();
-        }
-    }
-
-    /**
-     * yyyy-MM-ddzzzzz格式字符串转换成日期类型
-     * 
-     * @param s s
-     * @param errorMessage errorMessage
-     * @return Date
-     * @throws ParameterException ParameterException
-     * @see [类、类#方法、类#成员]
-     */
-    public static Date xmlDateStr2XMLDate(String s, String errorMessage)
-            throws Exception
-    {
-        if (isEmpty(s) || s.length() < 10)
-        {
-            throw new Exception(errorMessage);
-        }
-        else
-        {
-            try
-            {
-                // 先验证yyyy-MM-dd格式
-                String tmp = s.substring(0, 10);
-                timeStr2Date(tmp, DATE_PATTERN);
-
-                XMLGregorianCalendar calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(
-                        s);
-                return calendar.toGregorianCalendar().getTime();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(errorMessage);
-            }
         }
     }
 
@@ -702,38 +508,6 @@ public class StringTools
 
         return path[path.length - 1].trim();
     }
-
-    /**
-     * <一句话功能简述>将yyyy-MM-dd HH:mm:ss 格式的字符串转换成对应的日期 <功能详细描述>
-     * 
-     * @param s
-     * @param errorMessage
-     * @return
-     * @throws ParameterException
-     * @see [类、类#方法、类#成员] public static Date dateTimeStr2Date(String s,String
-     *      errorMessage) throws ParameterException { Date date = null; if ((s ==
-     *      null) || "".equals(s.trim())) { throw new
-     *      ParameterException(errorMessage); } else { try { SimpleDateFormat
-     *      sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); date =
-     *      sdf.parse(s); } catch (Exception e) { throw new
-     *      ParameterException(errorMessage); } } return date; }
-     */
-    /*
-     * public static void main(String[] args) { try {
-     * System.out.println(xmlDateTimeStr2XMLDateTime("2008-01-02T12:30:01.001+08:00",
-     * "Error DateTime Format"));
-     * System.out.println(xmlDateTimeStr2XMLDateTime("2008-01-02T12:30:01.001-08:00",
-     * "Error DateTime Format"));
-     * System.out.println(xmlDateTimeStr2XMLDateTime("2008-01-02T12:30:01.001Z",
-     * "Error DateTime Format"));
-     * System.out.println(xmlDateTimeStr2XMLDateTime("2008-01-02T12:30:01.001",
-     * "Error DateTime Format"));
-     * System.out.println(xmlDateStr2XMLDate("2008-01-02+08:00", "Error Date
-     * Format")); System.out.println(xmlDateStr2XMLDate("2008-01-02Z", "Error
-     * Date Format")); System.out.println(xmlDateStr2XMLDate("2008-11-19",
-     * "Error Date Format")); } catch (ParameterException e) { // TODO
-     * Auto-generated catch block e.printStackTrace(); } }
-     */
 
     public static String replaceBlank(String str)
     {

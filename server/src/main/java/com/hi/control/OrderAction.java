@@ -25,7 +25,6 @@ import com.hi.service.OrderService;
 import com.hi.service.RecieptDeptService;
 import com.hi.service.StoreService;
 import com.hi.tools.CalendarTools;
-import com.hi.tools.StringTools;
 
 @Path("/")
 public class OrderAction extends BaseAction {
@@ -102,10 +101,10 @@ public class OrderAction extends BaseAction {
 		if (StringUtils.isEmpty(order.getDinningTime())) {
 			message = "\u8ba2\u9910\u65f6\u95f4\u4e0d\u80fd\u4e3a\u7a7a"; //订餐时间不能为空
 		} else {
-			dinningTime = StringTools.timeStr2Date(order.getDinningTime(), StringTools.IPHONETIME);
+			dinningTime = CalendarTools.timeStr2Date(order.getDinningTime(), CalendarTools.DATETIME_DEFAULT);
 			if (dinningTime.before(CalendarTools.now())) {
-				message = "\u8ba2\u9910\u65f6\u95f4\u4e0d\u5f97\u5c0f\u4e8e\u5f53\u524d\u65f6\u95f4"; //订餐时间不得小于当前时间
-			} 
+				message = "\u8ba2\u9910\u65f6\u95f4\u4e0d\u5f97\u5c0f\u4e8e\u5f53\u524d\u65f6\u95f4"; // 订餐时间不得小于当前时间
+			}
 		}
 		if (StringUtils.isEmpty(message)) {
 			if (StringUtils.isEmpty(order.getContactName())) {

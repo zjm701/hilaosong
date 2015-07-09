@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.hi.common.Pagination;
 import com.hi.model.Count;
 import com.hi.model.Nextval;
+import com.hi.tools.CalendarTools;
 
 public abstract class AbstractDao {
 
-	protected String DT_FORMAT = "'yyyy-mm-dd hh24:mi:ss'";
+	protected String DT_FORMAT = "'" + CalendarTools.DATATIME_DATEBASE + "'";
 
 	@Autowired
 	private SessionFactory sessionFactory;

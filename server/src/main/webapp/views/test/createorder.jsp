@@ -106,8 +106,8 @@ $(function() {
 								<td><input type="text" name="participantNumber" style="width: 440px" value="4"></td>
 							</tr>
 							<tr>
-								<th width="120">用餐时间:</th>
-								<td><input type="text" name="dinningTime" style="width: 440px" value="2015-07-02 20:30:00"></td>
+								<th width="120">订餐时间:</th>
+								<td><input type="text" name="dinningTime" style="width: 440px" value="2015-08-02 20:30:05"></td>
 							</tr>
 							<tr>
 								<th width="120">外送地址:</th>

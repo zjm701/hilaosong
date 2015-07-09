@@ -1,10 +1,32 @@
 package com.hi.tools;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class CalendarTools {
 	/* 日历 */
+
+	public static final String SOTRETIME = "HH:mm";
+
+	public static final String BIRTHDAY = "yyyy-MM-dd";
+
+	public static final String YEAR = "yyyy";
+
+	public static final String MONTH = "MM";
+
+	public static final String DAY = "dd";
+
+	public static final String DATETIME_DEFAULT = "yyyy-MM-dd HH:mm:ss";
+	
+	public static final String DATETIME_SYSCONFIG = "yyyy-MM-dd:HH:mm:ss";
+	
+	public static final String DATATIME_DATEBASE = "yyyy-mm-dd hh24:mi:ss";
+	
+	public static final String DATATIME_FILE = "yyyyMMddHHmmssS";
+
+	public static final String DATATIME_REDENVELOPE = "yyyyMMddHHmmssSSS";
 
 	/**
 	 * 获得当前日历
@@ -54,5 +76,59 @@ public class CalendarTools {
 	 */
 	public static Date getTime(long milliseconds) {
 		return getTime(getCalendar(milliseconds));
+	}
+
+	/**
+	 * 将字符串转换成日期形 参数：time，String，日期字符串 pattern, String, 解析的格式 返回：Date，日期形
+	 * 
+	 * @param time
+	 *            time
+	 * @param pattern
+	 *            pattern
+	 * @return Date
+	 * @see [类、类#方法、类#成员]
+	 */
+	public static Date timeStr2Date(String time, String pattern) {
+		if (null == time) {
+			throw new IllegalArgumentException("time parameter can not be null");
+		}
+		if (null == pattern) {
+			throw new IllegalArgumentException("pattern parameter can not be null");
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		try {
+			return sdf.parse(time);
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("using [" + pattern + "] parse [" + time + "] failed");
+		}
+	}
+
+	/**
+	 * 将日期型转换成字符串 参数：time，Date pattern, String, 转换的目标格式<一句话功能简述> <功能详细描述>
+	 * 
+	 * @param time
+	 *            time
+	 * @param pattern
+	 *            pattern
+	 * @return String
+	 * @see [类、类#方法、类#成员]
+	 */
+	public static String date2TimeStr(Date time, String pattern) {
+		if (null == pattern) {
+			throw new IllegalArgumentException("pattern parameter can not be null");
+		}
+		if (null == time) {
+			throw new IllegalArgumentException("time parameter can not be null");
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		return sdf.format(time);
+	}
+
+	/**
+	 * @param pattern
+	 * @return
+	 */
+	public static String nowString(String pattern) {
+		return date2TimeStr(now(), pattern);
 	}
 }
