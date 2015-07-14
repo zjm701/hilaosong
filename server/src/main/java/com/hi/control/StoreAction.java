@@ -15,12 +15,12 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.hi.common.MessageCode;
 import com.hi.common.OrderType;
 import com.hi.model.Store;
 import com.hi.service.StoreService;
 import com.hi.tools.BaiduTools;
 import com.hi.tools.CityTools;
-import com.hi.tools.ResponseTools;
 import com.hi.tools.StringTools;
 
 @Path("/")
@@ -41,7 +41,7 @@ public class StoreAction extends BaseAction {
 	public Response getStores(@FormParam("cityId") String cityId, @FormParam("address") String address) {
 		try {
 			List<Store> stores = null;
-			if(StringTools.isNotEmpty(address)){
+			if (StringTools.isNotEmpty(address)) {
 				stores = storeService.getStores(cityId, OrderType.SEND_OUT.getKey(),
 						BaiduTools.getCusPointByAddress(URLEncoder.encode(address, "ISO-8859-1")));
 				Collections.sort(stores, new Comparator<Store>() {
@@ -49,12 +49,12 @@ public class StoreAction extends BaseAction {
 						return arg0.getDistance().compareTo(arg1.getDistance());
 					}
 				});
-			}else{
+			} else {
 				stores = storeService.getStores(cityId, OrderType.SEND_OUT.getKey());
 			}
 			return getSuccessJsonResponse(stores);
 		} catch (UnsupportedEncodingException e) {
-			return ResponseTools.getResponse("\u7f16\u7801\u5f02\u5e38"); // 编码异常
+			return getFailedJsonResponse(MessageCode.ERROR_ENCODING.getDesc()); // 编码异常
 		}
 	}
 
@@ -82,10 +82,10 @@ public class StoreAction extends BaseAction {
 			if (s != null) {
 				return "{\"deliveryFee\":\"" + calculateDeliveryFee0(s) + "\"}";
 			} else {
-				return getMessageJsonResult("\u672a\u53d6\u5230\u6570\u636e"); // 未取到数据
+				return getJsonString(MessageCode.ERROR_NO_DATA); // 未取到数据
 			}
 		} catch (UnsupportedEncodingException e) {
-			return getMessageJsonResult("\u7f16\u7801\u5f02\u5e38"); // 编码异常
+			return getJsonString(MessageCode.ERROR_ENCODING); // 编码异常
 		}
 	}
 
@@ -112,7 +112,7 @@ public class StoreAction extends BaseAction {
 		try {
 			return BaiduTools.getCusPointByAddress(URLEncoder.encode(address, "ISO-8859-1"));
 		} catch (UnsupportedEncodingException e) {
-			return getMessageJsonResult("\u7f16\u7801\u5f02\u5e38"); // 编码异常
+			return getJsonString(MessageCode.ERROR_ENCODING); // 编码异常
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package com.hi.control;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -11,10 +13,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.hi.common.HIConstants;
+import com.hi.common.MessageCode;
 import com.hi.model.DiyGuodi;
 import com.hi.model.User;
 import com.hi.service.DishService;
@@ -37,7 +41,7 @@ public class DishAction extends BaseAction {
 		long count = dishService.countDiyGuodis(userId);
 		String name = userId;
 		User u = (User) getSession().getAttribute(HIConstants.USER);
-		if (u != null && userId.equals(u.getUser_entity_id()+"")) {
+		if (u != null && userId.equals(u.getUser_entity_id() + "")) {
 			name = u.getNickname();
 		}
 		name = name + "\u7684" + (count + 1) + "\u53f7\u9505\u5e95"; // **的*号锅底
@@ -70,22 +74,35 @@ public class DishAction extends BaseAction {
 	public String createGuodi(String content) {
 		getSession().removeAttribute(HIConstants.DIYGUODI_ID);
 		System.out.println("==> content:" + content);
+		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
 
 		Gson gson = new Gson();
 		DiyGuodi guodi = gson.fromJson(content, DiyGuodi.class);
+		if (StringUtils.isEmpty(userId)) {
+			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
+		}else if (StringUtils.isEmpty(guodi.getGuodiName())) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_NAME);
+		} else if (StringUtils.isEmpty(guodi.getDishId())) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_DISHID1);
+		} else if (StringUtils.isEmpty(guodi.getDishId2())) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_DISHID2);
+		}  else {
+			guodi.setUserId(userId);
+			String guodiId = dishService.createDiyGuodi(guodi);
+			if (guodiId != null) {
+				getSession().setAttribute(HIConstants.DIYGUODI_ID, guodiId);
 
-		guodi.setUserId((String) getSession().getAttribute(HIConstants.LOGIN_ID));
-		String guodiId = dishService.createDiyGuodi(guodi);
-		String message = "";
-		if (guodiId != null) {
-			getSession().setAttribute(HIConstants.DIYGUODI_ID, guodiId);
-			message = "\u521b\u5efaDIY\u9505\u5e95\u6210\u529f, \u9505\u5e95ID: " + guodiId; // 创建DIY锅底成功, 锅底ID:
-		} else {
-			message = "\u521b\u5efaDIY\u9505\u5e95\u5931\u8d25"; // 创建DIY锅底失败
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("guodiId", guodiId);
+				m.put("respCode", MessageCode.SUCCESS_CREATE_GUODI.getKey());
+				m.put("respMsg", MessageCode.SUCCESS_CREATE_GUODI.getDesc());
+				return getJsonString(m);
+			} else {
+				return getJsonString(MessageCode.ERROR_CREATE_GUODI);
+			}
 		}
-		return getMessageJsonResult(message);
 	}
-	
+
 	/**
 	 * 
 	 * @param content
@@ -101,16 +118,30 @@ public class DishAction extends BaseAction {
 		Gson gson = new Gson();
 		DiyGuodi guodi = gson.fromJson(content, DiyGuodi.class);
 
-		String guodiId = dishService.updateDiyGuodi(guodi);
-		String message = "";
-		if (guodiId != null) {
-			message = "\u66f4\u65b0DIY\u9505\u5e95\u6210\u529f"; // 更新DIY锅底成功
+		if (StringUtils.isEmpty(guodi.getGuodiId() + "")) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODIID);
+		} else if (StringUtils.isEmpty(guodi.getGuodiName())) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_NAME);
+		} else if (StringUtils.isEmpty(guodi.getDishId())) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_DISHID1);
+		} else if (StringUtils.isEmpty(guodi.getDishId2())) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_DISHID2);
 		} else {
-			message = "\u66f4\u65b0DIY\u9505\u5e95\u5931\u8d25"; // 更新DIY锅底失败
+			String guodiId = dishService.updateDiyGuodi(guodi);
+			if (guodiId != null) {
+				getSession().setAttribute(HIConstants.DIYGUODI_ID, guodiId);
+
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("guodiId", guodiId);
+				m.put("respCode", MessageCode.SUCCESS_UPDATE_GUODI.getKey());
+				m.put("respMsg", MessageCode.SUCCESS_UPDATE_GUODI.getDesc());
+				return getJsonString(m);
+			} else {
+				return getJsonString(MessageCode.ERROR_UPDATE_GUODI);
+			}
 		}
-		return getMessageJsonResult(message);
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -119,9 +150,15 @@ public class DishAction extends BaseAction {
 	@GET
 	@Path("/deletegd")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteGuodi(@FormParam("id") long id) {
-		boolean s = dishService.deleteDiyGuodi(id);
-		String message = s?"\u5220\u9664DIY\u9505\u5e95\u6210\u529f":"\u5220\u9664DIY\u9505\u5e95\u5931\u8d25"; //删除DIY锅底成功 删除DIY锅底失败
-		return getSuccessJsonResponse(message);
+	public String deleteGuodi(@FormParam("id") long id) {
+		if (StringUtils.isEmpty(id + "")) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODIID);
+		} else {
+			if (dishService.deleteDiyGuodi(id)) {
+				return getJsonString(MessageCode.SUCCESS_DELETE_GUODI);
+			} else {
+				return getJsonString(MessageCode.ERROR_DELETE_GUODI);
+			}
+		}
 	}
 }

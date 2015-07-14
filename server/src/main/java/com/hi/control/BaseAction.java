@@ -1,5 +1,7 @@
 package com.hi.control;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Response;
@@ -9,6 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.GsonBuilder;
+import com.hi.common.MessageCode;
 
 public abstract class BaseAction {
 
@@ -18,28 +21,45 @@ public abstract class BaseAction {
 		b.entity(gb.create().toJson(obj));
 		return b.build();
 	}
-	
-	protected Response getSuccessResponse(Object obj) {
-		Response.ResponseBuilder b = Response.status(Status.OK);
-		b.entity(obj);
-		return b.build();
-	}
-	
+
 	protected Response getFailedJsonResponse(Object obj) {
 		Response.ResponseBuilder b = Response.status(Status.BAD_REQUEST);
 		GsonBuilder gb = new GsonBuilder();
 		b.entity(gb.create().toJson(obj));
 		return b.build();
 	}
-	
-	protected String getMessageJsonResult(String msg) {
-		return "{\"respMsg\":\""+msg+"\"}";
+
+	protected Response getSuccessResponse(Object obj) {
+		Response.ResponseBuilder b = Response.status(Status.OK);
+		b.entity(obj);
+		return b.build();
 	}
-	
+
+	protected String getJsonString(String msg) {
+		return "{\"respMsg\":\"" + msg + "\"}";
+	}
+
+	protected String getJsonString(MessageCode error) {
+		return "{\"respCode\":\"" + error.getKey() + "\",\"respMsg\":\"" + error.getDesc() + "\"}";
+	}
+
+	protected String getJsonString(Map<String, Object> results) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		for (String key : results.keySet()) {
+			if (sb.length() > 1) {
+				sb.append(",");
+			}
+			sb.append("\"").append(key).append("\":\"").append(results.get(key)).append("\"");
+		}
+		sb.append("}");
+		return sb.toString();
+	}
+
 	protected HttpSession getSession() {
 		return getRequest().getSession();
 	}
-	
+
 	protected HttpServletRequest getRequest() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		return request;

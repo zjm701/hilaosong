@@ -812,4 +812,29 @@ public class StringTools{
         reString = sb.toString();
         return reString;
     }
+    
+    /**
+	 * 生成随机码
+	 * 字母+数字
+	 * 
+	 * @param length
+	 *            生成多长的随机码
+	 * @return
+	 */
+	public static String generateRandomCode(int length) {
+		Random random = new Random();
+		String val = "";
+		for (int i = 0; i < length; i++) {
+			String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num"; // 输出字母还是数字
+
+			if ("char".equalsIgnoreCase(charOrNum)) { // 字符串
+				int choice = random.nextInt(2) % 2 == 0 ? 65 : 97; // 取得大写字母还是小写字母
+				val += (char) (choice + random.nextInt(26));
+			} else if ("num".equalsIgnoreCase(charOrNum)) { // 数字
+				val += String.valueOf(random.nextInt(10));
+			}
+		}
+		return val;
+	}
+
 }

@@ -1,7 +1,9 @@
 package com.hi.control;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.hi.common.HIConstants;
+import com.hi.common.MessageCode;
 import com.hi.common.OrderType;
 import com.hi.model.Order;
 import com.hi.model.OrderAddress;
@@ -34,7 +37,7 @@ public class OrderAction extends BaseAction {
 
 	@Autowired
 	private StoreService storeService;
-	
+
 	@Autowired
 	private RecieptDeptService recieptDeptService;
 
@@ -92,55 +95,66 @@ public class OrderAction extends BaseAction {
 	public String createOrder(String content) {
 		getSession().removeAttribute(HIConstants.ORDER_ID);
 		System.out.println("==> content:" + content);
-		
-		Gson gson = new Gson();
-		Order order = gson.fromJson(content, Order.class);
 
-		String message = "";
-		Date dinningTime = null;
-		if (StringUtils.isEmpty(order.getDinningTime())) {
-			message = "\u8ba2\u9910\u65f6\u95f4\u4e0d\u80fd\u4e3a\u7a7a"; //订餐时间不能为空
+		User user = (User) getSession().getAttribute(HIConstants.USER);
+
+		if (user == null) {
+			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
 		} else {
-			dinningTime = CalendarTools.timeStr2Date(order.getDinningTime(), CalendarTools.DATETIME_DEFAULT);
-			if (dinningTime.before(CalendarTools.now())) {
-				message = "\u8ba2\u9910\u65f6\u95f4\u4e0d\u5f97\u5c0f\u4e8e\u5f53\u524d\u65f6\u95f4"; // 订餐时间不得小于当前时间
-			}
-		}
-		if (StringUtils.isEmpty(message)) {
-			if (StringUtils.isEmpty(order.getContactName())) {
-				message = "\u8ba2\u5355\u8054\u7cfb\u4eba\u4e0d\u80fd\u4e3a\u7a7a"; // 订单联系人不能为空
-			} else if (StringUtils.isEmpty(order.getContactPhone())) {
-				message = "\u8ba2\u5355\u8054\u7cfb\u7535\u8bdd\u4e0d\u80fd\u4e3a\u7a7a"; // 订单联系电话不能为空
-			} else if (StringUtils.isEmpty(order.getStoreId())) {
-				message = "\u9884\u8ba2\u95e8\u5e97id\u4e0d\u80fd\u4e3a\u7a7a"; // 预订门店id不能为空
-			} else if (order.getTotalDishesCount() == 0) {
-				message = "\u8ba2\u5355\u83dc\u54c1\u4e0d\u80fd\u4e3a\u7a7a"; // 订单菜品不能为空
-			} else if (StringUtils.isEmpty(order.getOrderType())) {
-				message = "\u8ba2\u5355\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"; // 订单类型不能为空
-			} else if (OrderType.SEND_OUT.getKey().equals(order.getOrderType()) && order.getAddress() != null
-					&& StringUtils.isEmpty(order.getAddress().getDetailAddress())) {
-				message = "\u5916\u9001\u5730\u5740\u4e0d\u80fd\u4e3a\u7a7a"; // 外送地址不能为空
-			} else if (StringUtils.isEmpty(order.getPayChannel())) {
-				message = "\u652f\u4ed8\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"; // 支付类型不能为空
-			}
-		}
-		
-		if (StringUtils.isEmpty(message)) {
-			order.setCustomerId((String) getSession().getAttribute(HIConstants.LOGIN_ID));
-			order.setSex(((User) getSession().getAttribute(HIConstants.USER)).getSex() + "");
-			order.setDinningTimeType(storeService.getDinningTimeType(order.getDinningTime(), order.getStoreId()));
-			
-			String orderId = orderService.createOrder(order);
-			if(orderId != null ){
-				getSession().setAttribute(HIConstants.ORDER_ID, orderId);
-				message = "\u521b\u5efa\u5b9a\u5355\u6210\u529f, \u8ba2\u5355\u7f16\u53f7: " + orderId; //创建定单成功, 订单编号:
-				if (StringUtils.isNotEmpty(order.getRecieptDept())) {
-					recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptDept());
+			Gson gson = new Gson();
+			Order order = gson.fromJson(content, Order.class);
+
+			String message = "";
+			Date dinningTime = null;
+			if (StringUtils.isEmpty(order.getDinningTime())) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_DINNINGTIME);
+			} else {
+				dinningTime = CalendarTools.timeStr2Date(order.getDinningTime(), CalendarTools.DATETIME_DEFAULT);
+				if (dinningTime.before(CalendarTools.now())) {
+					return getJsonString(MessageCode.VERIFICATION_PASSED_DINNINGTIME);
 				}
-			}else{
-				message = "\u521b\u5efa\u5b9a\u5355\u5931\u8d25"; //创建定单失败
 			}
-		} 
-		return getMessageJsonResult(message);
+			if (StringUtils.isEmpty(message)) {
+				if (StringUtils.isEmpty(order.getContactName())) {
+					return getJsonString(MessageCode.VERIFICATION_EMPTY_CONTACTNAME);
+				} else if (StringUtils.isEmpty(order.getContactPhone())) {
+					return getJsonString(MessageCode.VERIFICATION_EMPTY_CONTACTPHONE);
+				} else if (StringUtils.isEmpty(order.getStoreId())) {
+					return getJsonString(MessageCode.VERIFICATION_EMPTY_STORE);
+				} else if (order.getTotalDishesCount() == 0) {
+					return getJsonString(MessageCode.VERIFICATION_EMPTY_DISHES);
+				} else if (StringUtils.isEmpty(order.getOrderType())) {
+					return getJsonString(MessageCode.VERIFICATION_EMPTY_ORDERTYPE);
+				} else if (OrderType.SEND_OUT.getKey().equals(order.getOrderType()) && order.getAddress() != null
+						&& StringUtils.isEmpty(order.getAddress().getDetailAddress())) {
+					return getJsonString(MessageCode.VERIFICATION_EMPTY_ADDRESS);
+				} else if (StringUtils.isEmpty(order.getPayChannel())) {
+					return getJsonString(MessageCode.VERIFICATION_EMPTY_PAYCHANNEL);
+				}
+			}
+
+			if (StringUtils.isEmpty(message)) {
+				order.setCustomerId((String) getSession().getAttribute(HIConstants.LOGIN_ID));
+				order.setSex(((User) getSession().getAttribute(HIConstants.USER)).getSex() + "");
+				order.setDinningTimeType(storeService.getDinningTimeType(order.getDinningTime(), order.getStoreId()));
+
+				String orderId = orderService.createOrder(order);
+				if (orderId != null) {
+					getSession().setAttribute(HIConstants.ORDER_ID, orderId);
+					if (StringUtils.isNotEmpty(order.getRecieptDept())) {
+						recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptDept());
+					}
+
+					Map<String, Object> m = new HashMap<String, Object>();
+					m.put("orderId", orderId);
+					m.put("respCode", MessageCode.SUCCESS_CREATE_ORDER.getKey());
+					m.put("respMsg", MessageCode.SUCCESS_CREATE_ORDER.getDesc());
+					return getJsonString(m);
+				} else {
+					return getJsonString(MessageCode.ERROR_CREATE_ORDER);
+				}
+			}
+			return getJsonString(message);
+		}
 	}
 }

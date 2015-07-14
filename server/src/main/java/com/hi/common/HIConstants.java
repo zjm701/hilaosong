@@ -2,6 +2,8 @@ package com.hi.common;
 
 public interface HIConstants {
 	static final String LOGIN_ID = "loginId";
+	
+	static final String LOGIN_INFO = "loginInfo";
 
 	static final String USER = "user";
 	

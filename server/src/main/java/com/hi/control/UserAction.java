@@ -1,5 +1,8 @@
 package com.hi.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -12,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.gson.Gson;
 import com.hi.common.HIConstants;
+import com.hi.common.MessageCode;
 import com.hi.common.SnsProvider;
 import com.hi.json.GetUserInfoReq;
 import com.hi.json.GetUserInfoResp;
@@ -19,6 +23,7 @@ import com.hi.json.LoginForm;
 import com.hi.json.ReqForm;
 import com.hi.json.TerminalUserLoginReq;
 import com.hi.json.TerminalUserLoginResp;
+import com.hi.model.User;
 import com.hi.tools.MD5;
 import com.hi.tools.StringTools;
 
@@ -36,44 +41,43 @@ public class UserAction extends BaseAction {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(String content) {
 		getSession().removeAttribute(HIConstants.LOGIN_ID);
+		getSession().removeAttribute(HIConstants.LOGIN_INFO);
 		getSession().removeAttribute(HIConstants.USER);
 		System.out.println("==> content:" + content);
-		
+
 		Gson gson = new Gson();
 		LoginForm form = gson.fromJson(content, LoginForm.class);
 		String username = form.getUsername();
 		String password = form.getPassword();
-		String message = "";
 		if (StringUtils.isEmpty(username)) {
-			message = "\u7528\u6237\u540d\u4e0d\u80fd\u4e3a\u7a7a"; //用户名不能为空
-			return getMessageJsonResult(message);
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_USERNAME);
 		} else if (StringUtils.isEmpty(password)) {
-			message = "\u5bc6\u7801\u4e0d\u80fd\u4e3a\u7a7a"; //密码不能为空
-			return getMessageJsonResult(message);
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_PASSWORD);
 		} else {
 			password = MD5.getMd5(form.getPassword().getBytes());
 			System.out.println("==> username:" + username + ", password:" + password);
+
+			// 调用SNS接口验证用户名
+			TerminalUserLoginReq loginReq = new TerminalUserLoginReq();
+			loginReq.setReqInfo(new ReqForm("terminalUserLoginReq"));
+			loginReq.setAccountName(username);
+			loginReq.setPwd(password);
+			loginReq.setStatus("1");
+
+			String loginReqString = gson.toJson(loginReq);
+
 			try {
-				// 调用SNS接口验证用户名
-				TerminalUserLoginReq loginReq = new TerminalUserLoginReq();
-				loginReq.setReqInfo(new ReqForm("terminalUserLoginReq"));
-				loginReq.setAccountName(username);
-				loginReq.setPwd(password);
-				loginReq.setStatus("1");
-
-				String loginReqString = gson.toJson(loginReq);
-
 				String respString = SnsProvider.getSNSJsonCxfClient().terminalUserLogin(loginReqString);
 				System.out.println("<== login response:" + respString);
 
 				TerminalUserLoginResp resp = gson.fromJson(respString, TerminalUserLoginResp.class);
-				if(StringTools.isNotEmpty(resp.getLoginID())){
+				if (StringTools.isNotEmpty(resp.getLoginID())) {
 					getSession().setAttribute(HIConstants.LOGIN_ID, resp.getLoginID());
 				}
 
 				return respString;
-			} catch (Exception ex) {
-				return getMessageJsonResult("fail");
+			} catch (Exception e) {
+				return getJsonString(MessageCode.ERROR_USER_SYSTEM);
 			}
 		}
 	}
@@ -88,6 +92,61 @@ public class UserAction extends BaseAction {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getUserInfo(@FormParam("userId") String userId) {
 		System.out.println("==> userId:" + userId);
+		if (StringUtils.isEmpty(userId)) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_USERID);
+		} else {
+			User user = (User) getSession().getAttribute(HIConstants.USER);
+			if (user != null && userId.equals(user.getUser_entity_id() + "")) {
+				return (String) getSession().getAttribute(HIConstants.LOGIN_INFO);
+			} else {
+				String respString = getUserInfo0(userId);
+				if (StringTools.isNotEmpty(respString)) {
+					Gson gson = new Gson();
+					GetUserInfoResp resp = gson.fromJson(respString, GetUserInfoResp.class);
+					getSession().setAttribute(HIConstants.LOGIN_INFO, respString);
+					getSession().setAttribute(HIConstants.USER, resp.getUser());
+					return respString;
+				} else {
+					return getJsonString(MessageCode.ERROR_USER_SYSTEM);
+				}
+			}
+		}
+	}
+
+	@GET
+	@Path(value = "/getcurrentuser")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCurrentUser() {
+		User user = (User) getSession().getAttribute(HIConstants.USER);
+		if (user != null) {
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("userId", user.getUser_entity_id() + "");
+			m.put("nickname", user.getNickname());
+			return getJsonString(m);
+		} else {
+			String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
+			if (StringTools.isNotEmpty(userId)) {
+				String respString = getUserInfo0(userId);
+				if (StringTools.isNotEmpty(respString)) {
+					Gson gson = new Gson();
+					GetUserInfoResp resp = gson.fromJson(respString, GetUserInfoResp.class);
+					getSession().setAttribute(HIConstants.LOGIN_INFO, respString);
+					getSession().setAttribute(HIConstants.USER, resp.getUser());
+
+					Map<String, Object> m = new HashMap<String, Object>();
+					m.put("userId", userId);
+					m.put("nickname", resp.getUser().getNickname());
+					return getJsonString(m);
+				} else {
+					return getJsonString(MessageCode.ERROR_USER_SYSTEM);
+				}
+			} else {
+				return "[]";
+			}
+		}
+	}
+
+	private String getUserInfo0(String userId) {
 		Gson gson = new Gson();
 
 		// 调用sns查询用户信息
@@ -98,12 +157,14 @@ public class UserAction extends BaseAction {
 
 		String userInfoReqString = gson.toJson(userInfoReq);
 
-		String respString = SnsProvider.getSNSJsonCxfClient().getUserInfo(userInfoReqString);
-		System.out.println("<== getuserinfo response:" + respString);
+		try {
+			String respString = SnsProvider.getSNSJsonCxfClient().getUserInfo(userInfoReqString);
+			System.out.println("<== getuserinfo response:" + respString);
+			return respString;
 
-		GetUserInfoResp resp = gson.fromJson(respString, GetUserInfoResp.class);
-		getSession().setAttribute(HIConstants.USER, resp.getUser());
-
-		return respString;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
