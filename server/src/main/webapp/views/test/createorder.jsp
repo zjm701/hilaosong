@@ -41,10 +41,7 @@ $(function() {
 						   dishes: [
 						            {dishId: $.trim($("input[name='packDishId1']").val())},
 						            {dishId: $.trim($("input[name='packDishId2']").val())},
-						            {dishId: "20014_0201"},
-						            {dishId: "32014_0201"},
-						            {dishId: "41006_0201"},
-						            {dishId: "20026_0201"}
+						            {dishId: $.trim($("input[name='packDishId3']").val())}
 						           ]
 						 }
 				       ],
@@ -155,7 +152,9 @@ $(function() {
 							</tr>
 							<tr>
 								<th width="120">选择小料</th>
-								<td><input type="text" name="packDishId2" style="width: 440px" value="61008_0201">N选1： 61008_0201,61012_0201 等 (套餐详情中"innerId":"2"的都是小料)</td>
+								<td>
+									小料1：<input type="text" name="packDishId2" style="width: 150px" value="61008_0201">
+									小料2：<input type="text" name="packDishId3" style="width: 150px" value="61012_0201">N选?： 61008_0201,61012_0201 等 (套餐详情中"innerId":"2"的都是小料)</td>
 							</tr>
 							<tr>
 								<th width="120">套餐中其他菜品</th>

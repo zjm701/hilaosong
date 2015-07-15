@@ -197,14 +197,20 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 						+ "select SEQ_CATER_ORDERDISHES.Nextval , '"
 						+ o.getOrderId()
 						+ "', pd.dishid, pd.dishnumber, '1', pd.packid, d.unitprice, '";
-				String part2 = "', pd.innerid from T_CATER_PACKDISH pd inner join T_CATER_DISH d on pd.dishid = d.dishid where pd.packId= :packId and pd.dishId = :dishId ";
+				String part2 = "', pd.innerid from T_CATER_PACKDISH pd inner join T_CATER_DISH d on pd.dishid = d.dishid where pd.packId= :packId ";
+				String part3 = "and pd.innerid not in ('1','2') ";
+				String part4 = "and pd.dishId = :dishId ";
 
 				Map<String, Object> params = new HashMap<String, Object>();
 				for (OrderPack pack : o.getPacks()) {
 					sb.setLength(0);
-					sb.append(part1).append(pack.getPackCount()).append(part2);
-					for (OrderPackDish dish : pack.getDishes()) {
-						params.put("packId", pack.getPackId());
+					sb.append(part1).append(pack.getPackCount()).append(part2).append(part3);
+					params.put("packId", pack.getPackId());
+					this.executiveSql(sb.toString(), params);// insert 除锅底，小料外的固定的套餐菜品
+					
+					sb.setLength(0);
+					sb.append(part1).append(pack.getPackCount()).append(part2).append(part4);
+					for (OrderPackDish dish : pack.getDishes()) {	//insert 锅底，小料
 						params.put("dishId", dish.getDishId());
 						saveflag = (this.executiveSql(sb.toString(), params) == 1);
 					}
