@@ -105,7 +105,6 @@ public class UserAction extends BaseAction {
 	@Path(value = "/getuserinfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getUserInfo(@FormParam("userId") String userId) {
-		System.out.println("==> userId:" + userId);
 		if (StringUtils.isEmpty(userId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_USERID);
 		} else {
@@ -148,6 +147,7 @@ public class UserAction extends BaseAction {
 	}
 
 	private String getUserInfo0(String userId) {
+		System.out.println("==> userId:" + userId);
 		Gson gson = new Gson();
 
 		// 调用sns查询用户信息
