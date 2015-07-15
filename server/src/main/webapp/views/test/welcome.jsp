@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>登陆成功</title>
+<title>登陆结果</title>
 
 <script type="text/javascript" src="<%=path%>/static/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" >

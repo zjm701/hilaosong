@@ -82,6 +82,20 @@ public class UserAction extends BaseAction {
 		}
 	}
 
+	@POST
+	@Path(value = "/login2")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String login2(String content) {
+		String step1 = login(content);
+		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
+		if (StringTools.isNotEmpty(userId)) {
+			return getCurrentUser();
+		} else {
+			return step1;
+		}
+	}
+
 	/**
 	 * function getCustomerInfo() (Mobile version)
 	 * 
@@ -101,10 +115,6 @@ public class UserAction extends BaseAction {
 			} else {
 				String respString = getUserInfo0(userId);
 				if (StringTools.isNotEmpty(respString)) {
-					Gson gson = new Gson();
-					GetUserInfoResp resp = gson.fromJson(respString, GetUserInfoResp.class);
-					getSession().setAttribute(HIConstants.LOGIN_INFO, respString);
-					getSession().setAttribute(HIConstants.USER, resp.getUser());
 					return respString;
 				} else {
 					return getJsonString(MessageCode.ERROR_USER_SYSTEM);
@@ -117,32 +127,23 @@ public class UserAction extends BaseAction {
 	@Path(value = "/getcurrentuser")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getCurrentUser() {
-		User user = (User) getSession().getAttribute(HIConstants.USER);
-		if (user != null) {
-			Map<String, Object> m = new HashMap<String, Object>();
-			m.put("userId", user.getUser_entity_id() + "");
-			m.put("nickname", user.getNickname());
-			return getJsonString(m);
-		} else {
-			String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
-			if (StringTools.isNotEmpty(userId)) {
-				String respString = getUserInfo0(userId);
-				if (StringTools.isNotEmpty(respString)) {
-					Gson gson = new Gson();
-					GetUserInfoResp resp = gson.fromJson(respString, GetUserInfoResp.class);
-					getSession().setAttribute(HIConstants.LOGIN_INFO, respString);
-					getSession().setAttribute(HIConstants.USER, resp.getUser());
-
-					Map<String, Object> m = new HashMap<String, Object>();
-					m.put("userId", userId);
-					m.put("nickname", resp.getUser().getNickname());
-					return getJsonString(m);
-				} else {
-					return getJsonString(MessageCode.ERROR_USER_SYSTEM);
-				}
-			} else {
-				return "[]";
+		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
+		if (StringTools.isNotEmpty(userId)) {
+			User user = (User) getSession().getAttribute(HIConstants.USER);
+			if (user == null) {
+				getUserInfo0(userId);
+				user = (User) getSession().getAttribute(HIConstants.USER);
 			}
+			if (user != null) {
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("userId", user.getUser_entity_id() + "");
+				m.put("nickname", user.getNickname());
+				return getJsonString(m);
+			} else {
+				return getJsonString(MessageCode.ERROR_USER_SYSTEM);
+			}
+		} else {
+			return "[]";
 		}
 	}
 
@@ -160,6 +161,10 @@ public class UserAction extends BaseAction {
 		try {
 			String respString = SnsProvider.getSNSJsonCxfClient().getUserInfo(userInfoReqString);
 			System.out.println("<== getuserinfo response:" + respString);
+
+			GetUserInfoResp resp = gson.fromJson(respString, GetUserInfoResp.class);
+			getSession().setAttribute(HIConstants.LOGIN_INFO, respString);
+			getSession().setAttribute(HIConstants.USER, resp.getUser());
 			return respString;
 
 		} catch (Exception e) {
