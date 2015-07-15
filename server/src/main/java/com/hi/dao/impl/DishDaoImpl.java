@@ -63,7 +63,8 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	public List<PackDish> getPackDishes(String packId) {
 		String sql = "select p.packId as \"packId\", p.dishId as \"dishId\", p.dishNumber as \"dishNumber\", "
 				+ " p.innerId as \"innerId\", p.innerNumber as \"innerNumber\", p.innerName as \"innerName\", "
-				+ " d.dishName as \"dishName\", d.unitPrice as \"unitPrice\" "
+				+ " d.dishName as \"dishName\", d.unitPrice as \"unitPrice\", "
+				+ " d.bigImageAddr as \"bigImageAddr\", d.mediumImageAddr as \"mediumImageAddr\" "
 				+ " from T_CATER_PACKDISH p "
 				+ " inner join T_CATER_DISH d on d.dishId = p.dishId "
 				+ " where p.packId = :packId ";
