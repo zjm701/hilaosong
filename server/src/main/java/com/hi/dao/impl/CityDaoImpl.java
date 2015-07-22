@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.hi.dao.AbstractDao;
 import com.hi.dao.CityDao;
 import com.hi.model.City;
-import com.hi.model.Store;
 
 @Repository("cityDao")
 public class CityDaoImpl extends AbstractDao implements CityDao {
@@ -20,25 +19,6 @@ public class CityDaoImpl extends AbstractDao implements CityDao {
 				" and ordertype = '0' and isavail = '1' order by sortnum ";
 		List<City> cities = this.getBeansBySql(City.class, sql);
 		return cities;
-	}
-
-	public Store getDefaultStore(String cityId) {
-		String sql = "select s.storeid as \"storeId\" from T_CATER_STORE s" +
-				" where s.cityId = :cityId and s.DEPTTYPE='4' and (s.MEMO3 = '1' or s.MEMO4 = '1') " +
-				" order by storeid ";
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("cityId", cityId);
-		List<Store> stores = this.getBeansBySql(Store.class, sql, params);
-		return stores.size() > 0 ? stores.get(0) : null;
-	}
-
-	public Store getAreaStore(String storeId) {
-		String sql = "select s.storeid as \"storeId\" from T_CATER_STORE s" +
-				" where deptId = (select parentDeptId from T_CATER_STORE where storeId = :storeId) ";
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("storeId", storeId);
-		List<Store> stores = this.getBeansBySql(Store.class, sql, params);
-		return stores.size() > 0 ? stores.get(0) : null;
 	}
 
 	public City getCity(String cityId) {

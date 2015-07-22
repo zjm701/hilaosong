@@ -49,6 +49,14 @@ public class StoreServiceImpl implements StoreService {
 		return sdao.getStores(cityId, orderType, cuspoint);
 	}
 
+	public Store getDefaultStore(String cityId) {
+		if (cityId == null) {
+			cityId = CityServiceImpl.CITY_BEIJING;
+		}
+
+		return sdao.getDefaultStore(cityId);
+	}
+	
 	public Store getStore(String storeId) {
 		return sdao.getStore(storeId);
 	}

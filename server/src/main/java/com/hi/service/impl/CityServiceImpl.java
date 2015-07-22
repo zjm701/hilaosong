@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hi.dao.CityDao;
 import com.hi.model.City;
-import com.hi.model.Store;
 import com.hi.service.CityService;
 
 @Service("cityService")
@@ -22,18 +21,6 @@ public class CityServiceImpl implements CityService {
 	public List<City> getDeliveryCities() {
 		List<City> cities = dao.getDeliveryCities();
 		return cities;
-	}
-
-	public Store getDefaultStore(String cityId) {
-		if (cityId == null) {
-			cityId = CITY_BEIJING;
-		}
-
-		return dao.getDefaultStore(cityId);
-	}
-
-	public Store getAreaStore(String storeId) {
-		return dao.getAreaStore(storeId);
 	}
 
 	public City getCity(String cityId) {

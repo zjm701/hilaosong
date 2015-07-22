@@ -11,6 +11,8 @@ public interface StoreService {
 
 	List<Store> getStores(String cityId, String orderType, String cuspoint);
 
+	Store getDefaultStore(String cityId);
+	
 	Store getStore(String storeId);
 
 	Store getStore(String storeId, String cuspoint);

@@ -15,6 +15,35 @@ import com.hi.tools.StringTools;
 @Repository("storeDao")
 public class StoreDaoImpl extends AbstractDao implements StoreDao {
 
+	public Store getDefaultStore(String cityId) {
+		String part1 = "select s.storeid as \"storeId\", s.storeName as \"storeName\", s.storeCode as \"storeCode\", s.storeType as \"storeType\" "
+				+ " from T_CATER_STORE s where s.cityId = :cityId and s.deptType='4' and s.memo1= '1' and s.isactive = 'Y' and s.isDisplay = '1' ";
+		String part2 = " and (s.memo3 = '1' and s.memo4 = '1')";
+		String part3 = " and (s.memo3 = '1' or s.memo4 = '1')";
+		String part4 = " order by storeid ";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(part1).append(part2).append(part4);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("cityId", cityId);
+		Store s = this.getFirstBeanBySql(Store.class, sb.toString(), params);
+		if (s != null) {
+			return s;
+		} else {
+			sb.setLength(0);
+			sb.append(part1).append(part3).append(part4);
+			return this.getFirstBeanBySql(Store.class, sb.toString(), params);
+		}
+	}
+
+	public Store getAreaStore(String storeId) {
+		String sql = "select s.storeid as \"storeId\" from T_CATER_STORE s" +
+				" where deptId = (select parentDeptId from T_CATER_STORE where storeId = :storeId) ";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);
+		return this.getFirstBeanBySql(Store.class, sql, params);
+	}
+	
 	/*
 	 * 不带 距离
 	 * 

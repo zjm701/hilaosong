@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hi.dao.CityDao;
 import com.hi.dao.DishDao;
 import com.hi.dao.DiyGuodiDao;
+import com.hi.dao.StoreDao;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
 import com.hi.model.DishVO;
@@ -24,7 +24,7 @@ public class DishServiceImpl implements DishService {
 	private DishDao ddao;
 	
 	@Autowired
-	private CityDao cdao;
+	private StoreDao sdao;
 	
 	@Autowired
 	private DiyGuodiDao gdao;
@@ -42,7 +42,7 @@ public class DishServiceImpl implements DishService {
 	}
 	
 	public List<DishVO> getPacks(String storeId, String catId, int pageIndex) {
-		String areaStoreId = cdao.getAreaStore(storeId).getStoreId();
+		String areaStoreId = sdao.getAreaStore(storeId).getStoreId();
 		return ddao.getDishes(areaStoreId, catId, pageIndex);
 	}
 	

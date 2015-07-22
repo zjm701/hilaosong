@@ -26,6 +26,7 @@ import com.hi.model.PackDish;
 import com.hi.service.CityService;
 import com.hi.service.DishService;
 import com.hi.service.OrderService;
+import com.hi.service.StoreService;
 import com.hi.tools.HttpUtil;
 
 @Path("/")
@@ -36,6 +37,9 @@ public class TakeOutAction extends BaseAction {
 
 	@Autowired
 	private DishService dishService;
+
+	@Autowired
+	private StoreService storeService;
 
 	@Autowired
 	private OrderService orderService;
@@ -68,7 +72,7 @@ public class TakeOutAction extends BaseAction {
 		} else {
 			getSession().setAttribute("cityId", cityId);
 		}
-		String storeId = cityService.getDefaultStore(cityId).getStoreId();
+		String storeId = storeService.getDefaultStore(cityId).getStoreId();
 		getSession().setAttribute("storeId", storeId);
 		List<DishVO> dishes = dishService.getDishes(storeId, categoryId,
 				pageIndex);
@@ -96,7 +100,7 @@ public class TakeOutAction extends BaseAction {
 			} else {
 				getSession().setAttribute("cityId", cityId);
 			}
-			storeId = cityService.getDefaultStore(cityId).getStoreId();
+			storeId = storeService.getDefaultStore(cityId).getStoreId();
 			getSession().setAttribute("storeId", storeId);
 		}
 		List<DishVO> dishes = dishService.getPacks(storeId, categoryId,
