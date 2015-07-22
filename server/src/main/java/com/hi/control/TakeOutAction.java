@@ -18,10 +18,10 @@ import com.hi.common.SystemSetting;
 import com.hi.model.City;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
-import com.hi.model.DishVO;
 import com.hi.model.Order;
 import com.hi.model.OrderDish;
 import com.hi.model.OrderPack;
+import com.hi.model.Pack;
 import com.hi.model.PackDish;
 import com.hi.service.CityService;
 import com.hi.service.DishService;
@@ -64,8 +64,7 @@ public class TakeOutAction extends BaseAction {
 	@GET
 	@Path("/getdishes")
 	@Produces("application/json")
-	public Response getDishes(@FormParam("cityId") String cityId,
-			@FormParam("catId") String categoryId,
+	public Response getDishes(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId,
 			@FormParam("pageIndex") int pageIndex) {
 		if (cityId == null) {
 			cityId = (String) getSession().getAttribute("cityId");
@@ -74,8 +73,7 @@ public class TakeOutAction extends BaseAction {
 		}
 		String storeId = storeService.getDefaultStore(cityId).getStoreId();
 		getSession().setAttribute("storeId", storeId);
-		List<DishVO> dishes = dishService.getDishes(storeId, categoryId,
-				pageIndex);
+		List<Dish> dishes = dishService.getDishes(storeId, categoryId, pageIndex);
 		return getSuccessJsonResponse(dishes);
 	}
 
@@ -103,7 +101,7 @@ public class TakeOutAction extends BaseAction {
 			storeId = storeService.getDefaultStore(cityId).getStoreId();
 			getSession().setAttribute("storeId", storeId);
 		}
-		List<DishVO> dishes = dishService.getPacks(storeId, categoryId,
+		List<Pack> dishes = dishService.getPacks(storeId, categoryId,
 				pageIndex);
 		return getSuccessJsonResponse(dishes);
 	}

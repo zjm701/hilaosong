@@ -65,6 +65,7 @@ response： [{"dishId":"30043_020111","storeDishId":"30043","storeDishName":"牛
 
 13, 套餐
 http://localhost:8080/delivery/rest/getpacks?catId=012
+http://localhost:8080/delivery/rest/getpacks?catId=012&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response: [{"dishId":"82193_0201","storeDishId":"82193","storeDishName":"微特享套餐B","unitPrice":"488.0000","type":"2"},{"dishId":"82192_0201","storeDishId":"82192","storeDishName":"微特享套餐A","unitPrice":"288.0000","type":"2"}]
 #返回套餐列表, dishId菜品/套餐主键， storeDishId菜品/套餐id，storeDishName菜品/套餐名， unitPrice价格， type菜品/套餐（1普通菜品，2套餐）
 
@@ -99,6 +100,7 @@ http://localhost:8080/delivery/rest/user/changenumofpack?packId=82192_0201&num=3
 
 30, 获取用户的DIY锅底列表，支持分页
 http://localhost:8080/delivery/rest/getgds?userId=222243
+http://localhost:8080/delivery/rest/getgds?userId=222243&&pageIndex=2
 
 31, 获取DIY锅底默认名
 http://localhost:8080/delivery/rest/getgdname?userId=222243

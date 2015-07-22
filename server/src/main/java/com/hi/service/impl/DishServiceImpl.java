@@ -11,8 +11,8 @@ import com.hi.dao.DiyGuodiDao;
 import com.hi.dao.StoreDao;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
-import com.hi.model.DishVO;
 import com.hi.model.DiyGuodi;
+import com.hi.model.Pack;
 import com.hi.model.PackDish;
 import com.hi.service.DishService;
 
@@ -33,7 +33,7 @@ public class DishServiceImpl implements DishService {
 		return ddao.getCategories();
 	}
 
-	public List<DishVO> getDishes(String storeId, String catId, int pageIndex) {
+	public List<Dish> getDishes(String storeId, String catId, int pageIndex) {
 		String areaStoreId = sdao.getAreaStore(storeId).getStoreId();
 		return ddao.getDishes(areaStoreId, catId, pageIndex);
 	}
@@ -42,9 +42,9 @@ public class DishServiceImpl implements DishService {
 		return ddao.getDishDetail(dishId);
 	}
 	
-	public List<DishVO> getPacks(String storeId, String catId, int pageIndex) {
+	public List<Pack> getPacks(String storeId, String catId, int pageIndex) {
 		String areaStoreId = sdao.getAreaStore(storeId).getStoreId();
-		return ddao.getDishes(areaStoreId, catId, pageIndex);
+		return ddao.getPacks(areaStoreId, catId, pageIndex);
 	}
 	
 	public List<PackDish> getPackDishes(String packId) {

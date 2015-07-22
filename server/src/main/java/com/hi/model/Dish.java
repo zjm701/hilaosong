@@ -30,6 +30,15 @@ public class Dish extends Pagenation{
 	private String mediumImageAddr;
 	
 	private String storeDishId;
+	
+	private String storeDishName;
+	
+	private String halfDishId;
+	 
+	private String halfStoreDishId;
+	
+	// if this dish has half, then set the price of half dish
+	private String halfPrice;
 
 	public String getDishId() {
 		return dishId;
@@ -150,6 +159,36 @@ public class Dish extends Pagenation{
 	public void setStoreDishId(String storeDishId) {
 		this.storeDishId = storeDishId;
 	}
-	
-	
+
+	public String getStoreDishName() {
+		return storeDishName;
+	}
+
+	public void setStoreDishName(String storeDishName) {
+		this.storeDishName = storeDishName;
+	}
+
+	public String getHalfDishId() {
+		return halfDishId;
+	}
+
+	public void setHalfDishId(String halfDishId) {
+		this.halfDishId = halfDishId;
+	}
+
+	public String getHalfStoreDishId() {
+		return halfStoreDishId;
+	}
+
+	public void setHalfStoreDishId(String halfStoreDishId) {
+		this.halfStoreDishId = halfStoreDishId;
+	}
+
+	public String getHalfPrice() {
+		return halfPrice;
+	}
+
+	public void setHalfPrice(String halfPrice) {
+		this.halfPrice = halfPrice;
+	}
 }

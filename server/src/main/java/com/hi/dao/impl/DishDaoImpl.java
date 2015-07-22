@@ -11,12 +11,14 @@ import com.hi.dao.AbstractDao;
 import com.hi.dao.DishDao;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
-import com.hi.model.DishVO;
+import com.hi.model.Pack;
 import com.hi.model.PackDish;
 
 @Repository("dishDao")
 public class DishDaoImpl extends AbstractDao implements DishDao {
 
+	public static String commonsql = " and storeId = :storeId and dishcategory = :categoryId and dishsourcetype = '2' and isDisplay in ('2','3') and isStopped = '1'";
+	
 	public List<DishType> getCategories() {
 		String sql = "select dishtypeid as \"dishTypeId\", dishtypename as \"dishTypeName\", parentid as \"parentId\", isrequired as \"isRequired\" from T_CATER_DISHTYPE "
 				+ " where parentid = 0 and identifier = 1 order by typesort ";
@@ -24,16 +26,16 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 		return categories;
 	}
 
-	public List<DishVO> getDishes(String storeId, String categoryId,
-			int pageIndex) {
+	public List<Dish> getDishes(String storeId, String categoryId, int pageIndex) {
+		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
 		String sql = "select d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
 				+ " d.bigImageAddr as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
 				+ " from T_CATER_DISH d"
-				+ " left join (select linkStoreDishId, dishId, storeDishId, unitPrice from T_CATER_DISH "
-				+ "		where storeId = :storeId and dishcategory = :categoryId and dishShareType = 2) hd"
+				+ " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
+				+ "		where d2.type = '1' and d2.dishShareType = '2' " + commonsql + " ) hd"
 				+ "	on hd.linkStoreDishId = d.storeDishId "
-				+ " where storeId = :storeId and dishcategory = :categoryId and dishShareType != 2 "
-				+ " order by dishSort";
+				+ " where d.type = '1' and d.dishShareType in ('1', '3') " + commonsql 
+				+ " order by dishSort asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);
@@ -42,11 +44,27 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 		Pagination pagn = new Pagination();
 		pagn.setPageIndex(pageIndex);
 
-		List<DishVO> dishes = this.getBeansBySql(DishVO.class, sql, params,
-				pagn);
-		return dishes;
+		return this.getBeansBySql(Dish.class, sql, params, pagn);
 	}
 
+	public List<Pack> getPacks(String storeId, String categoryId, int pageIndex) {
+		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
+		String sql = "select d.dishId as \"packId\", d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
+				+ " d.bigImageAddr as \"bigImageAddr\", d.type as \"type\" "
+				+ " from T_CATER_DISH d"
+				+ " where d.type = '2' and d.packType = '1' " + commonsql
+				+ " order by dishSort asc";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);
+		params.put("categoryId", categoryId);
+
+		Pagination pagn = new Pagination();
+		pagn.setPageIndex(pageIndex);
+
+		return this.getBeansBySql(Pack.class, sql, params, pagn);
+	}
+	
 	public Dish getDishDetail(String dishId) {
 		String sql = "select dishid as \"dishId\", dishname as \"dishName\", guideprice as \"guidePrice\", unitprice as \"unitPrice\", "
 				+ " description as \"description\", isrequired as \"isRequired\", dishunit as \"dishUnit\", dishweight as \"dishWeight\", "
