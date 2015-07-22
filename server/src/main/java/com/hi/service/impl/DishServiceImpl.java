@@ -34,7 +34,8 @@ public class DishServiceImpl implements DishService {
 	}
 
 	public List<DishVO> getDishes(String storeId, String catId, int pageIndex) {
-		return ddao.getDishes(storeId, catId, pageIndex);
+		String areaStoreId = sdao.getAreaStore(storeId).getStoreId();
+		return ddao.getDishes(areaStoreId, catId, pageIndex);
 	}
 
 	public Dish getDishDetail(String dishId) {
