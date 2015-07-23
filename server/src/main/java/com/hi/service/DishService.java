@@ -10,16 +10,20 @@ import com.hi.model.PackDish;
 
 public interface DishService {
 	List<DishType> getCategories();
+
+	int countDishes(String storeId, String catId);
 	
 	List<Dish> getDishes(String storeId, String catId, int pageIndex);
 	
 	Dish getDishDetail(String dishId);
+
+	int countPacks(String storeId, String catId);
 	
 	List<Pack> getPacks(String storeId, String catId, int pageIndex);
 	
 	List<PackDish> getPackDishes(String packId);
 	
-	long countDiyGuodis(String userId);
+	int countDiyGuodis(String userId);
 	
 	List<DiyGuodi> getDiyGuodis(String userId, int pageIndex);
 

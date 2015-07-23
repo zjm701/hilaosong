@@ -38,12 +38,12 @@ public abstract class AbstractDao {
 		return this.getUniqueBeanBySql(Nextval.class, sql, null).getID().longValue();
 	}
 
-	public long countBySql(String sql) {
+	public int countBySql(String sql) {
 		return countBySql(sql, null);
 	}
 
-	public long countBySql(String sql, Map<String, Object> params) {
-		return this.getUniqueBeanBySql(Count.class, "select count(*) as \"count\" from (" + sql + ")", params).longValue();
+	public int countBySql(String sql, Map<String, Object> params) {
+		return this.getUniqueBeanBySql(Count.class, "select count(*) as \"count\" from (" + sql + ")", params).intValue();
 	}
 
 	public <T> T getFirstBeanBySql(Class<T> clazz, String sql) {

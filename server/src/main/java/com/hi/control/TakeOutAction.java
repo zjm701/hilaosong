@@ -9,6 +9,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,21 @@ public class TakeOutAction extends BaseAction {
 	}
 
 	@GET
+	@Path("/cntdishes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String countDishes(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId) {
+		if (cityId == null) {
+			cityId = (String) getSession().getAttribute("cityId");
+		} else {
+			getSession().setAttribute("cityId", cityId);
+		}
+		String storeId = storeService.getDefaultStore(cityId).getStoreId();
+		getSession().setAttribute("storeId", storeId);
+
+		return getJsonString(dishService.countDishes(storeId, categoryId));
+	}
+
+	@GET
 	@Path("/getdishes")
 	@Produces("application/json")
 	public Response getDishes(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId,
@@ -83,6 +99,21 @@ public class TakeOutAction extends BaseAction {
 	public Response getDishDetail(@FormParam("dishId") String dishId) {
 		Dish dish = dishService.getDishDetail(dishId);
 		return getSuccessJsonResponse(dish);
+	}
+	
+	@GET
+	@Path("/cntpacks")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String countPacks(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId) {
+		if (cityId == null) {
+			cityId = (String) getSession().getAttribute("cityId");
+		} else {
+			getSession().setAttribute("cityId", cityId);
+		}
+		String storeId = storeService.getDefaultStore(cityId).getStoreId();
+		getSession().setAttribute("storeId", storeId);
+
+		return getJsonString(dishService.countPacks(storeId, categoryId));
 	}
 
 	@GET

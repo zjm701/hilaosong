@@ -35,6 +35,19 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 		return this.getFirstBeanBySql(OrderAddress.class, sql, params);
 	}
 	
+	@Override
+	public int countHistoryOrders(String userId) {
+		String sql = "select * from T_CATER_ORDERMAININFO o " 
+				+ " inner join T_CATER_ORDEREXPENSESINFO e on e.orderid = o.orderid "
+				+ " inner join T_CATER_STORE s ON o.storeid = s.storeid "
+				+ " where o.status not in ('11','12') and o.orderType in ('0', '2') and o.order_Src in ('W','S') "
+				+ "		and o.customerId = :userId ";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		return this.countBySql(sql, params);
+	}
+	
 	/*
 	 * refer to query:findOrdersHasDishByCustIdAndPage of cater-order-hql.xml
 	 */

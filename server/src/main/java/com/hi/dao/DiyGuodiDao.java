@@ -6,7 +6,7 @@ import com.hi.model.DiyGuodi;
 
 public interface DiyGuodiDao {
 
-	long countDiyGuodis(String userId);
+	int countDiyGuodis(String userId);
 	
 	List<DiyGuodi> getDiyGuodis(String userId, int pageIndex);
 

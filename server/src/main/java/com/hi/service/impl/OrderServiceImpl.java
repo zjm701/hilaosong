@@ -35,6 +35,11 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public int countHistoryOrders(String userId){
+		return odao.countHistoryOrders(userId);
+	}
+	
+	@Override
 	public List<Order> getHistoryOrders(String userId, int pageIndex) {
 		return odao.getHistoryOrders(userId, pageIndex);
 	}

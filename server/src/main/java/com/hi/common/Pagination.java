@@ -60,11 +60,8 @@ public final class Pagination {
 	}
 
 	public int getTotalPagesCount() {
-		return totalPagesCount;
-	}
-
-	public void setTotalPagesCount(int totalPagesCount) {
-		this.totalPagesCount = totalPagesCount;
+		this.totalPagesCount = new Double(Math.ceil(1.0 * this.totalRowsCount / this.pageSize)).intValue();
+		return this.totalPagesCount;
 	}
 
 	public int getTotalRowsCount() {

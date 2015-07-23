@@ -9,6 +9,8 @@ public interface OrderDao {
 
 	OrderAddress getLatestAddress(String userId);
 
+	int countHistoryOrders(String userId);
+	
 	List<Order> getHistoryOrders(String userId, int pageIndex);
 
 	Order getOrderInfo(String orderId);

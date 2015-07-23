@@ -54,6 +54,18 @@ public class OrderAction extends BaseAction {
 	}
 
 	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	@GET
+	@Path("/cnthistoryorders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String countHistoryOrders(@FormParam("userId") String userId) {
+		return getJsonString(orderService.countHistoryOrders(userId));
+	}
+	
+	/**
 	 * "/wap/historyOrderList" (Mobile version)
 	 * 
 	 * @param userId

@@ -33,6 +33,12 @@ public class DishServiceImpl implements DishService {
 		return ddao.getCategories();
 	}
 
+	@Override
+	public int countDishes(String storeId, String catId) {
+		String areaStoreId = sdao.getAreaStore(storeId).getStoreId();
+		return ddao.countDishes(areaStoreId, catId);
+	}
+	
 	public List<Dish> getDishes(String storeId, String catId, int pageIndex) {
 		String areaStoreId = sdao.getAreaStore(storeId).getStoreId();
 		return ddao.getDishes(areaStoreId, catId, pageIndex);
@@ -40,6 +46,12 @@ public class DishServiceImpl implements DishService {
 
 	public Dish getDishDetail(String dishId) {
 		return ddao.getDishDetail(dishId);
+	}
+	
+	@Override
+	public int countPacks(String storeId, String catId) {
+		String areaStoreId = sdao.getAreaStore(storeId).getStoreId();
+		return ddao.countPacks(areaStoreId, catId);
 	}
 	
 	public List<Pack> getPacks(String storeId, String catId, int pageIndex) {
@@ -52,7 +64,7 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public long countDiyGuodis(String userId) {
+	public int countDiyGuodis(String userId) {
 		return gdao.countDiyGuodis(userId);
 	}
 

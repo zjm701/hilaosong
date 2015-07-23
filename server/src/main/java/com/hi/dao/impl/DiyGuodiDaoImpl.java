@@ -16,7 +16,7 @@ import com.hi.model.DiyGuodi;
 public class DiyGuodiDaoImpl extends AbstractDao implements DiyGuodiDao {
 
 	@Override
-	public long countDiyGuodis(String userId) {
+	public int countDiyGuodis(String userId) {
 		String sql = "select * from T_CATER_GUODIDIY g where g.deltag = '0' and g.userId = :userId";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);

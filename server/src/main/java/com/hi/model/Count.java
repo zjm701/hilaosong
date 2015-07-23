@@ -13,7 +13,7 @@ public class Count {
 		this.count = count;
 	}
 
-	public long longValue() {
-		return this.count.longValue();
+	public int intValue() {
+		return this.count.intValue();
 	}
 }

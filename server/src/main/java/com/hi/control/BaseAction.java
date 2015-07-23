@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.GsonBuilder;
 import com.hi.common.MessageCode;
+import com.hi.common.Pagination;
 
 public abstract class BaseAction {
 
@@ -54,6 +55,12 @@ public abstract class BaseAction {
 		}
 		sb.append("}");
 		return sb.toString();
+	}
+
+	protected String getJsonString(int totalRowsCount) {
+		Pagination pagn = new Pagination();
+		pagn.setTotalRowsCount(totalRowsCount);
+		return "{\"totalRowsCount\":" + pagn.getTotalRowsCount() + ", \"totalPagesCount\":" + pagn.getTotalPagesCount() + "}";
 	}
 
 	protected HttpSession getSession() {

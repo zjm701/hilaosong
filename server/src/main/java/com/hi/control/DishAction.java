@@ -38,7 +38,7 @@ public class DishAction extends BaseAction {
 	@Path("/getgdname")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getDefaultGuodiName(@FormParam("userId") String userId) {
-		long count = dishService.countDiyGuodis(userId);
+		int count = dishService.countDiyGuodis(userId);
 		String name = userId;
 		User u = (User) getSession().getAttribute(HIConstants.USER);
 		if (u != null && userId.equals(u.getUser_entity_id() + "")) {
@@ -46,6 +46,19 @@ public class DishAction extends BaseAction {
 		}
 		name = name + "\u7684" + (count + 1) + "\u53f7\u9505\u5e95"; // **的*号锅底
 		return "{\"guodiName\":\"" + name + "\"}";
+	}
+	
+	/**
+	 * 
+	 * @param userId
+	 * @param pageIndex
+	 * @return
+	 */
+	@GET
+	@Path("/cntgds")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String countGuodis(@FormParam("userId") String userId) {
+		return getJsonString(dishService.countDiyGuodis(userId));
 	}
 
 	/**

@@ -8,6 +8,8 @@ import com.hi.model.OrderAddress;
 public interface OrderService {
 
 	OrderAddress getLatestAddress(String userId);
+
+	int countHistoryOrders(String userId);
 	
 	List<Order> getHistoryOrders(String userId, int pageIndex);
 	

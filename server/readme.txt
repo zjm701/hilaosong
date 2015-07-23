@@ -56,30 +56,38 @@ http://localhost:8080/delivery/rest/getcategories
 response: [{"dishTypeId":"003","dishTypeName":"荤菜","parentId":"0","isRequired":"0"},{"dishTypeId":"004","dishTypeName":"素菜","parentId":"0","isRequired":"0"}]
 #返回菜品分类列表， dishTypeId菜品分类id， dishTypeName菜品分类名， isRequired是否 为必选菜品分类
 
-12, 菜品分类 -> 菜品
+12, 菜品分类 -> 菜品的分页信息
+http://localhost:8080/delivery/rest/cntdishes?catId=003
+{"totalRowsCount":42, "totalPagesCount":5}
+
+13, 菜品分类 -> 菜品
 http://localhost:8080/delivery/rest/getdishes?catId=003
 http://localhost:8080/delivery/rest/getdishes?catId=003&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 http://localhost:8080/delivery/rest/getdishes?catId=003&cityId=130100：显示石家庄的菜品信息，如果cityId字段不提供，那么就用默认北京市
 response： [{"dishId":"30043_020111","storeDishId":"30043","storeDishName":"牛领肉","unitPrice":"60.0000","bigImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_1.png","type":"1","halfStoreDishId":"30044","halfPrice":"30.0000"}]
 #返回菜品列表， dishId菜品主键（菜品id+店id）， storeDishId菜品id（同一个菜品在不同的店是一样的）， storeDishName菜品名，unitPrice菜品单价， bigImageAddr菜品大图（地址不能用）， type菜品/套餐（1普通菜品，2套餐）， halfStoreDishId半份菜品对应的菜品id（有半份的菜品才显示）， halfPrice半份菜品的价格（有半份才显示）
 
-13, 套餐
+14, 菜品分类 -> 套餐的分页信息
+http://localhost:8080/delivery/rest/cntpacks?catId=012
+{"totalRowsCount":5, "totalPagesCount":1}
+
+15, 菜品分类 -> 套餐
 http://localhost:8080/delivery/rest/getpacks?catId=012
 http://localhost:8080/delivery/rest/getpacks?catId=012&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response: [{"dishId":"82193_0201","storeDishId":"82193","storeDishName":"微特享套餐B","unitPrice":"488.0000","type":"2"},{"dishId":"82192_0201","storeDishId":"82192","storeDishName":"微特享套餐A","unitPrice":"288.0000","type":"2"}]
 #返回套餐列表, dishId菜品/套餐主键， storeDishId菜品/套餐id，storeDishName菜品/套餐名， unitPrice价格， type菜品/套餐（1普通菜品，2套餐）
 
-14, 套餐详情
+16, 套餐详情
 http://localhost:8080/delivery/rest/getpackdishes?dishId=82192_0201
 response: [{"packId":"82192_0201","dishId":"41006_0201","dishNumber":1,"innerId":"group10001_0201","innerNumber":1,"innerName":"素菜","dishName":"(B)木耳(半)","unitPrice":"10.0000"},{"packId":"82192_0201","dishId":"41024_0201","dishNumber":1,"innerId":"group10001_0201","innerNumber":1,"innerName":"素菜","dishName":"(B)茼蒿(半)","unitPrice":"9.0000"}]
 #返回套餐详情， packId套餐id（套餐的dishId），dishId菜品的主键， dishNumber套餐内此菜品的数量，innerId套餐内组别id， innerName套餐内组别名， dishName菜品名， unitPrice套餐内此菜品原价 
 
-15, 菜品详情
+17, 菜品详情
 http://localhost:8080/delivery/rest/getdishdetail?dishId=30043_020111
 response： {"dishId":"30043_020111","dishName":"牛领肉","unitPrice":"60.0000","description":"牛脖子部位的肉，肉质细嫩，牛肉味浓郁","isRequired":"0","dishUnit":"份","dishWeight":"0.00","dishShareType":"1","isRecommend":"0","type":"1","bigImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_1.png","mediumImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_2.png","storeDishId":"30043"}
 #返回菜品详情， dishId菜品主键， dishName菜品名， unitPrice菜品单价， description菜品描述， isRequired是否必选， dishUnit菜品单位， dishWeight菜品分量， dishShareType菜品半份属性（1一份，2半份， 3没有特指）， isRecommend是否推荐， type是否是套餐， bigImageAddress菜品图片， storeDishId菜品id
 
-16, 切换城市，以便获取不同城市的菜品
+18, 切换城市，以便获取不同城市的菜品
 http://localhost:8080/delivery/rest/switchcity?cityId=130100
 
 20， 下单菜品（正式生成订单之前，保持到session）
@@ -98,22 +106,26 @@ http://localhost:8080/delivery/rest/user/changenumofpack?packId=82192_0201&num=3
 
 24，baidu map api test only: http://localhost:8080/delivery/rest/testbaidu
 
-30, 获取用户的DIY锅底列表，支持分页
-http://localhost:8080/delivery/rest/getgds?userId=222243
-http://localhost:8080/delivery/rest/getgds?userId=222243&&pageIndex=2
+30, 获取用户的DIY锅底列表分页信息
+http://localhost:8080/delivery/rest/cntgds?userId=23675
+{"totalRowsCount":7, "totalPagesCount":1}
 
-31, 获取DIY锅底默认名
+31, 获取用户的DIY锅底列表
+http://localhost:8080/delivery/rest/getgds?userId=23675
+http://localhost:8080/delivery/rest/getgds?userId=23675&&pageIndex=2
+
+32, 获取DIY锅底默认名
 http://localhost:8080/delivery/rest/getgdname?userId=222243
 
-32, 创建DIY锅底, POST方式
+33, 创建DIY锅底, POST方式
 http://localhost:8080/delivery/rest/creategd
 传入:{"guodiName":"大宝的3号锅底","dishId":"10011_020119","dishId2":"10016_020115"}
 
-33, 更新DIY锅底, POST方式
+34, 更新DIY锅底, POST方式
 http://localhost:8080/delivery/rest/updategd
 传入:{"guodiId":1521, "guodiName":"大宝的4号锅底","dishId":"10011_020119","dishId2":"10016_020115"}
 
-34, 删除DIY锅底
+35, 删除DIY锅底
 http://localhost:8080/delivery/rest/deletegd?id=1122
 
 40, 最近的订单地址
@@ -168,14 +180,18 @@ test page： http://localhost:8082/delivery/views/test/createorder.jsp
 			 			{"dishId":"41066_0201","dishNumber":"3"} ]
 			 }
 
-45, 历史订单
+45, 历史订单的分页信息
+http://localhost:8080/delivery/rest/cnthistoryorders?userId=0200000045250449
+{"totalRowsCount":21797, "totalPagesCount":2422}
+
+46, 历史订单
 http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449
 http://localhost:8080/delivery/rest/gethistoryorders?userId=0200000045250449&pageIndex=2分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response:  [{"serialId":"2013091805003","orderId":"WBJ162013091805003","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-19 18:00:00","status":"7","orderType":"1","deliveryType":"0","custMemo":"请王龙飞为我们服务。谢谢。","createdDt":"2013-09-18 21:22:37","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]},
 			{"serialId":"2013083103588","orderId":"WBJ162013083103588","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-01 18:00:00","status":"2","orderType":"1","deliveryType":"0","custMemo":"找王龙飞服务 网订 L","createdDt":"2013-08-31 18:08:18","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]}]
 #返回历史订单列表, serialId流水号，orderId订单号，customerId用户号（就是userId），storeId门店号，status：订单状态（0-待审核1-待打印2-待配菜3-已派送4-待收锅5-已收锅6-已删除7-作废8-待下发9-下发失败），orderType：订单类型：（0表示外送,1表示订座,2表示外带），deliveryType外送种类（0-外送 1-自助 2-豪华 3-上门自取）
 
-46, 订单详情
+47, 订单详情
 http://localhost:8080/delivery/rest/getorderinfo?orderId=153376
 http://localhost:8080/delivery/rest/getorderinfo?orderId=ZBJ182012060900024
 response:  {"serialId":"2012060900024","orderId":"ZBJ182012060900024","customerId":"0100000051165276","storeId":"020119","storeName":"潮青汇海底捞","contactName":"系统升级测试","contactPhone":"186581011351","dinningTime":"2012-06-09 23:40:00","status":"7","potStatus":"0","orderType":"0","deliveryType":"0","createdDt":"2012-06-09 06:32:19",
