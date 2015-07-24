@@ -3,13 +3,13 @@ package com.hi.service;
 import java.util.List;
 
 import com.hi.model.Dish;
+import com.hi.model.DishType;
 import com.hi.model.DiyGuodi;
-import com.hi.model.Menu;
 import com.hi.model.Pack;
 import com.hi.model.PackDish;
 
 public interface DishService {
-	List<Menu> getCategories(String areaStoreId);
+	List<DishType> getCategories(String areaStoreId);
 
 	int countDishes(String areaStoreId, String catId);
 	

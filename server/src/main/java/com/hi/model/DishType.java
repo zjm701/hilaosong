@@ -1,6 +1,5 @@
 package com.hi.model;
 
-
 public class DishType {
 	private String dishTypeId;
 

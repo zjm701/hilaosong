@@ -13,7 +13,6 @@ import com.hi.dao.DiyGuodiDao;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
 import com.hi.model.DiyGuodi;
-import com.hi.model.Menu;
 import com.hi.model.Pack;
 import com.hi.model.PackDish;
 import com.hi.service.DishService;
@@ -28,57 +27,22 @@ public class DishServiceImpl implements DishService {
 	@Autowired
 	private DiyGuodiDao gdao;
 	
-	private List<Menu> menus = null;
-	
-	public List<Menu> getCategories(String areaStoreId) {
-		generateCategories();
+	public List<DishType> getCategories(String areaStoreId) {
+		List<DishType> menus = new ArrayList<DishType>();
+		DishType pack = new DishType(SystemSetting.getSetting("pack"), "\u5957\u9910"); // 套餐
+		DishType guodi = new DishType(SystemSetting.getSetting("guodi"), "\u9505\u5E95"); // 锅底
+
+		menus.add(pack);
+		menus.add(guodi);
 		for (DishType dt : ddao.getCategories4Dish(areaStoreId)) {
-			menus.add(new Menu(dt));
+			menus.add(dt);
 		}
 		for (DishType dt : ddao.getCategories4Wine(areaStoreId)) {
-			menus.add(new Menu(dt));
+			menus.add(dt);
 		}
 		return menus;
 	}
 	
-	private void generateCategories() {
-		if (menus == null) {
-			Menu pack = new Menu(new DishType(SystemSetting.getSetting("pack"), "\u5957\u9910"), Menu.FIRST_LEVEL); // 套餐
-			Menu guodi = new Menu(new DishType(SystemSetting.getSetting("guodi"), "\u9505\u5E95"), Menu.FIRST_LEVEL); // 锅底
-			
-			menus = new ArrayList<Menu>();
-			menus.add(pack);
-			menus.add(guodi);
-		}
-	}
-	
-	/**
-	 * old
-	 */
-//	private void generateCategories() {
-//		if (menus == null) {
-//			Menu guodi = new Menu("guodi", "\u9505\u5E95", Menu.FIRST_LEVEL); // 锅底
-//			guodi.addChild(new Menu(new DishType(SystemSetting.getSetting("guodi"), "\u9505\u5E95"))); // 锅底
-//			guodi.addChild(new Menu("mydiygd", "\u6211\u7684\u9505\u5E95")); // 我的锅底
-//
-//			Menu pack = new Menu(new DishType(SystemSetting.getSetting("pack"), "\u5957\u9910"), Menu.FIRST_LEVEL); // 套餐
-//			pack.setId("pack");
-//			
-//			dish = new Menu("dish", "\u83DC\u54C1", Menu.FIRST_LEVEL); // 菜品
-//
-//			wine = new Menu("wine", "\u9152\u6C34", Menu.FIRST_LEVEL); // 酒水
-//
-//			Menu historyorders = new Menu("historyorders", "\u5386\u53F2\u8BA2\u5355", Menu.FIRST_LEVEL); // 历史订单
-//
-//			menus = new ArrayList<Menu>();
-//			menus.add(guodi);
-//			menus.add(pack);
-//			menus.add(dish);
-//			menus.add(wine);
-//			menus.add(historyorders);
-//		}
-//	}
-
 	@Override
 	public int countDishes(String areaStoreId, String catId) {
 		return ddao.countDishes(areaStoreId, catId);
