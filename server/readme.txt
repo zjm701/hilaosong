@@ -52,7 +52,7 @@ response: [{"id":8221,"cityId":"110000","city":"北京市","provinceId":"110000"
 #返回支持外卖的城市列表，id主键， cityId城市id， provinceId省份直辖市id
 
 11, 菜品分类
-http://localhost:8080/delivery/rest/getcategories
+http://localhost:8080/delivery/rest/getcategories?cityId=110000
 response: [{"dishTypeId":"003","dishTypeName":"荤菜","parentId":"0","isRequired":"0"},{"dishTypeId":"004","dishTypeName":"素菜","parentId":"0","isRequired":"0"}]
 #返回菜品分类列表， dishTypeId菜品分类id， dishTypeName菜品分类名， isRequired是否 为必选菜品分类
 

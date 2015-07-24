@@ -50,10 +50,6 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	public Store getDefaultStore(String cityId) {
-		if (cityId == null) {
-			cityId = CityServiceImpl.CITY_BEIJING;
-		}
-
 		return sdao.getDefaultStore(cityId);
 	}
 

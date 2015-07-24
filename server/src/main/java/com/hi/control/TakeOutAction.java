@@ -24,7 +24,9 @@ import com.hi.service.CityService;
 import com.hi.service.DishService;
 import com.hi.service.OrderService;
 import com.hi.service.StoreService;
+import com.hi.service.impl.CityServiceImpl;
 import com.hi.tools.HttpUtil;
+import com.hi.tools.StringTools;
 
 @Path("/")
 public class TakeOutAction extends BaseAction {
@@ -113,7 +115,10 @@ public class TakeOutAction extends BaseAction {
 
 	private void saveIntoSession(String cityId) {
 		System.out.println("==> cityId:" + cityId);
-		if (cityId != null && !cityId.equals((String) getSession().getAttribute(HIConstants.CITYID))) {
+		if (StringTools.isEmpty(cityId)) {
+			cityId = CityServiceImpl.CITY_BEIJING;
+		}
+		if (!cityId.equals((String) getSession().getAttribute(HIConstants.CITYID))) {
 			getSession().setAttribute(HIConstants.CITYID, cityId);
 			String storeId = storeService.getDefaultStore(cityId).getStoreId();
 			System.out.println("<== storeId:" + storeId);
