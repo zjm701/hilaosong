@@ -56,6 +56,10 @@ public class StoreServiceImpl implements StoreService {
 
 		return sdao.getDefaultStore(cityId);
 	}
+
+	public Store getAreaStore(String storeId) {
+		return sdao.getAreaStore(storeId);
+	}
 	
 	public Store getStore(String storeId) {
 		return sdao.getStore(storeId);

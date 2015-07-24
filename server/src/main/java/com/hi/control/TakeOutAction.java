@@ -17,13 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.hi.common.HIConstants;
 import com.hi.common.SystemSetting;
 import com.hi.model.City;
-import com.hi.model.Dish;
-import com.hi.model.DishType;
 import com.hi.model.Order;
 import com.hi.model.OrderDish;
 import com.hi.model.OrderPack;
-import com.hi.model.Pack;
-import com.hi.model.PackDish;
 import com.hi.service.CityService;
 import com.hi.service.DishService;
 import com.hi.service.OrderService;
@@ -47,102 +43,85 @@ public class TakeOutAction extends BaseAction {
 
 	@GET
 	@Path("/getcities")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCities() {
 		List<City> cities = cityService.getDeliveryCities();
-		getSession().setAttribute("cityId", cities.get(0).getCityId());
+		getSession().setAttribute(HIConstants.CITYID, cities.get(0).getCityId());
 		return getSuccessJsonResponse(cities);
 	}
 
 	@GET
 	@Path("/getcategories")
-	@Produces("application/json")
-	public Response getCategories() {
-		List<DishType> cats = dishService.getCategories();
-		return getSuccessJsonResponse(cats);
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCategories(@FormParam("cityId") String cityId) {
+		saveIntoSession(cityId);
+		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
+		return getSuccessJsonResponse(dishService.getCategories(areaStoreId));
 	}
 
 	@GET
 	@Path("/cntdishes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String countDishes(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId) {
-		if (cityId == null) {
-			cityId = (String) getSession().getAttribute("cityId");
-		} else {
-			getSession().setAttribute("cityId", cityId);
-		}
-		String storeId = storeService.getDefaultStore(cityId).getStoreId();
-		getSession().setAttribute("storeId", storeId);
-
-		return getJsonString(dishService.countDishes(storeId, categoryId));
+		saveIntoSession(cityId);
+		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
+		return getJsonString(dishService.countDishes(areaStoreId, categoryId));
 	}
 
 	@GET
 	@Path("/getdishes")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDishes(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId,
 			@FormParam("pageIndex") int pageIndex) {
-		if (cityId == null) {
-			cityId = (String) getSession().getAttribute("cityId");
-		} else {
-			getSession().setAttribute("cityId", cityId);
-		}
-		String storeId = storeService.getDefaultStore(cityId).getStoreId();
-		getSession().setAttribute("storeId", storeId);
-		List<Dish> dishes = dishService.getDishes(storeId, categoryId, pageIndex);
-		return getSuccessJsonResponse(dishes);
+		saveIntoSession(cityId);
+		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
+		return getSuccessJsonResponse(dishService.getDishes(areaStoreId, categoryId, pageIndex));
 	}
 
 	@GET
 	@Path("/getdishdetail")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDishDetail(@FormParam("dishId") String dishId) {
-		Dish dish = dishService.getDishDetail(dishId);
-		return getSuccessJsonResponse(dish);
+		return getSuccessJsonResponse(dishService.getDishDetail(dishId));
 	}
 	
 	@GET
 	@Path("/cntpacks")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String countPacks(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId) {
-		if (cityId == null) {
-			cityId = (String) getSession().getAttribute("cityId");
-		} else {
-			getSession().setAttribute("cityId", cityId);
-		}
-		String storeId = storeService.getDefaultStore(cityId).getStoreId();
-		getSession().setAttribute("storeId", storeId);
-
-		return getJsonString(dishService.countPacks(storeId, categoryId));
+		saveIntoSession(cityId);
+		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
+		return getJsonString(dishService.countPacks(areaStoreId, categoryId));
 	}
 
 	@GET
 	@Path("/getpacks")
-	@Produces("application/json")
-	public Response getPacks(@FormParam("cityId") String cityId,
-			@FormParam("catId") String categoryId,
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPacks(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId,
 			@FormParam("pageIndex") int pageIndex) {
-		String storeId = (String) getSession().getAttribute("storeId");
-		if (storeId == null) {
-			if (cityId == null) {
-				cityId = (String) getSession().getAttribute("cityId");
-			} else {
-				getSession().setAttribute("cityId", cityId);
-			}
-			storeId = storeService.getDefaultStore(cityId).getStoreId();
-			getSession().setAttribute("storeId", storeId);
-		}
-		List<Pack> dishes = dishService.getPacks(storeId, categoryId,
-				pageIndex);
-		return getSuccessJsonResponse(dishes);
+		saveIntoSession(cityId);
+		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
+		return getSuccessJsonResponse(dishService.getPacks(areaStoreId, categoryId, pageIndex));
 	}
 
 	@GET
 	@Path("/getpackdishes")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPackDishes(@FormParam("dishId") String packId) {
-		List<PackDish> dishes = dishService.getPackDishes(packId);
-		return getSuccessJsonResponse(dishes);
+		return getSuccessJsonResponse(dishService.getPackDishes(packId));
+	}
+
+	private void saveIntoSession(String cityId) {
+		System.out.println("==> cityId:" + cityId);
+		if (cityId != null && !cityId.equals((String) getSession().getAttribute(HIConstants.CITYID))) {
+			getSession().setAttribute(HIConstants.CITYID, cityId);
+			String storeId = storeService.getDefaultStore(cityId).getStoreId();
+			System.out.println("<== storeId:" + storeId);
+			getSession().setAttribute(HIConstants.STOREID, storeId);
+			String areaStoreId = storeService.getAreaStore(storeId).getStoreId();
+			System.out.println("<== areaStoreId:" + areaStoreId);
+			getSession().setAttribute(HIConstants.AREASTOREID, areaStoreId);
+		}
 	}
 
 	@GET

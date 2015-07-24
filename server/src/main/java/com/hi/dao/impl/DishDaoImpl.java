@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.hi.common.Pagination;
+import com.hi.common.SystemSetting;
 import com.hi.dao.AbstractDao;
 import com.hi.dao.DishDao;
 import com.hi.model.Dish;
@@ -16,18 +17,37 @@ import com.hi.model.PackDish;
 
 @Repository("dishDao")
 public class DishDaoImpl extends AbstractDao implements DishDao {
+	
+	private static String sql1 = " and storeId = :storeId and dishsourcetype = '2' and isDisplay in ('2','3') and isStopped = '1'";
 
-	private static String commonsql = " and storeId = :storeId and dishcategory = :categoryId and dishsourcetype = '2' and isDisplay in ('2','3') and isStopped = '1'";
+	private static String sql2 = " and dishcategory = :categoryId " + sql1;
 
-	public List<DishType> getCategories() {
-		String sql = "select dishtypeid as \"dishTypeId\", dishtypename as \"dishTypeName\", parentid as \"parentId\", isrequired as \"isRequired\" from T_CATER_DISHTYPE "
-				+ " where parentid = 0 and identifier = 1 order by typesort ";
-		List<DishType> categories = this.getBeansBySql(DishType.class, sql);
-		return categories;
+	public List<DishType> getCategories4Dish(String storeId) {
+		String sql = "select t.dishtypeid as \"dishTypeId\", t.dishtypename as \"dishTypeName\" " 
+				+ " from T_CATER_DISHTYPE t "
+				+ " where t.identifier = '1' and t.dishtypeid not in (" + SystemSetting.getOutOfDishCategories() 
+				+ " ) and t.dishtypeid in ("
+				+ " select distinct d.dishcategory from T_CATER_DISH d where d.type = '1' and d.dishShareType in ('1', '3') " + sql1 
+				+ " ) order by t.dishtypeid asc";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);
+		return this.getBeansBySql(DishType.class, sql, params);
 	}
 
+	public List<DishType> getCategories4Wine(String storeId) {
+		String sql = "select t.dishtypeid as \"dishTypeId\", t.dishtypename as \"dishTypeName\" "
+				+ " from T_CATER_DISHTYPE t " 
+				+ " where t.identifier = '1' and t.dishtypeid in ("
+				+ " select distinct d.dishclass from T_CATER_DISH d where d.type = '1' and d.dishShareType in ('1', '3') " + sql1
+				+ " and d.dishcategory = " + SystemSetting.getWine() 
+				+ " ) order by dishtypeid asc";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);
+		return this.getBeansBySql(DishType.class, sql, params);
+	}
+	
 	public int countDishes(String storeId, String categoryId) {
-		String sql = "select * from T_CATER_DISH d where d.type = '1' and d.dishShareType in ('1', '3') " + commonsql;
+		String sql = "select * from T_CATER_DISH d where d.type = '1' and d.dishShareType in ('1', '3') " + sql2;
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);
@@ -40,11 +60,12 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
 		String sql = "select d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
 				+ " d.bigImageAddr as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
-				+ " from T_CATER_DISH d"
+				+ " from T_CATER_DISH d "
+				+ " inner join t_cater_dishtype dt on d.dishCategory = dt.dishTypeID "
 				+ " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
-				+ "		where d2.type = '1' and d2.dishShareType = '2' " + commonsql + " ) hd"
+				+ "		where d2.type = '1' and d2.dishShareType = '2' " + sql2 + " ) hd"
 				+ "	on hd.linkStoreDishId = d.storeDishId "
-				+ " where d.type = '1' and d.dishShareType in ('1', '3') " + commonsql + " order by dishSort asc";
+				+ " where d.type = '1' and d.dishShareType in ('1', '3') " + sql2 + " order by dishSort asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);
@@ -64,12 +85,11 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 				+ " from T_CATER_DISH " + " where dishId = :dishId ";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("dishId", dishId);
-		List<Dish> dishes = this.getBeansBySql(Dish.class, sql, params);
-		return dishes.isEmpty() ? null : dishes.get(0);
+		return this.getFirstBeanBySql(Dish.class, sql, params);
 	}
 	
 	public int countPacks(String storeId, String categoryId) {
-		String sql = "select * from T_CATER_DISH d where d.type = '2' and d.packType = '1' " + commonsql;
+		String sql = "select * from T_CATER_DISH d where d.type = '2' and d.packType = '1' " + sql2;
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);
@@ -82,8 +102,9 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
 		String sql = "select d.dishId as \"packId\", d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", "
 				+ "  d.unitPrice as \"unitPrice\", d.bigImageAddr as \"bigImageAddr\", d.type as \"type\" "
-				+ " from T_CATER_DISH d"
-				+ " where d.type = '2' and d.packType = '1' " + commonsql + " order by dishSort asc";
+				+ " from T_CATER_DISH d "
+				+ " inner join t_cater_dishtype dt on d.dishCategory = dt.dishTypeID "
+				+ " where d.type = '2' and d.packType = '1' " + sql2 + " order by dishSort asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);

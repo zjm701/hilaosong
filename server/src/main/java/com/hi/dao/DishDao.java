@@ -8,7 +8,9 @@ import com.hi.model.Pack;
 import com.hi.model.PackDish;
 
 public interface DishDao {
-	List<DishType> getCategories();
+	List<DishType> getCategories4Dish(String storeId);
+	
+	List<DishType> getCategories4Wine(String storeId);
 
 	int countDishes(String storeId, String categoryId);
 

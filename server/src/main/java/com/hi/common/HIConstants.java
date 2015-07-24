@@ -7,6 +7,12 @@ public interface HIConstants {
 
 	static final String USER = "user";
 	
+	static final String CITYID = "cityId";
+	
+	static final String STOREID = "storeId";
+	
+	static final String AREASTOREID = "areaStoreId";
+	
 	static final String ORDER_ID = "orderId";
 	
 	static final String DIYGUODI_ID = "diyGuodiId";

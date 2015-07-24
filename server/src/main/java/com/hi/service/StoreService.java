@@ -13,6 +13,8 @@ public interface StoreService {
 
 	Store getDefaultStore(String cityId);
 	
+	Store getAreaStore(String storeId);
+	
 	Store getStore(String storeId);
 
 	Store getStore(String storeId, String cuspoint);

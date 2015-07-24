@@ -10,6 +10,15 @@ public class DishType {
 
 	private String isRequired;
 
+	public DishType() {
+	}
+	
+	public DishType(String dishTypeId, String dishTypeName) {
+		super();
+		this.dishTypeId = dishTypeId;
+		this.dishTypeName = dishTypeName;
+	}
+
 	public String getDishTypeId() {
 		return dishTypeId;
 	}
