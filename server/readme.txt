@@ -209,6 +209,12 @@ response:  {"serialId":"2012060900024","orderId":"ZBJ182012060900024","customerI
 			}
 #返回订单详情, 支持多套餐，address地址信息，expenses金额信息，packs套餐列表{某个pack的dishes:套餐内的菜品列表}，dishes订单中的非套餐菜品列表
 
+48, 获得优惠劵详情，必须先登录
+http://localhost:8080/delivery/rest/getcouponinfo?couponId=***
+
+49, 使用优惠劵，必须先登录
+http://localhost:8080/delivery/rest/usecoupon?orderId=***&couponId=***
+
 50, 获取支付渠道
 http://localhost:8080/delivery/rest/user/getpaychannel?orderId=215603&test=1
 可省略orderId,默认用之前保存在session中的订单（即之前创建的订单）； test参数为测试用
