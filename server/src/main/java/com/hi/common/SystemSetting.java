@@ -3,6 +3,8 @@ package com.hi.common;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.hi.common.provider.SnsProvider;
+
 public class SystemSetting {
 
 	private static String SNS_JSON_ADDRESS = "sns.json.address";

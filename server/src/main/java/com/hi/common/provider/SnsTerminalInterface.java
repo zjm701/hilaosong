@@ -1,4 +1,4 @@
-package com.hi.common;
+package com.hi.common.provider;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

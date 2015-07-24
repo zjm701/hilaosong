@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import com.google.gson.Gson;
 import com.hi.common.HIConstants;
 import com.hi.common.MessageCode;
-import com.hi.common.SnsProvider;
+import com.hi.common.provider.SnsProvider;
 import com.hi.json.GetUserInfoReq;
 import com.hi.json.GetUserInfoResp;
 import com.hi.json.LoginForm;

@@ -1,6 +1,8 @@
-package com.hi.common;
+package com.hi.common.provider;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+
+import com.hi.common.SystemSetting;
 
 public class SnsProvider {
 
