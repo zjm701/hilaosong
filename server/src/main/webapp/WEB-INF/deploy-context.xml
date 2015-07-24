@@ -32,6 +32,7 @@
             <ref bean="orderAction" />
             <ref bean="storeAction" />
             <ref bean="dishAction" />
+            <ref bean="couponAction" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 
@@ -42,6 +43,7 @@
     <bean id="orderAction" class="com.hi.control.OrderAction" />
     <bean id="storeAction" class="com.hi.control.StoreAction" />
     <bean id="dishAction" class="com.hi.control.DishAction" />
+    <bean id="couponAction" class="com.hi.control.CouponAction" />
 
     <context:property-placeholder location="classpath*:/appConfig.properties" />
     

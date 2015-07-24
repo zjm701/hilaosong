@@ -160,8 +160,27 @@ public enum MessageCode {
 	/**
 	 * 支付类型不能为空
 	 */
-	VERIFICATION_EMPTY_PAYCHANNEL("328", "\u652f\u4ed8\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a");
+	VERIFICATION_EMPTY_PAYCHANNEL("328", "\u652f\u4ed8\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"),
 
+
+	/*
+	 * 400~499: 优惠劵系统(400~409: Error 410~419: Success 420~499: Verification)
+	 */
+	/**
+	 * 优惠劵系统异常
+	 */
+	ERROR_COUPON("400", "\u4F18\u60E0\u52B5\u7CFB\u7EDF\u5F02\u5E38"),
+
+	/**
+	 * 优惠劵编码不能为空
+	 */
+	VERIFICATION_EMPTY_COUPONID("420", "\u4F18\u60E0\u52B5\u7F16\u7801\u4E0D\u80FD\u4E3A\u7A7A"),
+
+	/**
+	 * 订单编号不能为空
+	 */
+	VERIFICATION_EMPTY_ORDERID("421", "\u8BA2\u5355\u7F16\u53F7\u4E0D\u80FD\u4E3A\u7A7A");
+	
 	private String key;
 
 	private String desc;
