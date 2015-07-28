@@ -54,7 +54,7 @@ public class UserAction extends BaseAction {
 		} else if (StringUtils.isEmpty(password)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_PASSWORD);
 		} else {
-			password = MD5.getMd5(form.getPassword().getBytes());
+//			password = MD5.getMd5(form.getPassword().getBytes());
 			System.out.println("==> username:" + username + ", password:" + password);
 
 			// 调用SNS接口验证用户名
