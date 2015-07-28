@@ -683,15 +683,14 @@ function citylist(){
 function userlogin() {
 	var username = $("input[name='username']");
 	var password = $("input[name='password']");
-	var content = {
-			username: $.trim(username.val()),
-			password: $.trim(password.val())
-		};
 		var hi_username = $.trim(username.val());
 		var hi_password = hex_md5($.trim(password.val()));
+	var content = {
+			username: $.trim(username.val()),
+			password: $.trim(hi_password)
+		};
 			$('#userinfo').html('读取中...');
 			//alert(hi_password);
-			return false;
 	$.ajax({
 		url: apiurl+"login",//要访问的后台地址
 		data: JSON.stringify(content),//要发送的数据
