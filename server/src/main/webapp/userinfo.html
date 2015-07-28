@@ -1,0 +1,91 @@
+<script>
+$(document).ready(function(e) {
+	userid = $.cookie("userid");
+	if(userid == 'undefined' || userid == 'null' || userid == null){
+	     //alert(userid);		
+		$('#usernow').hide();
+		$('#cartinfo').hide();
+		$('#userlogin').show();
+	} else {
+		$('#usernow').show();
+		$('#userlogin').hide();
+		$('#userid').text(userid);
+	}
+	username = $.cookie("username");
+	if(username == 'undefined' || username == 'null' || username == null){
+		
+	} else {
+		$('#username').text(username);
+	}
+	getcartdishinfo();
+	getcartpackinfo();
+	getcartdiyguodiinfo();
+	//cartdiyguodi = getcartdiyguodiinfo();
+	//alert(JSON.stringify(cartdiyguodi));
+	//getdishes(catid,'#dishul','1');
+	
+});
+function logout(){
+	//$.cookie("cartdish",null);
+	//$.cookie("cartpack",null);
+	$.cookie("userid",null);
+	$.cookie("username",null);
+	window.location= './';
+}
+</script>
+<div class="menu">
+<div id="userlogin">
+<span>请输入手机号:</span>
+<span><input name="username" type="text" value="13585947701" /></span>
+<span>请输入密码:</span>
+<span><input name="password" type="password" value="123456" /></span>
+<div class="jizhu">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td width="15px" class="p_l_5"><input type="checkbox" checked="checked" readonly style="border:none; height:13px; width:13px;"/></td>
+<td width="95px"><span >记住我</span></td>
+<td><span>忘记密码?</span></td></tr>
+<tr><td colspan="3" class="p_t_15"><img src="images/btn_denglu.jpg" style="cursor:pointer;" onclick="userlogin();" /></td></tr>
+<tr><td colspan="3" align="right"><a href="#">没有账号？免费注册</a></td></tr>
+</table>
+</div>
+<span class="f_red m_t_20">友情提示</span>
+<span class="f_868686">如果您曾使用我们的订餐服务，请输入您上次使用的手机号码</span>
+</div>
+<div id="usernow">
+欢迎您：<span id="username"></span>
+<span id="userid" style="display:none;"></span>
+<a href="historyorder.html" class="btn btn-danger blcok">历史订单</a>
+<div class="blank5"></div>
+<a href="diyguodi.html" class="btn btn-danger blcok">DIY锅底</a>
+<div class="blank5"></div>
+<span class="btn btn-danger" onClick="logout();">退出</span>
+
+</div>
+</div>
+<div id="cartinfo">
+<div class="title">购物篮</div>
+<div class="car_gw">
+<div class="blank10"></div>
+<div id="cartbox">
+
+</div>
+<div id="cartpackbox">
+
+</div>
+<div id="cartdiyguodibox">
+
+</div>
+<div class="blank10"></div>
+<div class="xyh_box">
+<div class="clear"></div>
+<span class="sp_hx"></span>
+<div class="cart" style="display:none;"><div class="left">合计</div><div id="carttotle" class="right">0</div></div>
+<div class="blank5"></div>
+<a href="orderform1.html"><span class=" btn btn-danger block"  >进入结算 <i class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></i></span></a>
+<div class="clear"></div>
+
+<span class="m_t_30">提醒：根据您最终提交订单时间，送餐时间可能略有调整。</span>
+</div>
+</div>
+</div>
