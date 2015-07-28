@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
-<title>海底捞首页</title>
+<title>确认订单</title>
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
@@ -23,9 +23,12 @@
 
 </style>
 <script>
-nowpage = 'index';
+nowpage ='checkorder';
+
 $(document).ready(function(e) {
     getcategories(cityid,'#catul');
+	//$(n).parent().find('li').removeClass('li_hover');
+	//
 });
 </script>
 </head>
@@ -74,37 +77,53 @@ $(document).ready(function(e) {
   </map>
 </div>
 <div class="left mid">
-<div class="mid_left left">
-<div class="m_l_title">选择城市</div>
-<div class="m_l_menu">
-<div class="m_diqu" id="cityname" onclick="citylist()">北京市</div>
-<!--<div class="m_adv m_t_10"><img src="images/left_adv_01.jpg" /></div>-->
-<ul id="catul">
-</ul>
-</div>
-<div class="sc_date">
-送餐时间：11:30-23:00<br />
-电话订餐时间：08:00-23：00
-</div>
-</div>
-<div class="mid_mid left">
-<ul id="dishul">
-<div class="m_t_15 p_l_15"><img src="images/tel_rexian.jpg" /></div>
-<div class="m_t_10"><img src="images/banner_img.jpg" /></div>
-<div class=" p_t_5"><img src="images/adv_01.jpg" /><span style="padding-left:2px;"><img src="images/adv_02.jpg" /></span></div>
-</ul>
-</div>
-<div class="mid_right m_t_20" >
-<div class="title">开始订餐</div>
-<div id="userinfo">
 
+<div id="checkorder">
 
-</div>
-<div class="mid_right m_t_5">
-<div class="tishi"><span class="f_red ">提示</span></div>
-</div>
-</div>
+<div class="bd_01">
+<dl><dt>联系人</dt><dd><div class="d_input"><input type="text" value="张先生" /></div></dd></dl>
+<dl><dt>手机</dt><dd><div class="d_input"><input type="text" value="186********" /></div></dd></dl>
+<dl><dt>地址</dt><dd ><div class="dd_add d_input">
+<span>城市</span><span><input type="text"  value="北京市" /></span>
+<span>区域</span><span><input type="text"  value="城阳区" /></span>
+<span class="clear"></span>
+<span class="m_t_10">详细地址：</span><span class="m_t_10"><input type="text" style="width:270px;"  value="**街道**小区**单元**楼" /></span>
+</div></dd></dl>
 <div class="clear"></div>
+
+<div class="d_border">
+<dl><dt>电磁炉</dt><dd>*1</dd></dl>
+<dl><dt>锅具</dt><dd>*1</dd></dl>
+</div>
+
+<dl><dt>是否需要开发票</dt><dd><div class="d_fapiao"><span style="padding-right:10px;"><input type="checkbox" /></span><span style="padding-right:50px;">是</span><span><input type="checkbox" /></span><span>否</span></div></dd></dl>
+<dl><dt>发票类型</dt><dd><div class="d_fapiao"><span style="padding-right:10px;"><input type="checkbox" /></span><span style="padding-right:50px;">是</span><span><input type="checkbox" /></span><span>否</span></div></dd></dl>
+<dl><dt>发票抬头</dt><dd><div class="d_input"><input type="text" value="张先生" /></div></dd></dl>
+<dl><dt>备注</dt><dd><div class="d_input"><input type="text" value="微辣" /></div></dd></dl>
+<div class="clear"></div>
+</div>
+
+<div class="cd_list">
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<dl><dt>海底捞D套餐（2-3人）</dt><dd><span class="f_c6000a p_r_50">*1</span><span class="f_c6000a">265元/份</span></dd></dl>
+<div class="clear"></div>
+</div>
+<div class="heji"><dl><dt>合计</dt><dd><span class="f_c6000a">265元</span></dd></dl></div>
+
+<a href="orderform1.html"><div class="btn_queren">修改信息</div></a>
+<a href="pay.html"><div class="btn_queren">确认</div></a>
+
+
+<div class="clear"></div>
+
+</div>
+
 <div class="foot">
 <span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
 <span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>

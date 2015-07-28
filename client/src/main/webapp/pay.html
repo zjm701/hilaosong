@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
-<title>海底捞首页</title>
+<title>确认订单</title>
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
@@ -23,9 +23,12 @@
 
 </style>
 <script>
-nowpage = 'index';
+nowpage ='pay';
+
 $(document).ready(function(e) {
     getcategories(cityid,'#catul');
+	//$(n).parent().find('li').removeClass('li_hover');
+	//
 });
 </script>
 </head>
@@ -74,36 +77,40 @@ $(document).ready(function(e) {
   </map>
 </div>
 <div class="left mid">
-<div class="mid_left left">
-<div class="m_l_title">选择城市</div>
-<div class="m_l_menu">
-<div class="m_diqu" id="cityname" onclick="citylist()">北京市</div>
-<!--<div class="m_adv m_t_10"><img src="images/left_adv_01.jpg" /></div>-->
-<ul id="catul">
+<div class=" f14px fB m_t_35">选择支付方式</div>
+<div class="zf_list m_t_10">
+<div><span><input type="radio" /></span><span>货到付款</span></div>
+<div class="clear"></div>
+<div class=" m_t_15"><span><input type="radio" /></span><span>网上支付</span></div>
+<div class="clear"></div>
+
+<div class="p_l_20 m_t_15"><span class="p_t_20"><input type="radio" /></span><span><img src="images/zf_img.jpg" /></span>
+<span  class="p_t_20"><input type="radio" /></span><span><img src="images/weixin_img.jpg" /></span></div>
+<div class="clear"></div>
+</div>
+<div class="bank_list">
+<ul><li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank01.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank02.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank03.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank04.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank05.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank06.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank07.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank08.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank09.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank10.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank11.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank12.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank13.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank14.jpg" /></span></li>
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank15.jpg" /></span></li>
 </ul>
+<div class="clear"></div>
 </div>
-<div class="sc_date">
-送餐时间：11:30-23:00<br />
-电话订餐时间：08:00-23：00
-</div>
-</div>
-<div class="mid_mid left">
-<ul id="dishul">
-<div class="m_t_15 p_l_15"><img src="images/tel_rexian.jpg" /></div>
-<div class="m_t_10"><img src="images/banner_img.jpg" /></div>
-<div class=" p_t_5"><img src="images/adv_01.jpg" /><span style="padding-left:2px;"><img src="images/adv_02.jpg" /></span></div>
-</ul>
-</div>
-<div class="mid_right m_t_20" >
-<div class="title">开始订餐</div>
-<div id="userinfo">
+
+<div class="btn_queren">确认</div>
 
 
-</div>
-<div class="mid_right m_t_5">
-<div class="tishi"><span class="f_red ">提示</span></div>
-</div>
-</div>
 <div class="clear"></div>
 <div class="foot">
 <span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>

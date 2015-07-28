@@ -16,12 +16,17 @@ a:hover{ text-decoration:none;}
 .left{float:left;}
 .right{float:right;}
 
+.blcok{ display:block;}
+
+.blank5{ height:5px; clear:both;}
+.blank10{ height:10px; clear:both;}
+.blank20{ height:20px; clear:both;}
+
 .f_italic{ font-style:italic;}
 .yahei{font-family:"Microsoft YaHei","微软雅黑";}
 .Arial{ font-family:Arial, Helvetica, sans-serif;}
 
 a{color:#8b8b8b}
-a:hover{ text-decoration:underline;}
 .box{ width:1000px; margin:0px auto; padding:0px auto;}
 .clear{ clear:both;}
 .m_t_5{ margin-top:5px;}
@@ -47,6 +52,8 @@ a:hover{ text-decoration:underline;}
 .p_l_10{ padding-left:10px;}
 .p_l_15{ padding-left:15px;}
 .p_l_20{ padding-left:20px;}
+.p_r_50{ padding-right:50px;}
+.p_r_10{ padding-right:10px;}
 .f_000{ color:#000000;}
 .f_fff{ color:#fff;}
 .f_868686{color:#868686;}

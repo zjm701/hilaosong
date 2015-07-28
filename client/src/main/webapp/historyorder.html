@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
-<title>海底捞首页</title>
+<title>历史订单</title>
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
@@ -16,6 +16,7 @@
 <script src="js/jquery.fancybox-1.3.4.js"></script>
 <script src="js/jquery.mousewheel.js"></script>
 <script src="js/jquery.easing.js"></script>
+<script src="js/jquery.pager.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
 <script src="js/common.js"></script>
 <script src="js/config.js"></script>
@@ -23,10 +24,20 @@
 
 </style>
 <script>
-nowpage = 'index';
+nowpage ='historyorder';
+userid = $.cookie('userid');//
+
 $(document).ready(function(e) {
     getcategories(cityid,'#catul');
+	if(typeof(userid) == 'undefined' || userid == 'null'){ //如果没有登录报错
+		window.history.go(-1);
+	}
+	//userid = '23675';
+	gethistoryorders(userid,'#orderlist','1');
 });
+PageClick = function(pageclickednumber) {
+	gethistoryorders(userid,'#orderlist',pageclickednumber);
+}
 </script>
 </head>
 
@@ -87,23 +98,19 @@ $(document).ready(function(e) {
 电话订餐时间：08:00-23：00
 </div>
 </div>
-<div class="mid_mid left">
-<ul id="dishul">
-<div class="m_t_15 p_l_15"><img src="images/tel_rexian.jpg" /></div>
-<div class="m_t_10"><img src="images/banner_img.jpg" /></div>
-<div class=" p_t_5"><img src="images/adv_01.jpg" /><span style="padding-left:2px;"><img src="images/adv_02.jpg" /></span></div>
+<div class="dd_xiangqing">
+<div class="dd_nav">历史订单</div>
+<div class="ls_list">
+<ul id="orderlist">
 </ul>
 </div>
-<div class="mid_right m_t_20" >
-<div class="title">开始订餐</div>
-<div id="userinfo">
+<div class="clear"></div>
+<div id="pager" ></div>
 
 
 </div>
-<div class="mid_right m_t_5">
-<div class="tishi"><span class="f_red ">提示</span></div>
-</div>
-</div>
+
+
 <div class="clear"></div>
 <div class="foot">
 <span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
