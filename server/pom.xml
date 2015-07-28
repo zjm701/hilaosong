@@ -63,7 +63,7 @@
 					<artifactId>maven-war-plugin</artifactId>
 					<version>2.3</version>
 					<configuration>
-						<warName>delivery</warName>
+						<warName>hilaosong</warName>
 						<!--  					
 						<webappDirectory>WebContent</webappDirectory>
 						<webXml>WebContent\WEB-INF\web.xml</webXml>
