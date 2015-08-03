@@ -24,7 +24,6 @@ import com.hi.json.ReqForm;
 import com.hi.json.TerminalUserLoginReq;
 import com.hi.json.TerminalUserLoginResp;
 import com.hi.model.User;
-import com.hi.tools.MD5;
 import com.hi.tools.StringTools;
 
 @Path("/")
@@ -88,8 +87,8 @@ public class UserAction extends BaseAction {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login2(String content) {
 		String step1 = login(content);
-		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
-		if (StringTools.isNotEmpty(userId)) {
+		String loginId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
+		if (StringTools.isNotEmpty(loginId)) {
 			return getCurrentUser();
 		} else {
 			return step1;
@@ -104,15 +103,15 @@ public class UserAction extends BaseAction {
 	@GET
 	@Path(value = "/getuserinfo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getUserInfo(@FormParam("userId") String userId) {
-		if (StringUtils.isEmpty(userId)) {
-			return getJsonString(MessageCode.VERIFICATION_EMPTY_USERID);
+	public String getUserInfo(@FormParam("loginId") String loginId) {
+		if (StringUtils.isEmpty(loginId)) {
+			return getJsonString(MessageCode.VERIFICATION_EMPTY_LOGINID);
 		} else {
 			User user = (User) getSession().getAttribute(HIConstants.USER);
-			if (user != null && userId.equals(user.getUser_entity_id() + "")) {
+			if (user != null && loginId.equals(user.getUser_entity_id() + "")) {
 				return (String) getSession().getAttribute(HIConstants.LOGIN_INFO);
 			} else {
-				String respString = getUserInfo0(userId);
+				String respString = getUserInfo0(loginId);
 				if (StringTools.isNotEmpty(respString)) {
 					return respString;
 				} else {
@@ -126,11 +125,11 @@ public class UserAction extends BaseAction {
 	@Path(value = "/getcurrentuser")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getCurrentUser() {
-		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
-		if (StringTools.isNotEmpty(userId)) {
+		String loginId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
+		if (StringTools.isNotEmpty(loginId)) {
 			User user = (User) getSession().getAttribute(HIConstants.USER);
 			if (user == null) {
-				getUserInfo0(userId);
+				getUserInfo0(loginId);
 				user = (User) getSession().getAttribute(HIConstants.USER);
 			}
 			if (user != null) {
@@ -146,15 +145,16 @@ public class UserAction extends BaseAction {
 		}
 	}
 
-	private String getUserInfo0(String userId) {
-		System.out.println("==> userId:" + userId);
+	private String getUserInfo0(String loginId) {
+		System.out.println("==> loginId:" + loginId);
+		getSession().setAttribute(HIConstants.LOGIN_ID, loginId);
 		Gson gson = new Gson();
 
 		// 调用sns查询用户信息
 		GetUserInfoReq userInfoReq = new GetUserInfoReq();
 		userInfoReq.setReqInfo(new ReqForm("getUserInfoReq"));
-		userInfoReq.setFromUid(Long.valueOf(userId));
-		userInfoReq.setToUid(Long.valueOf(userId));
+		userInfoReq.setFromUid(Long.valueOf(loginId));
+		userInfoReq.setToUid(Long.valueOf(loginId));
 
 		String userInfoReqString = gson.toJson(userInfoReq);
 
@@ -163,6 +163,7 @@ public class UserAction extends BaseAction {
 			System.out.println("<== getuserinfo response:" + respString);
 
 			GetUserInfoResp resp = gson.fromJson(respString, GetUserInfoResp.class);
+			getSession().setAttribute(HIConstants.LOGIN_ID, loginId);
 			getSession().setAttribute(HIConstants.LOGIN_INFO, respString);
 			getSession().setAttribute(HIConstants.USER, resp.getUser());
 			return respString;

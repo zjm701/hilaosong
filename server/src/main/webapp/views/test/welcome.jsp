@@ -15,7 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 function getuserinfo(){
 	$.ajax({
 			url: "<%=path%>/rest/getuserinfo",//要访问的后台地址
-			data: "userId=" + ${sessionScope.loginId},//要发送的数据
+			data: "loginId=" + ${sessionScope.loginId},//要发送的数据
 			type: "get", //使用get方法访问后台
 			dataType: "json", //返回json格式的数据
 			async: true,

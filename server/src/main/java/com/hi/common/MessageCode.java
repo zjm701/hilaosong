@@ -43,9 +43,9 @@ public enum MessageCode {
 	VERIFICATION_EMPTY_PASSWORD("121", "\u5bc6\u7801\u4e0d\u80fd\u4e3a\u7a7a"),
 
 	/**
-	 * UserId不能为空
+	 * LoginId不能为空
 	 */
-	VERIFICATION_EMPTY_USERID("122", "UserId\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_LOGINID("122", "LoginId\u4e0d\u80fd\u4e3a\u7a7a"),
 
 	/*
 	 * 200~299: DIY锅底系统(200~209: Error 210~219: Success 220~299: Verification)
