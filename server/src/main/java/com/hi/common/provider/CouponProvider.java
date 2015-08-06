@@ -110,7 +110,7 @@ public class CouponProvider {
 	 * @param userPhone
 	 * @return
 	 */
-	public static JSONObject query(String userId, String redEnvelopeId) {
+	public static JSONObject get(String userId, String redEnvelopeId) {
 		TreeMap<String, String> params = new TreeMap<String, String>();
 		params.put("userId", userId);
 		params.put("redEnvelopeId", redEnvelopeId);
@@ -124,7 +124,7 @@ public class CouponProvider {
 	 * @param userPhone
 	 * @return
 	 */
-	public static JSONObject getList(String userId) {
+	public static JSONObject list(String userId) {
 		TreeMap<String, String> params = new TreeMap<String, String>();
 		params.put("userId", userId);
 		params.put("userPhone", "");
@@ -164,16 +164,19 @@ public class CouponProvider {
 
 	public static void main(String[] args) {
 		TreeMap<String, String> params = new TreeMap<String, String>();
-		params.put("orderNo", "XBJ1520150529130131");
-		params.put("userId", "22479");
-		params.put("redEnvelopeIds", "1002410347380177");
-		String s = requestRedCore("use", params).toString();
-		System.out.println(s);
+//		params.put("orderNo", "XBJ1520150529130131");
+//		params.put("userId", "22479");
+//		params.put("redEnvelopeIds", "1002410347380177");
+//		System.out.println(requestRedCore("use", params).toString());
+
+//		params = new TreeMap<String, String>();
+//		params.put("userId", "21517");
+//		params.put("redEnvelopeId", "1002410347380177");
+//		System.out.println(requestRedCore("query", params).toString());
 
 		params = new TreeMap<String, String>();
-		params.put("userId", "0100000063399197");
-		params.put("redEnvelopeId", "1002410347380177");
-		s = requestRedCore("query", params).toString();
-		System.out.println(s);
+		params.put("userId", "22479");
+		params.put("userPhone", "");
+		System.out.println(requestRedCore("getList", params));
 	}
 }

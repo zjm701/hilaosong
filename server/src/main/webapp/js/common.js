@@ -707,7 +707,7 @@ function userlogin() {
 				$.cookie("userid", msg.loginID, { expires: 30 }); 
 				//$('#userinfo').html(' 用户ID：'+ msg.loginID);
 				$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
-				$.getJSON(''+apiurl+'getuserinfo?userId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
+				$.getJSON(''+apiurl+'getuserinfo?loginId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
 					//alert(json.content);JSON.stringify(json)
 					$.cookie("username", json.user.nickname, { expires: 30 });
 					$.cookie("hi_username", hi_username, { expires: 30 });

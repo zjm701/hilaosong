@@ -65,7 +65,7 @@ $(function() {
 				//location.href = "welcome.jsp";
 				//alert("login response:"+JSON.stringify(msg));
 				if(typeof(msg.loginID) != 'undefined'){
-				$.getJSON(''+apiurl+'getuserinfo?userId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
+				$.getJSON(''+apiurl+'getuserinfo?loginId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
 					//alert(json.content);JSON.stringify(json)
 					$('#userinfo').html('用户名：'+json.user.nickname+' 用户ID：'+ msg.loginID);
 					//setTimeout("loadMainok()",1000);

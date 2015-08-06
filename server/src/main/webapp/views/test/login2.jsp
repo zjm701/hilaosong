@@ -10,6 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>测试login</title>
 
 <script type="text/javascript" src="<%=path%>/static/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/md5.js"></script>
 <script type="text/javascript" >
 $(function() {
 	$("input[name='save']").click(function() {
@@ -17,7 +18,7 @@ $(function() {
 		var password = $("input[name='password']");
 		var content = {
 				username: $.trim(username.val()),
-				password: $.trim(password.val())
+				password: hex_md5($.trim(password.val()))
 			};
 		$.ajax({
 			url: "<%=path%>/rest/login2",//要访问的后台地址
@@ -48,11 +49,11 @@ $(function() {
 						<table class="insert-tab" width="100%">
 							<tr>
 								<th width="120">用户名:</th>
-								<td><input type="text" name="username" style="width: 440px" >13585947701</td>
+								<td><input type="text" name="username" style="width: 440px" > 13161695955 </td>
 							</tr>
 							<tr>
 								<th width="120">密码:</th>
-								<td><input type="password" name="password" style="width: 440px" >123456</td>
+								<td><input type="password" name="password" style="width: 440px" > 111111 </td>
 							</tr>
 							<tr>
 								<th></th>

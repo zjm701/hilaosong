@@ -49,11 +49,11 @@ $(function() {
 						<table class="insert-tab" width="100%">
 							<tr>
 								<th width="120">用户名:</th>
-								<td><input type="text" name="username" style="width: 440px" >13585947701</td>
+								<td><input type="text" name="username" style="width: 440px" > 13161695955 </td>
 							</tr>
 							<tr>
 								<th width="120">密码:</th>
-								<td><input type="password" name="password" style="width: 440px" >123456</td>
+								<td><input type="password" name="password" style="width: 440px" > 111111 </td>
 							</tr>
 							<tr>
 								<th></th>

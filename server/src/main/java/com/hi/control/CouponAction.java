@@ -28,7 +28,7 @@ public class CouponAction extends BaseAction {
 		if (StringUtils.isEmpty(userId)) {
 			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
 		} else {
-			return CouponProvider.getList(userId).toString();
+			return CouponProvider.list(userId).toString();
 		}
 	}
 
@@ -48,7 +48,7 @@ public class CouponAction extends BaseAction {
 		} else if (StringUtils.isEmpty(couponId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_COUPONID);
 		} else {
-			return CouponProvider.query(userId, couponId).toString();
+			return CouponProvider.get(userId, couponId).toString();
 		}
 	}
 
