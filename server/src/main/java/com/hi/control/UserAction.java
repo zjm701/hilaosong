@@ -111,7 +111,8 @@ public class UserAction extends BaseAction {
 			if (user != null && loginId.equals(user.getUser_entity_id() + "")) {
 				return (String) getSession().getAttribute(HIConstants.LOGIN_INFO);
 			} else {
-				String respString = getUserInfo0(loginId);
+				saveUserInfoIntoSession(loginId);
+				String respString =  (String) getSession().getAttribute(HIConstants.LOGIN_INFO);
 				if (StringTools.isNotEmpty(respString)) {
 					return respString;
 				} else {
@@ -129,7 +130,7 @@ public class UserAction extends BaseAction {
 		if (StringTools.isNotEmpty(loginId)) {
 			User user = (User) getSession().getAttribute(HIConstants.USER);
 			if (user == null) {
-				getUserInfo0(loginId);
+				saveUserInfoIntoSession(loginId);
 				user = (User) getSession().getAttribute(HIConstants.USER);
 			}
 			if (user != null) {
@@ -145,9 +146,8 @@ public class UserAction extends BaseAction {
 		}
 	}
 
-	private String getUserInfo0(String loginId) {
+	private void saveUserInfoIntoSession(String loginId) {
 		System.out.println("==> loginId:" + loginId);
-		getSession().setAttribute(HIConstants.LOGIN_ID, loginId);
 		Gson gson = new Gson();
 
 		// 调用sns查询用户信息
@@ -166,11 +166,12 @@ public class UserAction extends BaseAction {
 			getSession().setAttribute(HIConstants.LOGIN_ID, loginId);
 			getSession().setAttribute(HIConstants.LOGIN_INFO, respString);
 			getSession().setAttribute(HIConstants.USER, resp.getUser());
-			return respString;
 
 		} catch (Exception e) {
+			getSession().removeAttribute(HIConstants.LOGIN_ID);
+			getSession().removeAttribute(HIConstants.LOGIN_INFO);
+			getSession().removeAttribute(HIConstants.USER);
 			e.printStackTrace();
-			return null;
 		}
 	}
 }

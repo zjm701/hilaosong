@@ -18,6 +18,7 @@ import com.hi.model.OrderAddress;
 import com.hi.model.OrderExpenses;
 import com.hi.model.Store;
 import com.hi.service.OrderService;
+import com.hi.tools.CalendarTools;
 import com.hi.tools.StringTools;
 
 @Service("orderService")
@@ -50,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public String createOrder(Order order){
-		order.setSerialId(odao.getOrderSerialId()+"");
+	public String createOrder(Order order) {
+		order.setSerialId(generateSerialId(odao.getOrderSerialId()));
 		order.setOrderId(generateOrderId(order.getStoreId(), order.getSerialId()));
 		order.setStatus(OrderStatus.PENDING_APPROVE.getKey());
 		order.setPayStatus(OrderPayStatus.WAITING_PAY.getKey());
@@ -87,6 +88,29 @@ public class OrderServiceImpl implements OrderService {
 		}else{
 			return null;
 		}
+	}
+	
+	private String generateSerialId(long serialId) {
+		String sid = serialId + "";
+
+		int length = sid.length();
+		switch (length) {
+		case 1:
+			sid = "0000" + sid;
+			break;
+		case 2:
+			sid = "000" + sid;
+			break;
+		case 3:
+			sid = "00" + sid;
+			break;
+		case 4:
+			sid = "0" + sid;
+			break;
+		default:
+			break;
+		}
+		return CalendarTools.nowString("yyyyMMdd") + sid;
 	}
 	
 	/**
