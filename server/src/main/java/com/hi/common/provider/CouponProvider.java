@@ -104,79 +104,69 @@ public class CouponProvider {
 	}
 
 	/**
-	 * 查询红包
-	 * 
-	 * @param userId
-	 * @param userPhone
-	 * @return
-	 */
-	public static JSONObject get(String userId, String redEnvelopeId) {
-		TreeMap<String, String> params = new TreeMap<String, String>();
-		params.put("userId", userId);
-		params.put("redEnvelopeId", redEnvelopeId);
-		return requestRedCore("query", params);
-	}
-
-	/**
 	 * 我的红包
 	 * 
-	 * @param userId
-	 * @param userPhone
+	 * @param customerKey
 	 * @return
 	 */
-	public static JSONObject list(String userId) {
+	public static JSONObject list(String customerKey) {
 		TreeMap<String, String> params = new TreeMap<String, String>();
-		params.put("userId", userId);
+		params.put("userId", customerKey);
 		params.put("userPhone", "");
 		return requestRedCore("getList", params);
 	}
 
 	/**
+	 * 查询红包
+	 * 
+	 * @param customerKey
+	 * @param redEnvelopeId
+	 * @return
+	 */
+	public static JSONObject get(String customerKey, String redEnvelopeId) {
+		TreeMap<String, String> params = new TreeMap<String, String>();
+		params.put("userId", customerKey);
+		params.put("userPhone", "");
+		params.put("redEnvelopeId", redEnvelopeId);
+		return requestRedCore("query", params);
+	}
+
+	/**
 	 * 使用红包
 	 * 
+	 * @param customerKey
 	 * @param orderId
-	 * @param userId
 	 * @param redEnvelopeIds
 	 * @return
 	 */
-	public static JSONObject use(String userId, String orderId, String redEnvelopeIds) {
+	public static JSONObject use(String customerKey, String orderId, String redEnvelopeIds) {
 		TreeMap<String, String> params = new TreeMap<String, String>();
-		params.put("userId", userId);
+		params.put("userId", customerKey);
 		params.put("orderNo", orderId);
 		params.put("redEnvelopeIds", redEnvelopeIds);
 		return requestRedCore("use", params);
 	}
 
-	public static JSONObject reback(String userId, String orderId, String redEnvelopeId) {
+	/**
+	 * 取消红包
+	 * 
+	 * @param customerKey
+	 * @param orderId
+	 * @param redEnvelopeId
+	 * @return
+	 */
+	public static JSONObject reback(String customerKey, String orderId, String redEnvelopeId) {
 		TreeMap<String, String> params = new TreeMap<String, String>();
-		params.put("userId", userId);
+		params.put("userId", customerKey);
 		params.put("orderNo", orderId);
 		params.put("redEnvelopeId", redEnvelopeId);
 		return requestRedCore("reback", params);
 	}
 
-	public static JSONObject cancel(String orderId, String userId) {
-		TreeMap<String, String> params = new TreeMap<String, String>();
-		params.put("userId", userId);
-		params.put("orderNo", orderId);
-		return requestRedCore("cancel", params);
-	}
-
 	public static void main(String[] args) {
-		TreeMap<String, String> params = new TreeMap<String, String>();
-//		params.put("orderNo", "XBJ1520150529130131");
-//		params.put("userId", "22479");
-//		params.put("redEnvelopeIds", "1002410347380177");
-//		System.out.println(requestRedCore("use", params).toString());
-
-//		params = new TreeMap<String, String>();
-//		params.put("userId", "21517");
-//		params.put("redEnvelopeId", "1002410347380177");
-//		System.out.println(requestRedCore("query", params).toString());
-
-		params = new TreeMap<String, String>();
-		params.put("userId", "22479");
-		params.put("userPhone", "");
-		System.out.println(requestRedCore("getList", params));
+		System.out.println(CouponProvider.list("990100000063397125"));
+		System.out.println(CouponProvider.get("990100000063397125", "1002909504697974"));
+		System.out.println(CouponProvider.use("990100000063397125", "WBJ022015081301306", "1002909504697974"));
+		System.out.println(CouponProvider.reback("990100000063397125", "WBJ022015081301306", "1002909504697974"));
 	}
 }

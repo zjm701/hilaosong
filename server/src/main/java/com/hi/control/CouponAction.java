@@ -24,11 +24,11 @@ public class CouponAction extends BaseAction {
 	@Path("/getcoupons")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getCoupons() {
-		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
-		if (StringUtils.isEmpty(userId)) {
+		String customerKey = (String) getSession().getAttribute(HIConstants.CUSTOMER_KEY);
+		if (StringUtils.isEmpty(customerKey)) {
 			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
 		} else {
-			return CouponProvider.list(userId).toString();
+			return CouponProvider.list(customerKey).toString();
 		}
 	}
 
@@ -42,13 +42,13 @@ public class CouponAction extends BaseAction {
 	@Path("/getcouponinfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getCouponInfo(@FormParam("couponId") String couponId) {
-		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
-		if (StringUtils.isEmpty(userId)) {
+		String customerKey = (String) getSession().getAttribute(HIConstants.CUSTOMER_KEY);
+		if (StringUtils.isEmpty(customerKey)) {
 			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
 		} else if (StringUtils.isEmpty(couponId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_COUPONID);
 		} else {
-			return CouponProvider.get(userId, couponId).toString();
+			return CouponProvider.get(customerKey, couponId).toString();
 		}
 	}
 
@@ -62,15 +62,15 @@ public class CouponAction extends BaseAction {
 	@Path("/usecoupon")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String useCoupon(@FormParam("orderId") String orderId, @FormParam("couponId") String couponId) {
-		String userId = (String) getSession().getAttribute(HIConstants.LOGIN_ID);
-		if (StringUtils.isEmpty(userId)) {
+		String customerKey = (String) getSession().getAttribute(HIConstants.CUSTOMER_KEY);
+		if (StringUtils.isEmpty(customerKey)) {
 			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
 		} else if (StringUtils.isEmpty(orderId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_ORDERID);
 		} else if (StringUtils.isEmpty(couponId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_COUPONID);
 		} else {
-			return CouponProvider.use(userId, couponId, couponId).toString();
+			return CouponProvider.use(customerKey, orderId, couponId).toString();
 		}
 	}
 }

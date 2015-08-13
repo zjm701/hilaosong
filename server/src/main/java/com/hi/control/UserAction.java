@@ -40,6 +40,7 @@ public class UserAction extends BaseAction {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(String content) {
 		getSession().removeAttribute(HIConstants.LOGIN_ID);
+		getSession().removeAttribute(HIConstants.CUSTOMER_KEY);
 		getSession().removeAttribute(HIConstants.LOGIN_INFO);
 		getSession().removeAttribute(HIConstants.USER);
 		System.out.println("==> content:" + content);
@@ -53,7 +54,6 @@ public class UserAction extends BaseAction {
 		} else if (StringUtils.isEmpty(password)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_PASSWORD);
 		} else {
-//			password = MD5.getMd5(form.getPassword().getBytes());
 			System.out.println("==> username:" + username + ", password:" + password);
 
 			// 调用SNS接口验证用户名
@@ -72,6 +72,7 @@ public class UserAction extends BaseAction {
 				TerminalUserLoginResp resp = gson.fromJson(respString, TerminalUserLoginResp.class);
 				if (StringTools.isNotEmpty(resp.getLoginID())) {
 					getSession().setAttribute(HIConstants.LOGIN_ID, resp.getLoginID());
+					getSession().setAttribute(HIConstants.CUSTOMER_KEY, resp.getCustomerKey());
 				}
 
 				return respString;
@@ -169,6 +170,7 @@ public class UserAction extends BaseAction {
 
 		} catch (Exception e) {
 			getSession().removeAttribute(HIConstants.LOGIN_ID);
+			getSession().removeAttribute(HIConstants.CUSTOMER_KEY);
 			getSession().removeAttribute(HIConstants.LOGIN_INFO);
 			getSession().removeAttribute(HIConstants.USER);
 			e.printStackTrace();
