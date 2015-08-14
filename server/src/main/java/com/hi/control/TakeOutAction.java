@@ -129,19 +129,6 @@ public class TakeOutAction extends BaseAction {
 		}
 	}
 
-	@GET
-	@Path("/switchcity")
-	@Produces("application/json")
-	public Response switchCity(@FormParam("cityId") String cityId) {
-		City city = cityService.getCity(cityId);
-		if (city == null) {
-			return this.getFailedJsonResponse("not valid city");
-		} else {
-			getSession().setAttribute("cityId", cityId);
-			return this.getSuccessJsonResponse(city);
-		}
-	}
-
 	public boolean showNotice(String userId, boolean checkHisOrder) {
 		Boolean isNoticeReaded = (Boolean) getSession().getAttribute(
 				HIConstants.IS_NOTICE_READED);

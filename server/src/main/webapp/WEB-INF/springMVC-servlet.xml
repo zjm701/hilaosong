@@ -30,11 +30,11 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/protected/**"/>
-			<bean class="com.hi.app.LoginInterceptor"/>
+			<bean class="com.hi.common.LoginInterceptor"/>
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/admin/**"/>
-			<bean class="com.hi.app.LoginInterceptor"/>
+			<bean class="com.hi.common.LoginInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 
