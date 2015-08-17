@@ -26,20 +26,20 @@ import com.hi.tools.StringTools;
 public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDao odao;
-	
+
 	@Autowired
 	private StoreDao sdao;
-	
+
 	@Override
 	public OrderAddress getLatestAddress(String userId) {
 		return odao.getLatestAddress(userId);
 	}
 
 	@Override
-	public int countHistoryOrders(String userId){
+	public int countHistoryOrders(String userId) {
 		return odao.countHistoryOrders(userId);
 	}
-	
+
 	@Override
 	public List<Order> getHistoryOrders(String userId, int pageIndex) {
 		return odao.getHistoryOrders(userId, pageIndex);
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		OrderAddress a = order.getAddress();
-		if(a != null){
+		if (a != null) {
 			a.setOrderId(order.getOrderId());
 			a.setCustomerPhone(order.getContactPhone());
 		}
@@ -79,17 +79,17 @@ public class OrderServiceImpl implements OrderService {
 		if (StringTools.isEmpty(e.getWaiterFee())) {
 			e.setWaiterFee("0");
 		}
-		if (StringTools.isEmpty(e.getDeliveryFee())){
+		if (StringTools.isEmpty(e.getDeliveryFee())) {
 			e.setDeliveryFee("0");
 		}
-		
-		if(odao.createOrder(order)){
+
+		if (odao.createOrder(order)) {
 			return order.getOrderId();
-		}else{
+		} else {
 			return null;
 		}
 	}
-	
+
 	private String generateSerialId(long serialId) {
 		String sid = serialId + "";
 
@@ -112,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return CalendarTools.nowString("yyyyMMdd") + sid;
 	}
-	
+
 	/**
 	 * 准备订单号
 	 * 
@@ -125,13 +125,14 @@ public class OrderServiceImpl implements OrderService {
 		Store store = sdao.getStore(storeId);
 		if (store != null) {
 			if (store.getStoreCode() == null) {
-				orderId = "ZABCD" + store.getStoreId() + serialId;
+				orderId = serialId;
 			} else {
-				orderId = OrderSrc.WEBSITE.getKey() + store.getStoreCode() + serialId;
+				orderId = store.getStoreCode() + serialId;
 			}
 		} else {
-			orderId = "ZABCD01" + serialId;// 临时虚假数据
+			orderId = "ABCD01" + serialId;// 临时虚假数据
 		}
+		orderId = OrderSrc.WEBSITE.getKey() + orderId;
 		return orderId;
 	}
 }
