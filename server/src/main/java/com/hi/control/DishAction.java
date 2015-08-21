@@ -29,6 +29,57 @@ public class DishAction extends BaseAction {
 	@Autowired
 	private DishService dishService;
 
+	@GET
+	@Path("/getcategories")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCategories(@FormParam("storeId") String storeId) {
+		return getSuccessJsonResponse(dishService.getCategories(storeId));
+	}
+
+	@GET
+	@Path("/cntdishes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String countDishes(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId) {
+		return getJsonString(dishService.countDishes(storeId, categoryId));
+	}
+
+	@GET
+	@Path("/getdishes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDishes(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId,
+			@FormParam("pageIndex") int pageIndex) {
+		return getSuccessJsonResponse(dishService.getDishes(storeId, categoryId, pageIndex));
+	}
+
+	@GET
+	@Path("/getdishdetail")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDishDetail(@FormParam("dishId") String dishId) {
+		return getSuccessJsonResponse(dishService.getDishDetail(dishId));
+	}
+
+	@GET
+	@Path("/cntpacks")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String countPacks(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId) {
+		return getJsonString(dishService.countPacks(storeId, categoryId));
+	}
+
+	@GET
+	@Path("/getpacks")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPacks(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId,
+			@FormParam("pageIndex") int pageIndex) {
+		return getSuccessJsonResponse(dishService.getPacks(storeId, categoryId, pageIndex));
+	}
+
+	@GET
+	@Path("/getpackdishes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPackDishes(@FormParam("dishId") String packId) {
+		return getSuccessJsonResponse(dishService.getPackDishes(packId));
+	}
+
 	/**
 	 * 
 	 * @param userId
@@ -47,7 +98,7 @@ public class DishAction extends BaseAction {
 		name = name + "\u7684" + (count + 1) + "\u53f7\u9505\u5e95"; // **的*号锅底
 		return "{\"guodiName\":\"" + name + "\"}";
 	}
-	
+
 	/**
 	 * 
 	 * @param userId
@@ -93,13 +144,13 @@ public class DishAction extends BaseAction {
 		DiyGuodi guodi = gson.fromJson(content, DiyGuodi.class);
 		if (StringUtils.isEmpty(userId)) {
 			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
-		}else if (StringUtils.isEmpty(guodi.getGuodiName())) {
+		} else if (StringUtils.isEmpty(guodi.getGuodiName())) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_NAME);
 		} else if (StringUtils.isEmpty(guodi.getDishId())) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_DISHID1);
 		} else if (StringUtils.isEmpty(guodi.getDishId2())) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_GUODI_DISHID2);
-		}  else {
+		} else {
 			guodi.setUserId(userId);
 			String guodiId = dishService.createDiyGuodi(guodi);
 			if (guodiId != null) {

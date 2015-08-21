@@ -11,9 +11,7 @@ public interface HIConstants {
 	
 	static final String CITYID = "cityId";
 	
-	static final String STOREID = "storeId";
-	
-	static final String AREASTOREID = "areaStoreId";
+	static final String AREASTORE = "areaStore";
 	
 	static final String ORDER_ID = "orderId";
 	

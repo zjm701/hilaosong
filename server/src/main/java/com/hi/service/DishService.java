@@ -9,17 +9,17 @@ import com.hi.model.Pack;
 import com.hi.model.PackDish;
 
 public interface DishService {
-	List<DishType> getCategories(String areaStoreId);
+	List<DishType> getCategories(String storeId);
 
-	int countDishes(String areaStoreId, String catId);
+	int countDishes(String storeId, String catId);
 	
-	List<Dish> getDishes(String areaStoreId, String catId, int pageIndex);
+	List<Dish> getDishes(String storeId, String catId, int pageIndex);
 	
 	Dish getDishDetail(String dishId);
 
-	int countPacks(String areaStoreId, String catId);
+	int countPacks(String storeId, String catId);
 	
-	List<Pack> getPacks(String areaStoreId, String catId, int pageIndex);
+	List<Pack> getPacks(String storeId, String catId, int pageIndex);
 	
 	List<PackDish> getPackDishes(String packId);
 	

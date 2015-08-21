@@ -21,24 +21,14 @@ import com.hi.model.Order;
 import com.hi.model.OrderDish;
 import com.hi.model.OrderPack;
 import com.hi.service.CityService;
-import com.hi.service.DishService;
 import com.hi.service.OrderService;
-import com.hi.service.StoreService;
-import com.hi.service.impl.CityServiceImpl;
 import com.hi.tools.HttpUtil;
-import com.hi.tools.StringTools;
 
 @Path("/")
 public class TakeOutAction extends BaseAction {
 
 	@Autowired
 	private CityService cityService;
-
-	@Autowired
-	private DishService dishService;
-
-	@Autowired
-	private StoreService storeService;
 
 	@Autowired
 	private OrderService orderService;
@@ -52,82 +42,7 @@ public class TakeOutAction extends BaseAction {
 		return getSuccessJsonResponse(cities);
 	}
 
-	@GET
-	@Path("/getcategories")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCategories(@FormParam("cityId") String cityId) {
-		saveIntoSession(cityId);
-		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
-		return getSuccessJsonResponse(dishService.getCategories(areaStoreId));
-	}
-
-	@GET
-	@Path("/cntdishes")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String countDishes(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId) {
-		saveIntoSession(cityId);
-		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
-		return getJsonString(dishService.countDishes(areaStoreId, categoryId));
-	}
-
-	@GET
-	@Path("/getdishes")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDishes(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId,
-			@FormParam("pageIndex") int pageIndex) {
-		saveIntoSession(cityId);
-		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
-		return getSuccessJsonResponse(dishService.getDishes(areaStoreId, categoryId, pageIndex));
-	}
-
-	@GET
-	@Path("/getdishdetail")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDishDetail(@FormParam("dishId") String dishId) {
-		return getSuccessJsonResponse(dishService.getDishDetail(dishId));
-	}
 	
-	@GET
-	@Path("/cntpacks")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String countPacks(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId) {
-		saveIntoSession(cityId);
-		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
-		return getJsonString(dishService.countPacks(areaStoreId, categoryId));
-	}
-
-	@GET
-	@Path("/getpacks")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPacks(@FormParam("cityId") String cityId, @FormParam("catId") String categoryId,
-			@FormParam("pageIndex") int pageIndex) {
-		saveIntoSession(cityId);
-		String areaStoreId = (String) getSession().getAttribute(HIConstants.AREASTOREID);
-		return getSuccessJsonResponse(dishService.getPacks(areaStoreId, categoryId, pageIndex));
-	}
-
-	@GET
-	@Path("/getpackdishes")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPackDishes(@FormParam("dishId") String packId) {
-		return getSuccessJsonResponse(dishService.getPackDishes(packId));
-	}
-
-	private void saveIntoSession(String cityId) {
-		System.out.println("==> cityId:" + cityId);
-		if (StringTools.isEmpty(cityId)) {
-			cityId = CityServiceImpl.CITY_BEIJING;
-		}
-		if (!cityId.equals((String) getSession().getAttribute(HIConstants.CITYID))) {
-			getSession().setAttribute(HIConstants.CITYID, cityId);
-			String storeId = storeService.getDefaultStore(cityId).getStoreId();
-			System.out.println("<== storeId:" + storeId);
-			getSession().setAttribute(HIConstants.STOREID, storeId);
-			String areaStoreId = storeService.getAreaStore(storeId).getStoreId();
-			System.out.println("<== areaStoreId:" + areaStoreId);
-			getSession().setAttribute(HIConstants.AREASTOREID, areaStoreId);
-		}
-	}
 
 	public boolean showNotice(String userId, boolean checkHisOrder) {
 		Boolean isNoticeReaded = (Boolean) getSession().getAttribute(

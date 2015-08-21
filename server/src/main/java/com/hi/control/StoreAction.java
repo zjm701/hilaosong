@@ -15,10 +15,12 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.hi.common.HIConstants;
 import com.hi.common.MessageCode;
 import com.hi.common.OrderType;
 import com.hi.model.Store;
 import com.hi.service.StoreService;
+import com.hi.service.impl.CityServiceImpl;
 import com.hi.tools.BaiduTools;
 import com.hi.tools.CityTools;
 import com.hi.tools.StringTools;
@@ -28,6 +30,26 @@ public class StoreAction extends BaseAction {
 
 	@Autowired
 	private StoreService storeService;
+
+	@GET
+	@Path("/getareastore")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAreaStore(@FormParam("cityId") String cityId) {
+		System.out.println("==> cityId:" + cityId);
+		if (StringTools.isEmpty(cityId)) {
+			cityId = CityServiceImpl.CITY_BEIJING;
+		}
+		String storeId = storeService.getDefaultStore(cityId).getStoreId();
+		System.out.println("<== storeId:" + storeId);
+
+		Store areaStore = storeService.getAreaStore(storeId);
+		System.out.println("<== areaStoreId:" + areaStore.getStoreId());
+
+		getSession().setAttribute(HIConstants.CITYID, cityId);
+		getSession().setAttribute(HIConstants.AREASTORE, areaStore);
+
+		return getSuccessJsonResponse(getSession().getAttribute(HIConstants.AREASTORE));
+	}
 
 	/**
 	 * "/wap/toSendDishesPage" (Mobile version)

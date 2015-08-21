@@ -27,29 +27,29 @@ public class DishServiceImpl implements DishService {
 	@Autowired
 	private DiyGuodiDao gdao;
 	
-	public List<DishType> getCategories(String areaStoreId) {
+	public List<DishType> getCategories(String storeId) {
 		List<DishType> menus = new ArrayList<DishType>();
 		DishType pack = new DishType(SystemSetting.getSetting("pack"), "\u5957\u9910"); // 套餐
 		DishType guodi = new DishType(SystemSetting.getSetting("guodi"), "\u9505\u5E95"); // 锅底
 
 		menus.add(pack);
 		menus.add(guodi);
-		for (DishType dt : ddao.getCategories4Dish(areaStoreId)) {
+		for (DishType dt : ddao.getCategories4Dish(storeId)) {
 			menus.add(dt);
 		}
-		for (DishType dt : ddao.getCategories4Wine(areaStoreId)) {
+		for (DishType dt : ddao.getCategories4Wine(storeId)) {
 			menus.add(dt);
 		}
 		return menus;
 	}
 	
 	@Override
-	public int countDishes(String areaStoreId, String catId) {
-		return ddao.countDishes(areaStoreId, catId);
+	public int countDishes(String storeId, String catId) {
+		return ddao.countDishes(storeId, catId);
 	}
 	
-	public List<Dish> getDishes(String areaStoreId, String catId, int pageIndex) {
-		return ddao.getDishes(areaStoreId, catId, pageIndex);
+	public List<Dish> getDishes(String storeId, String catId, int pageIndex) {
+		return ddao.getDishes(storeId, catId, pageIndex);
 	}
 
 	public Dish getDishDetail(String dishId) {
@@ -57,12 +57,12 @@ public class DishServiceImpl implements DishService {
 	}
 	
 	@Override
-	public int countPacks(String areaStoreId, String catId) {
-		return ddao.countPacks(areaStoreId, catId);
+	public int countPacks(String storeId, String catId) {
+		return ddao.countPacks(storeId, catId);
 	}
 	
-	public List<Pack> getPacks(String areaStoreId, String catId, int pageIndex) {
-		return ddao.getPacks(areaStoreId, catId, pageIndex);
+	public List<Pack> getPacks(String storeId, String catId, int pageIndex) {
+		return ddao.getPacks(storeId, catId, pageIndex);
 	}
 	
 	public List<PackDish> getPackDishes(String packId) {
