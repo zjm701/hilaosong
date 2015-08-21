@@ -151,10 +151,10 @@
 .bd_01 dl{ line-height:36px; width:745px; clear:both; margin-top:10px;}
 .bd_01 dl dt{ font-size:14px; color:#333; line-height:32px; font-weight:bold; width:105px; text-align:right; float:left;}
 .bd_01 dl dd{ float:left; padding-left:20px;}
-.bd_01 dl dd .d_input input{width:425px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; behavior: url(style/iecss3.htc)}
-.bd_01 dl dd .dd_add{ z-index:0; width:410px; height:90px; color:#333; background-color:#fff;  font-size:14px; font-weight:bold; padding:15px; border: 1px solid #cdcdcd; border-radius:5px; behavior: url(style/iecss3.htc) height:115px;}
-.bd_01 dl dd .dd_add span{ z-index:2000; display:block; float:left; height:32px; line-height:32px; margin-right:10px;}
-.bd_01 dl dd .dd_add span input{z-index:1000; width:125px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; behavior: url(style/iecss3.htc)}
+.bd_01 dl dd .d_input input{width:425px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px;}
+.bd_01 dl dd .dd_add{  width:410px; height:90px; color:#333; background-color:#fff;  font-size:14px; font-weight:bold; padding:15px; border: 1px solid #cdcdcd; border-radius:5px; height:115px;}
+.bd_01 dl dd .dd_add span{  display:block; float:left; height:32px; line-height:32px; margin-right:10px;}
+.bd_01 dl dd .dd_add span input{ width:125px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; }
 
 
 .d_border{ width:740px;  margin:30px auto; padding:10px 0px; border-top: 1px solid #cdcdcd;  border-bottom: 1px solid #cdcdcd;}
@@ -189,17 +189,18 @@
 .wm_list dl{ line-height:36px; width:558px; clear:both; padding-top:10px;}
 .wm_list dl dt{ font-size:14px; color:#333; line-height:32px; font-weight:bold; width:80px; text-align:right; float:left;}
 .wm_list dl dd{ float:left; padding-left:20px;}
-.wm_list dl dd .d_input input{width:425px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; behavior: url(style/iecss3.htc)}
+.wm_list dl dd .d_input input{width:425px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; }
 
 .wm_list dl dd .d_leixing{ padding-left:50px;}
 .wm_list dl dd .d_leixing span{ padding-left:10px; font-size:14px;}
 
-.wm_list dl dd .dd_add{ z-index:0; width:410px; height:90px; color:#333; background-color:#fff;  font-size:14px; font-weight:bold; padding:15px; border: 1px solid #cdcdcd; border-radius:5px; behavior: url(style/iecss3.htc) height:115px;}
-.wm_list dl dd .dd_add span{ z-index:2000; display:block; float:left; height:32px; line-height:32px; margin-right:10px;}
-.wm_list dl dd .dd_add span input{z-index:1000; width:125px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; behavior: url(style/iecss3.htc)}
+.wm_list dl dd .dd_add{ width:410px; height:90px; color:#333; background-color:#fff;  font-size:14px; font-weight:bold; padding:15px; border: 1px solid #cdcdcd; border-radius:5px; height:115px;}
+.wm_list dl dd .dd_add span input{ z-index:1; position:relative;width:125px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; }
+.wm_list dl dd .dd_add span{  display:block; float:left; height:32px; line-height:32px; margin-right:10px;}
+
 
 .wm_list dl dd .d_rili span{ display:block; height:32px; line-height:32px; font-size:14px; float:left;}
-.wm_list dl dd .d_rili span input{z-index:1000; width:125px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; behavior: url(style/iecss3.htc)}
+.wm_list dl dd .d_rili span input{ width:125px; color:#333;  font-size:14px; font-weight:bold; padding-left:15px; height:32px; line-height:32px; border: 1px solid #cdcdcd; border-radius:5px; }
 
 *{-webkit-box-sizing:inherit;-moz-box-sizing:inherit;box-sizing:inherit;}:after,:before{-webkit-box-sizing:inherit;-moz-box-sizing:inherit;box-sizing:inherit;}
 
@@ -226,6 +227,7 @@ font-size: 12px;
 font-family: Arial, Helvetica, sans-serif;
 background: #F2F2F2 url(../images/body_bg.png) repeat-x center top;
 width: 100%;
+display:none;
 }
 
 #cities{ width:500px; min-height:108px;}
@@ -257,8 +259,10 @@ border: 1px solid #ccc;
 text-decoration: none;
 color: #585858;
 line-height: 20px;
+float:left;
 }
 .liright{ float:right;}
+.liright span{ margin-left:5px;}
 .oh14{ overflow:hidden; display:block; height:22px; line-height:22px;}
 
 .carttitle{ line-height:30px; height:30px; overflow:hidden; font-size:14px;color: #c6000a; font-weight:bold; }
@@ -314,8 +318,8 @@ padding:5px;
 border:1px solid #003f7e; 
 } 
 #pager ul.pages li.pgEmpty { 
-border:1px solid #eee; 
-color:#eee; 
+border:1px solid #ccc; 
+color:#ccc; 
 } 
 #pager ul.pages li.pgCurrent { 
 border:1px solid #003f7e; 
