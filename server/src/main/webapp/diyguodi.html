@@ -77,10 +77,12 @@ function editdiyguodi(n){
 	diyguodijson['id1'] = null;
 
 	diyguodijson['id2'] = null;
+	
+	storeid = $.cookie('storeid');
 
 	$.ajax({
 
-        url: apiurl+'getdishes?catId=001',
+        url: apiurl+'getdishes?storeId='+storeid+'&catId=001',
 
         type: 'GET',
 
@@ -275,10 +277,12 @@ function adddiyguodi(){
 	diyguodijson['id1'] = null;
 
 	diyguodijson['id2'] = null;
+	
+	storeid = $.cookie('storeid');
 
 	$.ajax({
 
-        url: apiurl+'getdishes?catId=001',
+        url: apiurl+'getdishes?storeId='+storeid+'&catId=001',
 
         type: 'GET',
 

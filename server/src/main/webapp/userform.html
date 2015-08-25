@@ -8,7 +8,7 @@
 
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
 
-<title>外卖表单</title>
+<title>订餐表单</title>
 
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
 
@@ -56,9 +56,7 @@ nowpage ='orderform';
 
 storeid = '';
 
-var userformjson = {};
 
-userformjson = $.cookie('userformjson');
 
 $(document).ready(function(e) {
 
@@ -80,24 +78,22 @@ $(document).ready(function(e) {
 
 function getfee(){
 
-	var waiterFee = $('#waiterFee').val();
+	//var waiterFee = $('#waiterFee').val();
 
 		var deliveryFee = $('#deliveryFee').val();
 
-		var dishtotal = $('#dishPrice').val();
+		//var dishtotal = $('#dishPrice').val();
 
-		waiterFee = (Math.round(waiterFee*100)/100);
+		//waiterFee = (Math.round(waiterFee*100)/100);
 
 		deliveryFee = (Math.round(deliveryFee*100)/100);
-
-		dishtotal = (Math.round(dishtotal*100)/100);
-
-		var totalPrice = waiterFee +  deliveryFee + dishtotal;
-
-		$('#waiterFee').val(totalPrice);
 		$('#deliveryFee').val(totalPrice);
-		$('#dishPrice').val(totalPrice);
-		$('#totalPrice').val(totalPrice);
+
+		//dishtotal = (Math.round(dishtotal*100)/100);
+
+		//var totalPrice = waiterFee +  deliveryFee + dishtotal;
+
+		//$('#totalPrice').val(totalPrice);
 
 }
 
@@ -143,7 +139,7 @@ function ordertype0(){
 
 	$('#mendian').hide();
 
-	//$("#mendiandizhi").html('');
+	$("#mendiandizhi").html('');
 
 	$("#deliveryFee").val(0);
 
@@ -218,7 +214,7 @@ function ordertype2(){
 
 	$('#mendian').show();
 
-	//$("#mendiandizhi").html('');
+	$("#mendiandizhi").html('');
 
 	$("#deliveryFee").val(0);
 
@@ -226,7 +222,7 @@ function ordertype2(){
 
 }
 
-function orderform1type2(n){
+function orderform1type2(){
 
 	$.ajax({
 
@@ -263,12 +259,6 @@ function orderform1type2(n){
 					_html +=''+obj.storeTele+'';
 
 					_html +='</option>';
-					    //alert(obj.storeId);
-					   // alert(n);
-					if(obj.storeId == n){
-					    //alert(n);
-						$('#mendiandizhi').html(obj.storeAddress);
-					}
 
 						
 
@@ -277,7 +267,6 @@ function orderform1type2(n){
 				});
 
 				$('#storeid2').html(_html);
-				$('#storeid2 option[value='+n+']').attr("selected",true);
 
 			
 
@@ -294,12 +283,10 @@ $(document).ready(function(e) {
 	 
 
 	 
-			    orderform1type0();
 
-	$('#dizhi').show();
+	 orderform1type0();
 
-	$('#mendian').hide();
-
+	 orderform1type2();
 
 	 $("input[name='dinningTime']").val(getNowFormatDate());
 
@@ -308,48 +295,6 @@ $(document).ready(function(e) {
 	 //alert('11');
 
 	 show_date('dinningTime',true);
-	 
-	 var userformjson = {};
-	 userformjson = eval('(' + $.cookie("userformjson") + ')');
-	 if(typeof(userformjson) == 'undefined' ||  userformjson == null ||  userformjson == 'null' ||  userformjson == ''){
-		 alert('请填写订餐信息');
-	 }
-	 
-	 //alert(JSON.stringify(userformjson));
-	 
-	 $("input[name='storeId']").val(userformjson.storeId);
-
-				$("input[name='contactName']").val(userformjson.contactName);
-
-				$("input[name='contactPhone']").val(userformjson.contactPhone);
-
-				$("input[name='participantNumber']").val(userformjson.participantNumber);
-
-
-
-				$("input[name='payChannel']").val(userformjson.payChannel);
-
-				
-
-				//$("input[name='orderType']").val(userformjson.contactName);
-				
-				$("input[name='orderType'][value="+userformjson.orderType+"]").attr("checked",true); 
-				
-				if(userformjson.orderType == '2'){
-					//alert(userformjson.orderType);
-					$('#dizhi').hide();
-					$('#mendian').show();
-				}
-				
-						  
-		  
-			    orderform1type2(userformjson.storeId);
-
-				$("input[name='cityId']").val(userformjson.cityId);
-
-					$("input[name='detailAddress']").val(userformjson.detailAddress);
-				
-				$("input[name='deliveryFee']").val(userformjson.deliveryFee);
 
 	 var cartdish = {};
 
@@ -358,6 +303,10 @@ $(document).ready(function(e) {
 	cartpack = getcartpackinfo();
 
 	cartdiyguodi = getcartdiyguodiinfo();
+
+	$('#dizhi').show();
+
+	$('#mendian').hide();
 
 	_html ='';
 
@@ -485,129 +434,16 @@ $(document).ready(function(e) {
 
 });
 
-	function orderform1() {
+	function userform() {
 
-		 var cartdish = {};
-
-	    cartdish = getcartdishinfo();
-
-		 var cartpack = {};
-
-	    cartpack = getcartpackinfo();
-
-		 var cartdiyguodi = {};
-
-	    cartdiyguodi = getcartdiyguodiinfo();
-
+		 
 		
 
 		var payChannel = $("input[name='payChannel']").val();
 
 		
 
-		var dishesjson = [];
-
-		$.each(cartdish,function(index,obj){
-
-			if(typeof(obj) == 'undefined' ||  obj == null){
-
-			} else {
-
-			//alert(obj);
-
-			var tmp = {dishId: obj.id, dishNumber: obj.num};
-
-			dishesjson.push(tmp);
-
-			}
-
-		});
-
-		$.each(cartdiyguodi,function(index,obj){
-
-			if(typeof(obj) == 'undefined' ||  obj == null){
-
-			} else {
-
-			//alert(obj);
-
-			var tmp = {guodiId: obj.id, dishNumber: obj.num};
-
-			dishesjson.push(tmp);
-
-			}
-
-		});
-
-		var packsjson = [];
-
-		$.each(cartpack,function(index,obj){
-
-			if(typeof(obj) == 'undefined' ||  obj == null){
-
-			} else {
-
-				//alert(obj);
-
-				var tmp1 = obj.guodi;
-
-				var tmp2 = obj.xiaoliao;
-
-				//alert(JSON.stringify(tmp1));
-
-				var tmppacks = [];
-
-				$.each(tmp1,function(index1,obj1){
-
-					if(typeof(obj1) == 'undefined' ||  obj1 == null){
-
-					} else {
-
-					//alert(obj);
-
-					  var tmp = {dishId: obj1.id};
-
-					  tmppacks.push(tmp);
-
-					
-
-					}
-
-				});
-
-				$.each(tmp2,function(index2,obj2){
-
-					if(typeof(obj2) == 'undefined' ||  obj2 == null){
-
-					} else {
-
-					//alert(obj);
-
-						var tmp = {dishId: obj2.id};
-
-						tmppacks.push(tmp);
-
-					
-
-					}
-
-				});
-
-				//alert(JSON.stringify(tmppacks));
-
-				var tmp = {packId: obj.id, packCount: obj.num , dishes: tmppacks};
-
-				packsjson.push(tmp);
-
-			}
-
-		});
-
-		var reciept = $.trim($("input[name='reciept']").val());
-		var recieptDept = $.trim($("input[name='recieptDept']").val());
-		if(reciept == 1 && recieptDept == ''){
-			alert('请填写发票抬头');
-		}
+		
 
 		var content = {
 
@@ -619,72 +455,34 @@ $(document).ready(function(e) {
 
 				participantNumber: $.trim($("input[name='participantNumber']").val()),
 
-				dinningTime: $.trim($("input[name='dinningTime']").val())+':00',
 
-				recieptDept: $.trim($("input[name='recieptDept']").val()),
-
-				custMemo: $.trim($("input[name='custMemo']").val()),
 
 				payChannel: $.trim($("input[name='payChannel']").val()),
 
-				potNumber: $.trim($("input[name='potNumber']").val()),
+				
 
-				orderType: $.trim($("input[name='orderType']").val()),
+				orderType: $.trim($("input[name='orderType']:checked").val()),
 
-				address: {
+				cityId: $.trim($("input[name='cityId']").val()),
 
-					//provinceId: '123456',
-
-					cityId: $.trim($("input[name='cityId']").val()),
-
-					detailAddress: $.trim($("input[name='detailAddress']").val())
-
-				},
-
-				expenses: {
-
-					waiterFee: $.trim($("input[name='waiterFee']").val()),
-
-					deliveryFee: $.trim($("input[name='deliveryFee']").val()),
-
-					dishPrice: $.trim($("input[name='dishPrice']").val()),
-
-					totalPrice: $.trim($("input[name='totalPrice']").val())
-
-				},
-
-				packs: packsjson,
-
-				dishes: dishesjson
-
+					detailAddress: $.trim($("input[name='detailAddress']").val()),
+				
+				deliveryFee: $.trim($("input[name='deliveryFee']").val())
+				
 			};
 
-			//alert(JSON.stringify(content));
+			tmp = $.trim($("input[name='storeId']").val());
+			tmp1 = JSON.stringify(content);
+			
+			//alert(tmp1);
+			$.cookie("storeId1", tmp, { expires: 30 }); 
+			$.cookie("userformjson", tmp1, { expires: 30 }); 
+			
+			//alert(tmp1);
+			
+			window.location='./index.html';
 
-		$.ajax({
-
-			url:  apiurl+'createorder',//要访问的后台地址
-
-			data: JSON.stringify(content),//要发送的数据
-
-			type: "post", //使用post方法访问后台
-
-			dataType: "json", //返回json格式的数据
-
-			async: true,
-
-			contentType: "application/json;charset=utf-8", 
-
-			success: function(msg){//msg为返回的数据，在这里做数据绑定
-
-				//alert("login response:"+JSON.stringify(msg));
-
-				alert(msg.respMsg);
-				window.location='./index.html';
-
-			}
-
-		});
+		
 
 	}
 
@@ -818,17 +616,17 @@ f
 
 <div class="wm_list">
 
-<dl><dt>联系人</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="contactName" style=" border:0;" value="" /></div></dd></dl>
+<dl><dt>联系人</dt><dd><div class="d_input"><input type="text" name="contactName" value="" /></div></dd></dl>
 
-<dl><dt>手机</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="contactPhone" style=" border:0;" value="" /></div></dd></dl>
+<dl><dt>手机</dt><dd><div class="d_input"><input type="text" name="contactPhone" value="" /></div></dd></dl>
 
-<dl><dt>用餐人数</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="participantNumber" style=" border:0;" value="0" /></div></dd></dl>
+<dl><dt>用餐人数</dt><dd><div class="d_input"><input type="text" name="participantNumber" value="0" /></div></dd></dl>
 
 <dl><dt>类型</dt><dd><div class="d_leixing">
 
-<span onclick="ordertype0();"><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="0" checked="checked" />普通外卖</span>
+<span onclick="ordertype0();"><input type="radio" name="orderType" value="0" checked="checked" />普通外卖</span>
 
-<span onclick="ordertype2();"><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="2" />上门自取</span>
+<span onclick="ordertype2();"><input type="radio" name="orderType" value="2" />上门自取</span>
 
 </div></dd></dl>
 
@@ -840,7 +638,7 @@ f
 
 <div id="dizhi">
 
-<span class="m_t_10">地址：</span><span class="m_t_10"><input name="detailAddress" readonly="readonly" type="text" style="width:270px; border:0;" onblur="ordertype0addr(this);"  value="" />
+<span class="m_t_10">地址：</span><span class="m_t_10"><input name="detailAddress" type="text" style="width:270px;" onblur="ordertype0addr(this);"  value="" />
 
 <input type="hidden" name="cityId" value="" />
 
@@ -854,7 +652,7 @@ f
 
 <span>门店：</span>
 
-<span><select id="storeid2" disabled="disabled" style=" height:32px; line-height:32px; border:0;appearance:none;-moz-appearance:none; -webkit-appearance:none; " readonly="readonly"></select></span>
+<span><select id="storeid2" style=" height:32px; line-height:32px;"></select></span>
 
 <div class="clear"></div>
 
@@ -885,34 +683,10 @@ f
 </div></dd></dl>
 <div class="clear"></div>
 
-
-<div id="orderform1">
-
+<dl><dt>外送费</dt><dd><div class="d_leixing">
 
 
-<dl><dt>用餐时间</dt><dd><div class="d_input d_rili">
-
-<span><input name="dinningTime" type="text" id="dinningTime" style="width:160px;"  onfocus="show_date('dinningTime',true);" value="" /></span>
-
-</div></dd></dl>
-
-
-
-<dl><dt>自备炉具</dt><dd><div class="d_leixing">
-
-<span onclick="$('#guoju').hide();$('#potNumber').val('0');"><input type="radio" name="usecup" value="1" /></span><span class="p_r_10">是</span>
-
-<span onclick="$('#guoju').show();"><input type="radio" name="usecup" value="0" checked="checked" /></span><span>否</span>
-
-</div></dd></dl>
-
-
-
-<dl id="guoju"><dt style="line-height:40px;">炉具</dt><dd style="padding-left:260px;"><div class="left d_num" style="padding-top:10px;"><span><img src="images/img_jian.gif" id="imgjian" /></span>
-
-<span class="f12px fB f_c6000a"><input name="potNumber" id="potNumber" type="text" value="0" style="width:24px; height:18px; text-align:center;" /></span>
-
-<span><img src="images/img_jia.gif" id="imgjia" /></span>
+<span class="m_t_10"><input type="text" name="deliveryFee" readonly="readonly" id="deliveryFee" style="width: 40px; height:26px; border:0;" value="0"></span>
 
 </div></dd></dl>
 
@@ -920,67 +694,6 @@ f
 
 
 
-<dl><dt>备注(选填)</dt><dd><div class="d_input"><input type="text" name="custMemo" value="" /></div></dd></dl>
-
-
-
-</div>
-
-
-
-<div id="orderform2" style="display:none;">
-
-<div style="height:20px;"></div>
-
-<dl><dt>是否开发票</dt><dd><div class="d_leixing">
-
-<span onclick="$('#fapiao').show();"><input type="radio" name="reciept" value="1" /></span><span class="p_r_10">是</span>
-
-<span onclick="$('#fapiao').hide();"><input type="radio" name="reciept" value="0" checked="checked" /></span><span>否</span>
-
-</div></dd></dl>
-
-<dl id="fapiao" style="display:none;"><dt>发票抬头</dt><dd><div class="d_input"><input name="recieptDept" type="text" value="" /></div></dd></dl>
-
-
-
-
-
-
-
-<div id="dishlist" class="cd_list">
-
-<div class="clear"></div>
-
-</div>
-
-<div class="clear"></div>
-
-<dl id="feiyong"><dt>费用</dt><dd><div class="d_input">
-
-<span style="display:none;">服务费：<input type="text" name="waiterFee" id="waiterFee" style="width: 40px; border:0;" value="0"></span>
-
-<span class="m_t_10">外送费：</span><span class="m_t_10"><input type="text" name="deliveryFee" readonly="readonly" id="deliveryFee" style="width: 40px; border:0;" value="0"></span>
-
-<span class="m_t_10">菜品价：</span><span class="m_t_10"><input type="text" name="dishPrice" readonly="readonly" id="dishPrice" style="width: 40px; border:0;" value="88"></span>
-
-<span class="m_t_10">总价:</span><span class="m_t_10"><input type="text" name="totalPrice" readonly="readonly" id="totalPrice" style="width: 50px; border:0;" value="118"></span>
-
-</div></dd></dl>
-
-
-
-<dl><dt>支付方式</dt><dd><div class="d_leixing">
-
-<span><input type="radio" name="payChannel" value="0" /></span><span class="p_r_10">网付</span>
-
-<span><input type="radio" name="payChannel" value="1" checked="checked" /></span><span>到付</span>
-
-</div></dd></dl>
-
-
-
-</div>
 
 
 
@@ -988,11 +701,8 @@ f
 
 </div>
 
-<div class="btn_queren" id="orderform1_btn" style="margin-top:30px; cursor:pointer;" onclick="$('#orderform2').show();$('#orderform1').hide();$('#orderform1_btn').hide();$('#orderform2_btn').show();$('#orderform2_btn1').show();getfee();">下一步</div>
 
-<div class="btn_queren" id="orderform2_btn" style="margin-top:30px; cursor:pointer; display:none;" onclick="$('#orderform1').show();$('#orderform2').hide();$('#orderform1_btn').show();$('#orderform2_btn').hide();$('#orderform2_btn1').hide();">返回修改</div>
-
-<div class="btn_queren" id="orderform2_btn1" style="margin-top:30px; cursor:pointer; display:none;" onclick="orderform1();">确认提交</div>
+<div class="btn_queren" id="orderform2_btn1" style="margin-top:30px; cursor:pointer;" onclick="userform();">确认提交</div>
 
 </div>
 
