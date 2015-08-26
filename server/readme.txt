@@ -46,34 +46,36 @@ response：     {"respInfo":{"msgName":"getUserInfoResp","resp_time":"2015-06-24
 http://localhost:8080/hilaosong/rest/getcurrentuser
 如果用户未登录或超时，返回空 []，否则返回{"nickname":"大宝","userId":"23675"}
 
-10, get all support hilaosong cities:
+9, get all support hilaosong cities:
 http://localhost:8080/hilaosong/rest/getcities
 response: [{"id":8221,"cityId":"110000","city":"北京市","provinceId":"110000"},{"id":9831,"cityId":"130100","city":"石家庄市","provinceId":"130000"}]
 #返回支持外卖的城市列表，id主键， cityId城市id， provinceId省份直辖市id
 
+10, 获得所选城市的默认片区门店
+http://localhost:8080/hilaosong/rest/getareastore?cityId=110000
+
 11, 菜品分类
-http://localhost:8080/hilaosong/rest/getcategories?cityId=110000
+http://localhost:8080/hilaosong/rest/getcategories?storeId=020111    (也可传片区店Id: 0201)
 response: [{"dishTypeId":"003","dishTypeName":"荤菜","parentId":"0","isRequired":"0"},{"dishTypeId":"004","dishTypeName":"素菜","parentId":"0","isRequired":"0"}]
 #返回菜品分类列表， dishTypeId菜品分类id， dishTypeName菜品分类名， isRequired是否 为必选菜品分类
 
 12, 菜品分类 -> 菜品的分页信息
-http://localhost:8080/hilaosong/rest/cntdishes?catId=003
+http://localhost:8080/hilaosong/rest/cntdishes?storeId=020111&catId=003
 {"totalRowsCount":42, "totalPagesCount":5}
 
 13, 菜品分类 -> 菜品
-http://localhost:8080/hilaosong/rest/getdishes?catId=003
-http://localhost:8080/hilaosong/rest/getdishes?catId=003&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
-http://localhost:8080/hilaosong/rest/getdishes?catId=003&cityId=130100：显示石家庄的菜品信息，如果cityId字段不提供，那么就用默认北京市
+http://localhost:8080/hilaosong/rest/getdishes?storeId=020111&catId=003
+http://localhost:8080/hilaosong/rest/getdishes?storeId=020111&catId=003&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response： [{"dishId":"30043_020111","storeDishId":"30043","storeDishName":"牛领肉","unitPrice":"60.0000","bigImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_1.png","type":"1","halfStoreDishId":"30044","halfPrice":"30.0000"}]
 #返回菜品列表， dishId菜品主键（菜品id+店id）， storeDishId菜品id（同一个菜品在不同的店是一样的）， storeDishName菜品名，unitPrice菜品单价， bigImageAddr菜品大图（地址不能用）， type菜品/套餐（1普通菜品，2套餐）， halfStoreDishId半份菜品对应的菜品id（有半份的菜品才显示）， halfPrice半份菜品的价格（有半份才显示）
 
 14, 菜品分类 -> 套餐的分页信息
-http://localhost:8080/hilaosong/rest/cntpacks?catId=012
+http://localhost:8080/hilaosong/rest/cntpacks?storeId=020111&catId=012
 {"totalRowsCount":5, "totalPagesCount":1}
 
 15, 菜品分类 -> 套餐
-http://localhost:8080/hilaosong/rest/getpacks?catId=012
-http://localhost:8080/hilaosong/rest/getpacks?catId=012&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
+http://localhost:8080/hilaosong/rest/getpacks?storeId=020111&catId=012
+http://localhost:8080/hilaosong/rest/getpacks?storeId=020111&catId=012&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response: [{"dishId":"82193_0201","storeDishId":"82193","storeDishName":"微特享套餐B","unitPrice":"488.0000","type":"2"},{"dishId":"82192_0201","storeDishId":"82192","storeDishName":"微特享套餐A","unitPrice":"288.0000","type":"2"}]
 #返回套餐列表, dishId菜品/套餐主键， storeDishId菜品/套餐id，storeDishName菜品/套餐名， unitPrice价格， type菜品/套餐（1普通菜品，2套餐）
 
