@@ -15,6 +15,11 @@ public class PayChannel {
 
 	private String merchantKey;
 
+	public PayChannel(String channelNo, String channelName) {
+		this.channelNo = channelNo;
+		this.channelName = channelName;
+	}
+
 	public String getChannelNo() {
 		return channelNo;
 	}
