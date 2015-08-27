@@ -149,7 +149,11 @@ http://localhost:8080/hilaosong/rest/getstores2?cityId=110000
 http://localhost:8080/hilaosong/rest/calcdeliveryfee?storeId=020101&address=北京市朝阳区平房路12号
 返回{"deliveryFee":"10"}
 
-44, 下单
+44, 获取起送金额标准
+http://localhost:8080/hilaosong/rest/getdeliverylimitmoney?storeId=020101
+返回{"deliveryLimitMoney":"276"}
+
+50, 下单
 http://localhost:8080/hilaosong/rest/createorder
 test page： http://localhost:8082/hilaosong/views/test/createorder.jsp 
 #必须先登录
@@ -179,18 +183,18 @@ test page： http://localhost:8082/hilaosong/views/test/createorder.jsp
 			 			{"dishId":"41066_0201","dishNumber":"3"} ]
 			 }
 
-45, 历史订单的分页信息
+51, 历史订单的分页信息
 http://localhost:8080/hilaosong/rest/cnthistoryorders?userId=0200000045250449
 {"totalRowsCount":21797, "totalPagesCount":2422}
 
-46, 历史订单
+52, 历史订单
 http://localhost:8080/hilaosong/rest/gethistoryorders?userId=0200000045250449
 http://localhost:8080/hilaosong/rest/gethistoryorders?userId=0200000045250449&pageIndex=2分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
 response:  [{"serialId":"2013091805003","orderId":"WBJ162013091805003","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-19 18:00:00","status":"7","orderType":"1","deliveryType":"0","custMemo":"请王龙飞为我们服务。谢谢。","createdDt":"2013-09-18 21:22:37","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]},
 			{"serialId":"2013083103588","orderId":"WBJ162013083103588","customerId":"0100000053215312","storeId":"020116","storeName":"方庄店","contactName":"刘志江","contactPhone":"13167315255","participantNumber":7,"dinningTime":"2013-09-01 18:00:00","status":"2","orderType":"1","deliveryType":"0","custMemo":"找王龙飞服务 网订 L","createdDt":"2013-08-31 18:08:18","totalPrice":2273,"address":{},"expenses":{},"packs":[],"dishes":[]}]
 #返回历史订单列表, serialId流水号，orderId订单号，customerId用户号（就是userId），storeId门店号，status：订单状态（0-待审核1-待打印2-待配菜3-已派送4-待收锅5-已收锅6-已删除7-作废8-待下发9-下发失败），orderType：订单类型：（0表示外送,1表示订座,2表示外带），deliveryType外送种类（0-外送 1-自助 2-豪华 3-上门自取）
 
-47, 订单详情
+53, 订单详情
 http://localhost:8080/hilaosong/rest/getorderinfo?orderId=153376
 http://localhost:8080/hilaosong/rest/getorderinfo?orderId=ZBJ182012060900024
 response:  {"serialId":"2012060900024","orderId":"ZBJ182012060900024","customerId":"0100000051165276","storeId":"020119","storeName":"潮青汇海底捞","contactName":"系统升级测试","contactPhone":"186581011351","dinningTime":"2012-06-09 23:40:00","status":"7","potStatus":"0","orderType":"0","deliveryType":"0","createdDt":"2012-06-09 06:32:19",
@@ -208,13 +212,13 @@ response:  {"serialId":"2012060900024","orderId":"ZBJ182012060900024","customerI
 			}
 #返回订单详情, 支持多套餐，address地址信息，expenses金额信息，packs套餐列表{某个pack的dishes:套餐内的菜品列表}，dishes订单中的非套餐菜品列表
 
-48, 获得优惠劵详情，必须先登录
+60, 获得优惠劵详情，必须先登录
 http://localhost:8080/hilaosong/rest/getcouponinfo?couponId=***
 
-49, 使用优惠劵，必须先登录
+61, 使用优惠劵，必须先登录
 http://localhost:8080/hilaosong/rest/usecoupon?orderId=***&couponId=***
 
-50, 获取支付渠道
+70, 获取支付渠道
 http://localhost:8080/hilaosong/rest/user/getpaychannel?orderId=215603&test=1
 可省略orderId,默认用之前保存在session中的订单（即之前创建的订单）； test参数为测试用
 返回样例：
@@ -243,7 +247,7 @@ http://localhost:8080/hilaosong/rest/user/getpaychannel?orderId=215603&test=1
   respode:”1003”，respMsg:”查询异常！”}
 }
 
-51, 获取支付链接
+71, 获取支付链接
 http://localhost:8080/hilaosong/rest/user/getpayurl?channelNo=tenPay&orderId=215603&testPrice=1
 参数必填：channelNo， orderId可省略，默认为之前创建的订单， testPrice为测试用参数，默认1分钱
 返回样例：
