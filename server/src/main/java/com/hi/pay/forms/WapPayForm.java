@@ -2,11 +2,6 @@ package com.hi.pay.forms;
 
 import com.hi.tools.StringTools;
 
-/**
- * @author linjian
- * 
- *         2013-8-22
- */
 public class WapPayForm {
 
 	private String orderNo;
