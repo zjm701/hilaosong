@@ -25,7 +25,7 @@ public enum MessageCode {
 	/**
 	 * 用户系统异常
 	 */
-	ERROR_USER_SYSTEM("100", "\u7528\u6237\u7cfb\u7edf\u5f02\u5e38"),
+	ERROR_USER("100", "\u7528\u6237\u7cfb\u7edf\u5f02\u5e38"),
 
 	/**
 	 * 用户未登录或已过期

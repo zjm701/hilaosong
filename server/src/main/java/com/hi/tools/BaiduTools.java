@@ -9,7 +9,7 @@ import com.hi.common.SystemSetting;
 
 public class BaiduTools {
 	private static Logger logger = LogManager.getLogger(BaiduTools.class);
-	
+
 	/**
 	 * 
 	 * [简要描述]:获取两坐标之间的驾车距离
@@ -27,19 +27,14 @@ public class BaiduTools {
 		String response = "";
 		long distance = -1;
 
-		if (!StringTools.isEmpty(origin) && !StringTools.isEmpty(destination)
-				&& !StringTools.isEmpty(apiurl) && !StringTools.isEmpty(ak)) {
-			url = apiurl + "?mode=driving&origin=" + origin + "&destination="
-					+ destination + "&origin_region=" + cityName
-					+ "&destination_region=" + cityName + "&output=json&ak="
-					+ ak;
+		if (!StringTools.isEmpty(origin) && !StringTools.isEmpty(destination) && !StringTools.isEmpty(apiurl) && !StringTools.isEmpty(ak)) {
+			url = apiurl + "?mode=driving&origin=" + origin + "&destination=" + destination + "&origin_region=" + cityName
+					+ "&destination_region=" + cityName + "&output=json&ak=" + ak;
 			try {
-				response = HttpUtil.sendGet(url);
+				response = HttpTools.sendGet(url);
 				JSONObject object = JSONObject.fromObject(response);
 				if (object.getInt("status") == 0) {
-					distance = object.getJSONObject("result")
-							.getJSONArray("routes").getJSONObject(0)
-							.getLong("distance");
+					distance = object.getJSONObject("result").getJSONArray("routes").getJSONObject(0).getLong("distance");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -51,9 +46,10 @@ public class BaiduTools {
 
 	/**
 	 * 获取某个坐标点的地理位置描述
+	 * 
 	 * @param cuspoint
-	 * 					坐标位置，例 "116.420593,40.076381"
-	 * @return  北京市-昌平区-立汤路
+	 *            坐标位置，例 "116.420593,40.076381"
+	 * @return 北京市-昌平区-立汤路
 	 */
 	public static String getDescByLocation(String cuspoint) {
 		String response = "";
@@ -65,21 +61,13 @@ public class BaiduTools {
 			try {
 				apiurl += "?ak=" + ak + "&location=" + cuspoint + "&output=json";
 				System.out.println("==> " + apiurl);
-				response = HttpUtil.sendGet(apiurl);
+				response = HttpTools.sendGet(apiurl);
 				System.out.println("<== " + response);
 				JSONObject object = JSONObject.fromObject(response);
 				if (object.getInt("status") == 0) {
-					result = object.getJSONObject("result")
-							.getJSONObject("addressComponent")
-							.getString("province")
-							+ "-"
-							+ object.getJSONObject("result")
-									.getJSONObject("addressComponent")
-									.getString("district")
-							+ "-"
-							+ object.getJSONObject("result")
-									.getJSONObject("addressComponent")
-									.getString("street");
+					result = object.getJSONObject("result").getJSONObject("addressComponent").getString("province") + "-"
+							+ object.getJSONObject("result").getJSONObject("addressComponent").getString("district") + "-"
+							+ object.getJSONObject("result").getJSONObject("addressComponent").getString("street");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -90,12 +78,13 @@ public class BaiduTools {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 根据地理位置描述获取某个坐标点
-	 * @param 地理位置描述 
-	 * 					北京市 海淀区 学院南路
-	 * @return  坐标位置，"116.3555855618,39.963757558199"
+	 * 
+	 * @param 地理位置描述
+	 *            北京市 海淀区 学院南路
+	 * @return 坐标位置，"116.3555855618,39.963757558199"
 	 */
 	public static String getCusPointByAddress(String address) {
 		String response = "";
@@ -106,17 +95,12 @@ public class BaiduTools {
 			try {
 				apiurl += "?ak=" + ak + "&address=" + address + "&output=json";
 				System.out.println("==> " + apiurl);
-				response = HttpUtil.sendGet(apiurl);
+				response = HttpTools.sendGet(apiurl);
 				System.out.println("<== " + response);
 				JSONObject object = JSONObject.fromObject(response);
 				if (object.getInt("status") == 0) {
-					result = object.getJSONObject("result")
-							.getJSONObject("location")
-							.getString("lng")
-							+ ","
-							+ object.getJSONObject("result")
-									.getJSONObject("location")
-									.getString("lat");
+					result = object.getJSONObject("result").getJSONObject("location").getString("lng") + ","
+							+ object.getJSONObject("result").getJSONObject("location").getString("lat");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -77,7 +77,7 @@ public class UserAction extends BaseAction {
 
 				return respString;
 			} catch (Exception e) {
-				return getJsonString(MessageCode.ERROR_USER_SYSTEM);
+				return getJsonString(MessageCode.ERROR_USER);
 			}
 		}
 	}
@@ -117,7 +117,7 @@ public class UserAction extends BaseAction {
 				if (StringTools.isNotEmpty(respString)) {
 					return respString;
 				} else {
-					return getJsonString(MessageCode.ERROR_USER_SYSTEM);
+					return getJsonString(MessageCode.ERROR_USER);
 				}
 			}
 		}
@@ -140,7 +140,7 @@ public class UserAction extends BaseAction {
 				m.put("nickname", user.getNickname());
 				return getJsonString(m);
 			} else {
-				return getJsonString(MessageCode.ERROR_USER_SYSTEM);
+				return getJsonString(MessageCode.ERROR_USER);
 			}
 		} else {
 			return "[]";

@@ -4,8 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 import net.sf.json.JSONObject;
@@ -15,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.hi.common.SystemSetting;
 import com.hi.tools.CalendarTools;
-import com.hi.tools.HttpUtil;
+import com.hi.tools.HttpTools;
 import com.hi.tools.StringTools;
 
 public class CouponProvider {
@@ -86,19 +84,13 @@ public class CouponProvider {
 		System.out.println(params.toString());
 		String s = "";
 		try {
-			s = HttpUtil.sendPost(getURL(method), params);
+			s = HttpTools.sendPost(getURL(method), params);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 
 		if (s == null || "".equals(s)) {
-			JSONObject json = new JSONObject();
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("errorCode", "9999");
-			map.put("errorText", "系统异常");
-			json.put("status", map);
-			log.error(" 9999 从红包系统请求数据为空，网络异常或红包系统异常。");
-			return json;
+			return null;
 		}
 		return JSONObject.fromObject(s);
 	}

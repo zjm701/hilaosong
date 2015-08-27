@@ -6,6 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.hi.common.HIConstants;
@@ -28,7 +30,12 @@ public class CouponAction extends BaseAction {
 		if (StringUtils.isEmpty(customerKey)) {
 			return getJsonString(MessageCode.ERROR_NO_LOGGEDIN_USER);
 		} else {
-			return CouponProvider.list(customerKey).toString();
+			JSONObject r = CouponProvider.list(customerKey);
+			if (r == null) {
+				return getJsonString(MessageCode.ERROR_COUPON);
+			} else {
+				return r.toString();
+			}
 		}
 	}
 
@@ -48,7 +55,12 @@ public class CouponAction extends BaseAction {
 		} else if (StringUtils.isEmpty(couponId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_COUPONID);
 		} else {
-			return CouponProvider.get(customerKey, couponId).toString();
+			JSONObject r = CouponProvider.get(customerKey, couponId);
+			if (r == null) {
+				return getJsonString(MessageCode.ERROR_COUPON);
+			} else {
+				return r.toString();
+			}
 		}
 	}
 
@@ -70,7 +82,12 @@ public class CouponAction extends BaseAction {
 		} else if (StringUtils.isEmpty(couponId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_COUPONID);
 		} else {
-			return CouponProvider.use(customerKey, orderId, couponId).toString();
+			JSONObject r = CouponProvider.use(customerKey, orderId, couponId);
+			if (r == null) {
+				return getJsonString(MessageCode.ERROR_COUPON);
+			} else {
+				return r.toString();
+			}
 		}
 	}
 }
