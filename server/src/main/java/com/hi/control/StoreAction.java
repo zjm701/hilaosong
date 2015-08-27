@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.hi.common.HIConstants;
 import com.hi.common.MessageCode;
 import com.hi.common.OrderType;
+import com.hi.model.City;
 import com.hi.model.Store;
+import com.hi.service.CityService;
 import com.hi.service.StoreService;
 import com.hi.service.impl.CityServiceImpl;
 import com.hi.tools.BaiduTools;
@@ -29,8 +31,20 @@ import com.hi.tools.StringTools;
 public class StoreAction extends BaseAction {
 
 	@Autowired
+	private CityService cityService;
+
+	@Autowired
 	private StoreService storeService;
 
+	@GET
+	@Path("/getcities")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCities() {
+		List<City> cities = cityService.getDeliveryCities();
+		getSession().setAttribute(HIConstants.CITYID, cities.get(0).getCityId());
+		return getSuccessJsonResponse(cities);
+	}
+	
 	@GET
 	@Path("/getareastore")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -114,17 +128,33 @@ public class StoreAction extends BaseAction {
 	private int calculateDeliveryFee0(Store s) {
 		if (s != null) {
 			String cityId = CityTools.isDirectMunicipalities(s.getProvinceId()) ? s.getProvinceId() : s.getCityId();
-			double unitPrice = storeService.getDeliveryUnitPrice(cityId);
-			Double dis = s.getDistance().doubleValue() * 1d / 1000;
-			if (dis.compareTo(1d) < 0) {
-				dis = 1d;
+			double unitPrice = cityService.getDeliveryUnitPrice(cityId);
+			if (s.getDistance() != null) {
+				Double dis = s.getDistance().doubleValue() * 1d / 1000;
+				if (dis.compareTo(1d) < 0) {
+					dis = 1d;
+				}
+				Double totalPrice = unitPrice * dis;
+				// 总价四舍五入到整数位
+				return Integer.parseInt(new java.text.DecimalFormat("0").format(totalPrice));
 			}
-			Double totalPrice = unitPrice * dis;
-			// 总价四舍五入到整数位
-			return Integer.parseInt(new java.text.DecimalFormat("0").format(totalPrice));
-		} else {
-			return 0;
 		}
+		return 0;
+	}
+
+	@GET
+	@Path("/getdeliverylimitmoney")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getDeliveryLimitMoney(@FormParam("storeId") String storeId) {
+		Store s = storeService.getStore(storeId);
+		if (s != null) {
+			String cityId = CityTools.isDirectMunicipalities(s.getProvinceId()) ? s.getProvinceId() : s.getCityId();
+			String lm = cityService.getDeliveryLimitMoney(cityId);
+			if (StringTools.isNotEmpty(lm)) {
+				return "{\"deliveryLimitMoney\":\"" + lm + "\"}";
+			}
+		}
+		return getJsonString(MessageCode.ERROR_NO_DATA); // 未取到数据
 	}
 
 	@GET

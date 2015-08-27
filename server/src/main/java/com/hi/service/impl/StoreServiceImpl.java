@@ -65,15 +65,6 @@ public class StoreServiceImpl implements StoreService {
 		return sdao.getStore(storeId, cuspoint);
 	}
 
-	public double getDeliveryUnitPrice(String cityId) {
-		SysConfig cfg = cdao.getSysConfig(cityId, "6", "0");
-		if (cfg != null) {
-			return Double.parseDouble(StringTools.clobToString(cfg.getStartValue()));
-		} else {
-			return 0.0D;
-		}
-	}
-
 	/**
 	 * only for orderType = 1 （订座）
 	 * 

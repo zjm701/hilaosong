@@ -18,14 +18,6 @@ public interface StoreService {
 	Store getStore(String storeId);
 
 	Store getStore(String storeId, String cuspoint);
-
-	/**
-	 * 获得外送费单价
-	 * 
-	 * @param cityId
-	 * @return
-	 */
-	double getDeliveryUnitPrice(String cityId);
 	
 	boolean isClose(String storeId, Date date);
 
@@ -34,4 +26,5 @@ public interface StoreService {
 	String getShutdownNotice(String storeId);
 	
 	String getDinningTimeType(String date,String storeId);
+	
 }

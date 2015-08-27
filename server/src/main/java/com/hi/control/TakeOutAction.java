@@ -22,7 +22,7 @@ import com.hi.model.OrderDish;
 import com.hi.model.OrderPack;
 import com.hi.service.CityService;
 import com.hi.service.OrderService;
-import com.hi.tools.HttpUtil;
+import com.hi.tools.HttpTools;
 
 @Path("/")
 public class TakeOutAction extends BaseAction {
@@ -32,17 +32,6 @@ public class TakeOutAction extends BaseAction {
 
 	@Autowired
 	private OrderService orderService;
-
-	@GET
-	@Path("/getcities")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCities() {
-		List<City> cities = cityService.getDeliveryCities();
-		getSession().setAttribute(HIConstants.CITYID, cities.get(0).getCityId());
-		return getSuccessJsonResponse(cities);
-	}
-
-	
 
 	public boolean showNotice(String userId, boolean checkHisOrder) {
 		Boolean isNoticeReaded = (Boolean) getSession().getAttribute(
@@ -273,7 +262,7 @@ public class TakeOutAction extends BaseAction {
 		}
 		String json;
 		try {
-			json = HttpUtil.sendGet(SystemSetting.getSetting("queryPayChannelsUrl"));
+			json = HttpTools.sendGet(SystemSetting.getSetting("queryPayChannelsUrl"));
 		} catch (Exception e) {
 			return this.getFailedJsonResponse("can not get pay channels");
 		}
@@ -307,7 +296,7 @@ public class TakeOutAction extends BaseAction {
 		params.put("orderAmount", ""+price);
 		String json;
 		try {
-			json = HttpUtil.sendPost(payInitUrl, params);
+			json = HttpTools.sendPost(payInitUrl, params);
 		} catch (Exception e) {
 			return this.getFailedJsonResponse("can not get pay url");
 		}
