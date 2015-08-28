@@ -116,7 +116,6 @@ public class OrderAction extends BaseAction {
 			Gson gson = new Gson();
 			Order order = gson.fromJson(content, Order.class);
 
-			String message = "";
 			Date dinningTime = null;
 			if (StringUtils.isEmpty(order.getDinningTime())) {
 				return getJsonString(MessageCode.VERIFICATION_EMPTY_DINNINGTIME);
@@ -126,47 +125,42 @@ public class OrderAction extends BaseAction {
 					return getJsonString(MessageCode.VERIFICATION_PASSED_DINNINGTIME);
 				}
 			}
-			if (StringUtils.isEmpty(message)) {
-				if (StringUtils.isEmpty(order.getContactName())) {
-					return getJsonString(MessageCode.VERIFICATION_EMPTY_CONTACTNAME);
-				} else if (StringUtils.isEmpty(order.getContactPhone())) {
-					return getJsonString(MessageCode.VERIFICATION_EMPTY_CONTACTPHONE);
-				} else if (StringUtils.isEmpty(order.getStoreId())) {
-					return getJsonString(MessageCode.VERIFICATION_EMPTY_STORE);
-				} else if (order.getTotalDishesCount() == 0) {
-					return getJsonString(MessageCode.VERIFICATION_EMPTY_DISHES);
-				} else if (StringUtils.isEmpty(order.getOrderType())) {
-					return getJsonString(MessageCode.VERIFICATION_EMPTY_ORDERTYPE);
-				} else if (OrderType.SEND_OUT.getKey().equals(order.getOrderType()) && order.getAddress() != null
-						&& StringUtils.isEmpty(order.getAddress().getDetailAddress())) {
-					return getJsonString(MessageCode.VERIFICATION_EMPTY_ADDRESS);
-				} else if (StringUtils.isEmpty(order.getPayChannel())) {
-					return getJsonString(MessageCode.VERIFICATION_EMPTY_PAYCHANNEL);
-				}
+			if (StringUtils.isEmpty(order.getContactName())) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_CONTACTNAME);
+			} else if (StringUtils.isEmpty(order.getContactPhone())) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_CONTACTPHONE);
+			} else if (StringUtils.isEmpty(order.getStoreId())) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_STORE);
+			} else if (order.getTotalDishesCount() == 0) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_DISHES);
+			} else if (StringUtils.isEmpty(order.getOrderType())) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_ORDERTYPE);
+			} else if (OrderType.SEND_OUT.getKey().equals(order.getOrderType()) && order.getAddress() != null
+					&& StringUtils.isEmpty(order.getAddress().getDetailAddress())) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_ADDRESS);
+			} else if (StringUtils.isEmpty(order.getPayChannel())) {
+				return getJsonString(MessageCode.VERIFICATION_EMPTY_PAYCHANNEL);
 			}
 
-			if (StringUtils.isEmpty(message)) {
-				order.setCustomerId((String) getSession().getAttribute(HIConstants.LOGIN_ID));
-				order.setSex(((User) getSession().getAttribute(HIConstants.USER)).getSex() + "");
-				order.setDinningTimeType(storeService.getDinningTimeType(order.getDinningTime(), order.getStoreId()));
+			order.setCustomerId((String) getSession().getAttribute(HIConstants.LOGIN_ID));
+			order.setSex(((User) getSession().getAttribute(HIConstants.USER)).getSex() + "");
+			order.setDinningTimeType(storeService.getDinningTimeType(order.getDinningTime(), order.getStoreId()));
 
-				String orderId = orderService.createOrder(order);
-				if (orderId != null) {
-					getSession().setAttribute(HIConstants.ORDER_ID, orderId);
-					if (StringUtils.isNotEmpty(order.getRecieptDept())) {
-						recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptDept());
-					}
-
-					Map<String, Object> m = new HashMap<String, Object>();
-					m.put("orderId", orderId);
-					m.put("respCode", MessageCode.SUCCESS_CREATE_ORDER.getKey());
-					m.put("respMsg", MessageCode.SUCCESS_CREATE_ORDER.getDesc());
-					return getJsonString(m);
-				} else {
-					return getJsonString(MessageCode.ERROR_CREATE_ORDER);
+			String orderId = orderService.createOrder(order);
+			if (orderId != null) {
+				getSession().setAttribute(HIConstants.ORDER_ID, orderId);
+				if (StringUtils.isNotEmpty(order.getRecieptDept())) {
+					recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptDept());
 				}
+
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("orderId", orderId);
+				m.put("respCode", MessageCode.SUCCESS_CREATE_ORDER.getKey());
+				m.put("respMsg", MessageCode.SUCCESS_CREATE_ORDER.getDesc());
+				return getJsonString(m);
+			} else {
+				return getJsonString(MessageCode.ERROR_CREATE_ORDER);
 			}
-			return getJsonString(message);
 		}
 	}
 }

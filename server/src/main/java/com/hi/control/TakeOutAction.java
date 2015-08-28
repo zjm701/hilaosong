@@ -9,26 +9,18 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hi.common.HIConstants;
-import com.hi.common.SystemSetting;
-import com.hi.model.City;
 import com.hi.model.Order;
 import com.hi.model.OrderDish;
 import com.hi.model.OrderPack;
-import com.hi.service.CityService;
 import com.hi.service.OrderService;
-import com.hi.tools.HttpTools;
 
 @Path("/")
 public class TakeOutAction extends BaseAction {
-
-	@Autowired
-	private CityService cityService;
 
 	@Autowired
 	private OrderService orderService;
@@ -247,61 +239,4 @@ public class TakeOutAction extends BaseAction {
 		return this.getSuccessJsonResponse(dummy);
 
 	}
-	
-	@GET
-	@Path("/user/getpaychannel")
-	@Produces("application/json")
-	public Response getPayChannel(@FormParam("orderId") String orderId, @FormParam("test") String test) {
-		if(orderId == null){
-			orderId = (String) getSession()
-					.getAttribute(HIConstants.ORDER_ID);
-		}
-		String payType = this.orderService.getOrderInfo(orderId).getPayChannel();
-		if(!"1".equals(test)&&!"0".equals(payType)){
-			return this.getFailedJsonResponse("\u8D27\u5230\u4ED8\u6B3E\u8BA2\u5355 not need to pay from internet");
-		}
-		String json;
-		try {
-			json = HttpTools.sendGet(SystemSetting.getSetting("queryPayChannelsUrl"));
-		} catch (Exception e) {
-			return this.getFailedJsonResponse("can not get pay channels");
-		}
-		return this.getSuccessJsonResponse(json);
-
-	}
-	
-	@GET
-	@Path("/user/getpayurl")
-	@Produces("application/json")
-	public Response getpayurl(@FormParam("orderId") String orderId, @FormParam("channelNo") String channelNo, @FormParam("testPrice") String testPrice) {
-		if(orderId == null){
-			orderId = (String) getSession()
-					.getAttribute(HIConstants.ORDER_ID);
-		}
-		if(channelNo == null){
-			return this.getFailedJsonResponse("channelNo can not be null");
-		}
-		Order order = this.orderService.getOrderInfo(orderId);
-		double price;
-		if(testPrice!=null){
-			price = 0.01;
-		}else{
-			price = order.getExpenses().getTotalPrice().doubleValue();
-		}
-		
-		String payInitUrl = SystemSetting.getSetting("webPayInitUrl");
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("orderNo", orderId);
-		params.put("channelNo", channelNo);
-		params.put("orderAmount", ""+price);
-		String json;
-		try {
-			json = HttpTools.sendPost(payInitUrl, params);
-		} catch (Exception e) {
-			return this.getFailedJsonResponse("can not get pay url");
-		}
-
-		return this.getSuccessResponse(json);
-	}
-
 }

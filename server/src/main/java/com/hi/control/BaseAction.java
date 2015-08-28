@@ -23,21 +23,15 @@ public abstract class BaseAction {
 		return b.build();
 	}
 
+	protected Response getSuccessJsonResponse(MessageCode error) {
+		return getSuccessJsonResponse(new com.hi.json.Response(error.getKey(), error.getDesc()));
+	}
+
 	protected Response getFailedJsonResponse(Object obj) {
 		Response.ResponseBuilder b = Response.status(Status.BAD_REQUEST);
 		GsonBuilder gb = new GsonBuilder();
 		b.entity(gb.create().toJson(obj));
 		return b.build();
-	}
-
-	protected Response getSuccessResponse(Object obj) {
-		Response.ResponseBuilder b = Response.status(Status.OK);
-		b.entity(obj);
-		return b.build();
-	}
-
-	protected String getJsonString(String msg) {
-		return "{\"respMsg\":\"" + msg + "\"}";
 	}
 
 	protected String getJsonString(MessageCode error) {
