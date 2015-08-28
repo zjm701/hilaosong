@@ -1,4 +1,5 @@
 <script>
+var carttotal = 0;
 
 $(document).ready(function(e) {
 
@@ -43,6 +44,8 @@ $(document).ready(function(e) {
 	getcartpackinfo();
 
 	getcartdiyguodiinfo();
+	getcartfee();
+	//alert(carttotal);
 
 	//cartdiyguodi = getcartdiyguodiinfo();
 
@@ -56,16 +59,48 @@ $(document).ready(function(e) {
 
 function logout(){
 
-	//$.cookie("cartdish",null);
+	$.cookie("cartdish",null);
 
+	$.cookie("cartpack",null);
+	$.cookie("cartdiyguodi",null);
+	//$.cookie("cartpack",null);
 	//$.cookie("cartpack",null);
 
 	$.cookie("userid",null);
 
 	$.cookie("username",null);
 
-	window.location= './';
+	//window.location= './';
+	goLocationWithCity('index.html');
 
+}
+
+function checkcarttotl(){
+	if(carttotal == 0){
+		carttotal = $('#carttotle').text();
+		carttotal = (Math.round(carttotal*100)/100);
+	}
+	
+	var putconfig = 258;
+	
+	$.ajax({
+		url: apiurl+'getdeliverylimitmoney?storeId='+storeid+'',
+		type: 'GET',
+		dataType: 'JSON',//here
+		success: function (data) {
+				//alert(JSON.stringify(data));
+			if(typeof(data.deliveryLimitMoney)=='undefined'){
+			} else {
+				putconfig = data.deliveryLimitMoney;
+				if(carttotal < putconfig){
+					alert('点餐费未达到'+putconfig+'元的起送标准！');
+					return false;
+				}
+				
+			}
+		}
+	});
+	
 }
 
 </script>
@@ -164,11 +199,11 @@ function logout(){
 
 <span class="sp_hx"></span>
 
-<div class="cart" style="display:none;"><div class="left">合计</div><div id="carttotle" class="right">0</div></div>
+<div class="cart" ><div class="left">合计</div><div id="carttotle" class="right">0</div></div>
 
 <div class="blank5"></div>
 
-<a href="orderform1.html"><span class=" btn btn-danger block"  >进入结算 <i class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></i></span></a>
+<a href="orderform1.html" onClick="return checkcarttotl();"><span class=" btn btn-danger block"  >进入结算 <i class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></i></span></a>
 
 <div class="clear"></div>
 

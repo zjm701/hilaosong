@@ -22,13 +22,65 @@ var orderid;
 var packid;
 var packname;
 var packprice;
+var carttotal = 0;
 
 //alert(cityname);
 
 $(document).ready(function(e) {
-    //页面加载
+	 $.ajaxSetup ({
+	   cache: false 
+	 });
+	//页面加载
+	if(nowpage != 'index' && nowpage != 'dish' && nowpage != 'pack'){
+		//getcurrentuser();
+		//getuser();
+	}
+	if(nowpage == 'index'){
+		//getcurrentuser();
+		var logintmp = GetQueryString('loginId');
+		//alert(logintmp);
+		$.ajax({
+			url: apiurl+'getuserinfo?loginId='+logintmp,
+			type: 'GET',
+			dataType: 'JSON',//here
+			success: function (data) {
+				
+		        //alert(JSON.stringify(data));
+				
+				if(typeof(data.loginId)=='undefined'){
+					$.cookie("userid", data.user.user_entity_id, { expires: 30 }); 
+	                $.cookie("username", data.user.nickname, { expires: 30 }); 
+					$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
+				} else {
+					//未登录或者未返回
+				}
+			}
+		});
+	}
 	$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
 });
+
+function getcurrentuser(){
+	$.ajax({
+        url: apiurl+'getcurrentuser',
+        type: 'GET',
+        dataType: 'JSON',//here
+        success: function (data) {
+			if(typeof(data.error)=='undefined'){
+				//var _html = '';
+				if(typeof(msg.loginID) != 'undefined'){
+				$.cookie("userid", msg.loginID, { expires: 30 }); 
+				$.cookie("username", msg.nickname, { expires: 30 });
+				
+			} else {
+				//$('#userinfo').html('登录失败！');
+				noticeinfo('请您登录！');
+			}
+			
+			}
+        }
+    });
+}
 
 Array.prototype.remove=function(dx) 
 { 
@@ -247,7 +299,8 @@ function getpacks(n,m,l,p){
 	//alert(n);
 	if(nowpage != 'pack'){
 		$.cookie("catid", n, { expires: 30 }); 
-		window.location = 'pack.html';
+		//window.location = 'pack.html';
+		goLocationWithCity('pack.html');
 		return;
 	}
 	
@@ -313,7 +366,8 @@ function getdishes(n,m,l,p){
 	//alert(n);
 	if(nowpage != 'dish'){
 		$.cookie("catid", n, { expires: 30 }); 
-		window.location = 'dish.html';
+		//window.location = 'dish.html';
+		goLocationWithCity('dish.html');
 		return;
 	}
 	
@@ -390,8 +444,8 @@ function getcartdishinfo(){
 			//alert(obj);
 			_html +='<div id="'+obj.id+'" class="cartli">';
 			_html +='<div class="carttitle">'+obj.name+'</div>';
-			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+obj.id+'\')" /></div></div>';
-			_html +='<span class=" btn btn-danger" onclick="delcart(\''+obj.id+'\');">删除</span>';
+			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+obj.id+'\')" /> ';
+			_html +='<span onclick="delcart(\''+obj.id+'\');">X</span></div></div>';
 			_html +='</div>';
 			}
 		});
@@ -427,11 +481,12 @@ function addcarthalf(n){
 		_html ='';
 		_html +='<div id="'+id+'" class="cartli">';
 		_html +='<div class="carttitle">'+name+'</div>';
-		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+id+'\')" /> '+cartdish[id]['num']+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+id+'\')" /></div></div>';
-		_html +='<span class=" btn btn-danger" onclick="delcart(\''+id+'\');">删除</span>';
+		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+id+'\')" /> '+cartdish[id]['num']+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+id+'\')" /> ';
+		_html +='<span onclick="delcart(\''+id+'\');">X</span></div></div>';
 		_html +='</div>';
 		$('#cartbox').append(_html);
 	}
+	getcartfee();
 }
 function delcart(n){
 	var cartdish = {};
@@ -442,6 +497,7 @@ function delcart(n){
 	}
 	$('#'+n+'').remove();
 	$.cookie("cartdish",JSON.stringify(cartdish), { expires: 30 });
+	getcartfee();
 }
 function cartdishd(n){
 	getuser();
@@ -464,8 +520,8 @@ function cartdishd(n){
 				_html ='';
 				_html +='<div id="'+id+'" class="cartli">';
 				_html +='<div class="carttitle">'+name+'</div>';
-				_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+id+'\')" /> '+cartdish[id]['num']+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+id+'\')" /></div></div>';
-				_html +='<span class=" btn btn-danger" onclick="delcart(\''+id+'\');">删除</span>';
+				_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+id+'\')" /> '+cartdish[id]['num']+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+id+'\')" /> ';
+				_html +='<span  onclick="delcart(\''+id+'\');">X</span></div></div>';
 				_html +='</div>';
 				$('#cartbox').append(_html);
 				
@@ -476,6 +532,7 @@ function cartdishd(n){
 		}
 		$.cookie("cartdish",JSON.stringify(cartdish), { expires: 30 })
 	}
+	getcartfee();
 }
 
 function cartdishd1(n){
@@ -499,6 +556,7 @@ function cartdishd1(n){
 			}
 		}
 	}
+	getcartfee();
 }
 function cartdishp1(n){
 	getuser();
@@ -522,6 +580,7 @@ function cartdishp1(n){
 			}
 		}
 	}
+	getcartfee();
 }
 
 function cartdishp(n){
@@ -551,11 +610,12 @@ function cartdishp(n){
 		_html ='';
 		_html +='<div id="'+id+'" class="cartli">';
 		_html +='<div class="carttitle">'+name+'</div>';
-		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+id+'\')" /> '+cartdish[id]['num']+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+id+'\')" /></div></div>';
-		_html +='<span class=" btn btn-danger" onclick="delcart(\''+id+'\');">删除</span>';
+		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+id+'\')" /> '+cartdish[id]['num']+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+id+'\')" /> ';
+		_html +='<span  onclick="delcart(\''+id+'\');">X</span></div></div>';
 		_html +='</div>';
 		$('#cartbox').append(_html)
 	}
+	getcartfee();
 }
 function cartpack(n,m,l){
 	if(nowpage != 'packinfo'){
@@ -563,7 +623,8 @@ function cartpack(n,m,l){
 		$.cookie("packname", m, { expires: 30 }); 
 		$.cookie("packprice", l, { expires: 30 }); 
 		//alert(l);
-		window.location = 'packinfo.html';
+		//window.location = 'packinfo.html';		
+		goLocationWithCity('packinfo.html');
 	}
 }
 
@@ -589,6 +650,7 @@ function cartpackd1(n){
 			}
 		}
 	}
+	getcartfee();
 }
 function cartpackp1(n){
 	getuser();
@@ -614,6 +676,7 @@ function cartpackp1(n){
 			}
 		}
 	}
+	getcartfee();
 }
 
 function getcartpackinfo(){
@@ -630,8 +693,8 @@ function getcartpackinfo(){
 			//alert(obj);
 			_html +='<div id="'+obj.id+'" class="cartli">';
 			_html +='<div class="carttitle">'+obj.name+'</div>';
-			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+obj.id+'\')" /></div></div>';
-			_html +='<span class=" btn btn-danger" onclick="delcartpack(\''+obj.id+'\');">删除</span>';
+			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+obj.id+'\')" />';
+			_html +='<span  onclick="delcartpack(\''+obj.id+'\');">X</span></div></div>';
 			_html +='</div>';
 			}
 		});
@@ -649,6 +712,7 @@ function delcartpack(n){
 	}
 	$('#'+n+'').remove();
 	$.cookie("cartpack",JSON.stringify(cartpack), { expires: 30 });
+	getcartfee();
 }
 function cartdiyguodi(n){
 	getuser();
@@ -677,12 +741,13 @@ function cartdiyguodi(n){
 		_html ='';
 		_html +='<div id="'+id+'" class="cartli">';
 		_html +='<div class="carttitle">'+name+'</div>';
-		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num">×'+cartdiyguodi[id]['num']+'</div></div>';
-		_html +='<span class=" btn btn-danger" onclick="delcart(\''+id+'\');">删除</span>';
+		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num">×'+cartdiyguodi[id]['num']+' ';
+		_html +='<span  onclick="delcart(\''+id+'\');">X</span></div></div>';
 		_html +='</div>';
 		noticeinfo('您选择了'+name+''+cartdiyguodi[id]['num']+'份！');
 		$('#cartdiyguodibox').append(_html);
 	}
+	getcartfee();
 }
 function getcartdiyguodiinfo(){
 	var cartdiyguodi = {};
@@ -698,8 +763,8 @@ function getcartdiyguodiinfo(){
 			//alert(obj);
 			_html +='<div id="'+obj.id+'" class="cartli">';
 			_html +='<div class="carttitle">'+obj.name+'</div>';
-			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num">×'+obj.num+'</div></div>';
-			_html +='<span class=" btn btn-danger" onclick="delcartdiyguodi(\''+obj.id+'\');">删除</span>';
+			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num">×'+obj.num+' ';
+			_html +='<span  onclick="delcartdiyguodi(\''+obj.id+'\');">X</span></div></div>';
 			_html +='</div>';
 			}
 		});
@@ -717,14 +782,24 @@ function delcartdiyguodi(n){
 	}
 	$('#'+n+'').remove();
 	$.cookie("cartdiyguodi",JSON.stringify(cartdiyguodi), { expires: 30 });
+	getcartfee();
 }
 function getuser(){
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 		
-		noticeinfo('请您先登陆！');
-		var tmp1 = setTimeout(function () { window.location = './';} ,1000);
-		//return false;
+		alert('请您先登陆！');
+		goLocationWithCity('index.html');
+		//var tmp1 = setTimeout(function () { /*window.location = './';*/goLocationWithCity('index.html');} ,1000);
+		return false;
+	}
+	var tmp1 = $.cookie("storeid1");
+	if(typeof(tmp1) == 'undefined' || tmp1 == 'null' || tmp1 == null || tmp1 == ''){
+		
+		//noticeinfo('请您先登陆！');
+		goLocationWithCity('userform.html');
+		//var tmp1 = setTimeout(function () { /*window.location = './userform.html';*/goLocationWithCity('userform.html');} ,1000);
+		return false;
 	}
 	//return true;
 }
@@ -733,8 +808,9 @@ function getuserform(){
 	if(typeof(tmp) == 'undefined' || tmp == 'null' || tmp == null || tmp == ''){
 		
 		//noticeinfo('请您先登陆！');
-		var tmp1 = setTimeout(function () { window.location = './userform.html';} ,1000);
-		//return false;
+		goLocationWithCity('userform.html');
+		//var tmp1 = setTimeout(function () { /*window.location = './userform.html';*/goLocationWithCity('userform.html');} ,1000);
+		return false;
 	}
 	//return true;
 }
@@ -792,7 +868,8 @@ function gethistoryorders(n,m,l){
 function getorderinfo(n,m){
 	if(nowpage != 'orderinfo'){
 		$.cookie("orderid", n, { expires: 30 }); 
-		window.location = 'orderinfo.html';
+		//window.location = 'orderinfo.html';
+		goLocationWithCity('orderinfo.html');
 	}
 	$.ajax({
         url: apiurl+'getorderinfo?orderId='+n+'',
@@ -905,6 +982,71 @@ function right_ceng()
 {
 document.getElementById("id_right_01").style.display="none";
 
+}
+
+function getcartfee(){
+	var cartdish = {};
+	var cartpack = {};
+	var cartdiyguodi = {};
+	var dishtotal = 0;
+
+	cartdish = getcartdishinfo();
+
+	cartpack = getcartpackinfo();
+
+	cartdiyguodi = getcartdiyguodiinfo();
+	
+	
+	$.each(cartdish,function(index,obj){
+
+			if(typeof(obj) == 'undefined' ||  obj == null){
+
+			} else {
+
+			//alert(obj);
+
+			dishtotal += obj.price * obj.num;
+
+			_html +='<dl><dt>'+obj.name+'</dt><dd><span class="f_c6000a p_r_50">x'+obj.num+'</span><span class="f_c6000a">'+obj.price+'元</span></dd></dl>';
+
+			}
+
+		});
+
+		$.each(cartpack,function(index,obj){
+
+			if(typeof(obj) == 'undefined' ||  obj == null){
+
+			} else {
+
+			//alert(obj);
+
+			dishtotal += obj.price * obj.num;
+
+			_html +='<dl><dt>'+obj.name+'</dt><dd><span class="f_c6000a p_r_50">x'+obj.num+'</span><span class="f_c6000a">'+obj.price+'元</span></dd></dl>';
+
+			}
+
+		});
+
+		$.each(cartdiyguodi,function(index,obj){
+
+			if(typeof(obj) == 'undefined' ||  obj == null){
+
+			} else {
+
+			//alert(obj);
+
+			dishtotal += obj.price * obj.num;
+
+			_html +='<dl><dt>'+obj.name+'</dt><dd><span class="f_c6000a p_r_50">x'+obj.num+'</span><span class="f_c6000a">'+obj.price+'元</span></dd></dl>';
+
+			}
+
+		});
+		//alert(dishtotal);
+		carttotal = dishtotal;
+		$('#carttotle').text(dishtotal);
 }
 
 function getToStr(n){
@@ -1216,15 +1358,30 @@ function hideLoader()
     $.mobile.loading('hide');  
 }  
 
+function goLocationWithCity(n){
+	window.location = n;
+}
 
 
-
+function addScript(url){
+	 var oHead = document.getElementsByTagName('HEAD').item(0); 
+	    var oScript= document.createElement("script"); 
+	    oScript.type = "text/javascript"; 
+	    oScript.src=url; 
+	    oHead.appendChild( oScript); 
+}
 
 window.onload=function(){
 
           // document.documentElement.style.webkitTouchCallout = "none"; //禁止弹出菜单
 
     //document.documentElement.style.webkitUserSelect = "none";//禁止选中
+
+	/*addScript("js/common/Common.js");
+	addScript("js/common/base64.js");
+	addScript("js/common/header_iframe.js");
+	addScript("js/common/header_sns.js");
+	addScript("js/common/o_code.js");*/
 
 };
 

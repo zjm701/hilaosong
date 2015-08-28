@@ -297,6 +297,7 @@ color: #989898;
 #xiaoliao dl dd{ float:left; font-size:14px; color:#989898;}
 #xiaoliao dl dt{ float:right; color:#c6000a; font-size:14px;}
 
+.right.num span{ display:inline; font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif; cursor: pointer;}
 
 #pager ul.pages { 
 display:block; 

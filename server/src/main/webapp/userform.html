@@ -87,7 +87,7 @@ function getfee(){
 		//waiterFee = (Math.round(waiterFee*100)/100);
 
 		deliveryFee = (Math.round(deliveryFee*100)/100);
-		$('#deliveryFee').val(totalPrice);
+		$('#deliveryFee').val(deliveryFee);
 
 		//dishtotal = (Math.round(dishtotal*100)/100);
 
@@ -441,7 +441,22 @@ $(document).ready(function(e) {
 
 		var payChannel = $("input[name='payChannel']").val();
 
-		
+		if($("input[name='contactName']").val() == ''){
+			alert('请填写联系人');
+			return false;
+		}
+		if($("input[name='contactPhone']").val() == ''){
+			alert('请填写手机');
+			return false;
+		}
+		if($("input[name='orderType']:checked").val() == '0' && $("input[name='detailAddress']").val() == ''){
+			alert('请填写地址');
+			return false;
+		}
+		if($("input[name='participantNumber']").val() == ''){
+			alert('请填写用餐人数');
+			return false;
+		}
 
 		
 
@@ -474,13 +489,14 @@ $(document).ready(function(e) {
 			tmp = $.trim($("input[name='storeId']").val());
 			tmp1 = JSON.stringify(content);
 			
-			//alert(tmp1);
-			$.cookie("storeId1", tmp, { expires: 30 }); 
+			//alert(tmp);
+			$.cookie("storeid1", tmp, { expires: 30 }); 
 			$.cookie("userformjson", tmp1, { expires: 30 }); 
 			
 			//alert(tmp1);
 			
-			window.location='./index.html';
+			//window.location='./index.html';
+			goLocationWithCity('index.html');
 
 		
 
@@ -620,13 +636,13 @@ f
 
 <dl><dt>手机</dt><dd><div class="d_input"><input type="text" name="contactPhone" value="" /></div></dd></dl>
 
-<dl><dt>用餐人数</dt><dd><div class="d_input"><input type="text" name="participantNumber" value="0" /></div></dd></dl>
+<dl><dt>用餐人数</dt><dd><div class="d_input"><input type="text" name="participantNumber" value="1" /></div></dd></dl>
 
 <dl><dt>类型</dt><dd><div class="d_leixing">
 
-<span onclick="ordertype0();"><input type="radio" name="orderType" value="0" checked="checked" />普通外卖</span>
+<span><input type="radio" name="orderType" value="0" checked="checked" onclick="ordertype0();" />普通外卖</span>
 
-<span onclick="ordertype2();"><input type="radio" name="orderType" value="2" />上门自取</span>
+<span><input type="radio" name="orderType" value="2" onclick="ordertype2();" />上门自取</span>
 
 </div></dd></dl>
 

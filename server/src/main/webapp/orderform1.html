@@ -94,9 +94,9 @@ function getfee(){
 
 		var totalPrice = waiterFee +  deliveryFee + dishtotal;
 
-		$('#waiterFee').val(totalPrice);
-		$('#deliveryFee').val(totalPrice);
-		$('#dishPrice').val(totalPrice);
+		$('#waiterFee').val(waiterFee);
+		$('#deliveryFee').val(deliveryFee);
+		$('#dishPrice').val(dishtotal);
 		$('#totalPrice').val(totalPrice);
 
 }
@@ -502,8 +502,16 @@ $(document).ready(function(e) {
 		
 
 		var payChannel = $("input[name='payChannel']").val();
+		//alert($("input[name='reciept']:checked").val());
 
-		
+		if($("input[name='reciept']:checked").val() == '1' && $("input[name='recieptDept']").val() == ''){
+			alert('请填写发票抬头');
+			return false;
+		}
+		if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0){
+			alert('请选择炉具数量');
+			return false;
+		}
 
 		var dishesjson = [];
 
@@ -606,7 +614,7 @@ $(document).ready(function(e) {
 		var reciept = $.trim($("input[name='reciept']").val());
 		var recieptDept = $.trim($("input[name='recieptDept']").val());
 		if(reciept == 1 && recieptDept == ''){
-			alert('请填写发票抬头');
+			//alert('请填写发票抬头');
 		}
 
 		var content = {
@@ -680,7 +688,8 @@ $(document).ready(function(e) {
 				//alert("login response:"+JSON.stringify(msg));
 
 				alert(msg.respMsg);
-				window.location='./index.html';
+				//window.location='./index.html';
+				goLocationWithCity('index.html');
 
 			}
 
@@ -822,13 +831,13 @@ f
 
 <dl><dt>手机</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="contactPhone" style=" border:0;" value="" /></div></dd></dl>
 
-<dl><dt>用餐人数</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="participantNumber" style=" border:0;" value="0" /></div></dd></dl>
+<dl><dt>用餐人数</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="participantNumber" style=" border:0;" value="1" /></div></dd></dl>
 
 <dl><dt>类型</dt><dd><div class="d_leixing">
 
-<span onclick="ordertype0();"><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="0" checked="checked" />普通外卖</span>
+<span ><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="0" checked="checked" />普通外卖</span>
 
-<span onclick="ordertype2();"><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="2" />上门自取</span>
+<span ><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="2" />上门自取</span>
 
 </div></dd></dl>
 
@@ -918,8 +927,6 @@ f
 
 
 
-
-
 <dl><dt>备注(选填)</dt><dd><div class="d_input"><input type="text" name="custMemo" value="" /></div></dd></dl>
 
 
@@ -945,6 +952,8 @@ f
 
 
 
+
+<div class="clear" style=" height:1px;"></div>
 
 
 
@@ -972,9 +981,11 @@ f
 
 <dl><dt>支付方式</dt><dd><div class="d_leixing">
 
-<span><input type="radio" name="payChannel" value="0" /></span><span class="p_r_10">网付</span>
+<span><input type="radio" name="payChannel" value="2" checked="checked" /></span><span>餐到付款（现金）</span>
 
-<span><input type="radio" name="payChannel" value="1" checked="checked" /></span><span>到付</span>
+<span><input type="radio" name="payChannel" value="3"  /></span><span>餐到付款（POS）</span>
+
+<span><input type="radio" name="payChannel" value="0" /></span><span class="p_r_10">在线支付</span>
 
 </div></dd></dl>
 
