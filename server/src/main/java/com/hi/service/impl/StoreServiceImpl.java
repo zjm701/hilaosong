@@ -1,10 +1,8 @@
 package com.hi.service.impl;
 
-import java.sql.Clob;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -126,13 +124,13 @@ public class StoreServiceImpl implements StoreService {
 		if (sysList != null) {
 			for (SysConfig sysConfig : sysList) {
 				if ("0".equals(sysConfig.getParamSrc())) {
-					morningTime = getStartTimeValue(sysConfig.getStartValue());
+					morningTime = CalendarTools.getStartValueFromSysConfig(sysConfig);
 					morningTime = morningTime == null ? "10" : morningTime;
 				} else if ("1".equals(sysConfig.getParamSrc())) {
-					middleTime = getStartTimeValue(sysConfig.getStartValue());
+					middleTime = CalendarTools.getStartValueFromSysConfig(sysConfig);
 					middleTime = middleTime == null ? "17" : middleTime;
 				} else if ("2".equals(sysConfig.getParamSrc())) {
-					nightTime = getStartTimeValue(sysConfig.getStartValue());
+					nightTime = CalendarTools.getStartValueFromSysConfig(sysConfig);
 					nightTime = nightTime == null ? "22" : nightTime;
 				}
 			}
@@ -152,17 +150,5 @@ public class StoreServiceImpl implements StoreService {
 			result = "3"; // 夜市
 		}
 		return result;
-	}
-
-	private String getStartTimeValue(Clob inputValue) {
-		String input = StringTools.clobToString(inputValue);
-		if (StringUtils.isNotEmpty(input)) {
-			if (input.indexOf(":") > 0) {
-				return input.split(":")[0];
-			} else {
-				return input;
-			}
-		}
-		return null;
 	}
 }

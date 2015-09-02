@@ -55,4 +55,19 @@ public class SysConfigDaoImpl extends AbstractDao implements SysConfigDao {
 		params.put("paramCode", paramCode);
 		return this.getBeansBySql(SysConfig.class, sql, params);
 	}
+	
+	@Override
+	public List<SysConfig> getSysConfigs(String paramType, String paramCode, String paramSrc){
+		String sql = "select s.typeCode as \"typeCode\", s.paramType as \"paramType\", s.paramCode as \"paramCode\", "
+				+ " s.paramName as \"paramName\", s.paramSrc as \"paramSrc\", "
+				+ " s.startValue as \"startValue\", s.endValue as \"endValue\" "
+				+ " from T_CATER_SYSCONFIG s "
+				+ " where s.paramType = :paramType and s.paramCode = :paramCode and paramSrc = :paramSrc and s.status = '1' "
+				+ " order by s.id";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("paramType", paramType);
+		params.put("paramCode", paramCode);
+		params.put("paramSrc", paramSrc);
+		return this.getBeansBySql(SysConfig.class, sql, params);
+	}
 }

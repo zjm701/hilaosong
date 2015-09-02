@@ -44,7 +44,7 @@ public class StoreAction extends BaseAction {
 		getSession().setAttribute(HIConstants.CITYID, cities.get(0).getCityId());
 		return getSuccessJsonResponse(cities);
 	}
-	
+
 	@GET
 	@Path("/getareastore")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -145,16 +145,31 @@ public class StoreAction extends BaseAction {
 	@GET
 	@Path("/getdeliverylimitmoney")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getDeliveryLimitMoney(@FormParam("storeId") String storeId) {
+	public String getMinAmount(@FormParam("storeId") String storeId) {
 		Store s = storeService.getStore(storeId);
 		if (s != null) {
 			String cityId = CityTools.isDirectMunicipalities(s.getProvinceId()) ? s.getProvinceId() : s.getCityId();
-			String lm = cityService.getDeliveryLimitMoney(cityId);
+			String lm = cityService.getMinAmount(cityId);
 			if (StringTools.isNotEmpty(lm)) {
 				return "{\"deliveryLimitMoney\":\"" + lm + "\"}";
 			}
 		}
 		return getJsonString(MessageCode.ERROR_NO_DATA); // 未取到数据
+	}
+
+	@GET
+	@Path("/getdeliverylimit")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDeliveryLimit(@FormParam("storeId") String storeId, @FormParam("orderType") String orderType) {
+		Store s = storeService.getStore(storeId);
+		if (s != null) {
+			String cityId = CityTools.isDirectMunicipalities(s.getProvinceId()) ? s.getProvinceId() : s.getCityId();
+			if (StringTools.isEmpty(orderType)) {
+				orderType = OrderType.SEND_OUT.getKey();
+			}
+			return getSuccessJsonResponse(cityService.getDeliveryLimit(storeId, cityId, orderType));
+		}
+		return getSuccessJsonResponse(MessageCode.ERROR_NO_DATA); // 未取到数据
 	}
 
 	@GET

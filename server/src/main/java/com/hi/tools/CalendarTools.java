@@ -5,10 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+
+import com.hi.model.SysConfig;
+
 public class CalendarTools {
 	/* 日历 */
 
-	public static final String SOTRETIME = "HH:mm";
+	public static final String TIME = "HH:mm:ss";
 
 	public static final String BIRTHDAY = "yyyy-MM-dd";
 
@@ -56,6 +61,10 @@ public class CalendarTools {
 	 */
 	public synchronized static Date now() {
 		return getTime(current());
+	}
+
+	public static Date addMinutes(Date date, int amount) {
+		return DateUtils.addMinutes(date, amount);
 	}
 
 	/**
@@ -130,5 +139,19 @@ public class CalendarTools {
 	 */
 	public static String nowString(String pattern) {
 		return date2TimeStr(now(), pattern);
+	}
+
+	public static String getStartValueFromSysConfig(SysConfig cfg) {
+		if (cfg != null) {
+			String input = StringTools.clobToString(cfg.getStartValue());
+			if (StringUtils.isNotEmpty(input)) {
+				if (input.indexOf(":") > 0) {
+					return input.split(":")[0];
+				} else {
+					return input;
+				}
+			}
+		}
+		return null;
 	}
 }
