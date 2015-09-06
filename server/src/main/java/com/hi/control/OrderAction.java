@@ -64,7 +64,7 @@ public class OrderAction extends BaseAction {
 	public String countHistoryOrders(@FormParam("userId") String userId) {
 		return getJsonString(orderService.countHistoryOrders(userId));
 	}
-	
+
 	/**
 	 * "/wap/historyOrderList" (Mobile version)
 	 * 
@@ -149,8 +149,8 @@ public class OrderAction extends BaseAction {
 			String orderId = orderService.createOrder(order);
 			if (orderId != null) {
 				getSession().setAttribute(HIConstants.ORDER_ID, orderId);
-				if (StringUtils.isNotEmpty(order.getRecieptDept())) {
-					recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptDept());
+				if (order.isNeedReciept()) {
+					recieptDeptService.createRecieptDept(order.getCustomerId(), order.getRecieptType(), order.getRecieptDept());
 				}
 
 				Map<String, Object> m = new HashMap<String, Object>();

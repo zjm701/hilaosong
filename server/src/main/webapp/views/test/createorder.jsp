@@ -19,6 +19,8 @@ $(function() {
 				contactPhone: $.trim($("input[name='contactPhone']").val()),
 				participantNumber: $.trim($("input[name='participantNumber']").val()),
 				dinningTime: $.trim($("input[name='dinningTime']").val()),
+				needReciept: $.trim($("input:radio[name='needReciept']:checked").val()),
+				recieptType: $.trim($("input:radio[name='recieptType']:checked").val()),				
 				recieptDept: $.trim($("input[name='recieptDept']").val()),
 				custMemo: $.trim($("input[name='custMemo']").val()),
 				payChannel: $.trim($("input[name='payChannel']").val()),
@@ -52,6 +54,7 @@ $(function() {
 				         {dishId: $.trim($("input[name='dishId3']").val()), dishNumber: $.trim($("input[name='dishNumber3']").val())}
 						]
 			};
+		alert("content:"+JSON.stringify(content));
 		$.ajax({
 			url: "<%=path%>/rest/createorder",//要访问的后台地址
 			data: JSON.stringify(content),//要发送的数据
@@ -60,7 +63,7 @@ $(function() {
 			async: true,
 			contentType: "application/json;charset=utf-8", 
 			success: function(msg){//msg为返回的数据，在这里做数据绑定
-				alert("login response:"+JSON.stringify(msg));
+				alert("create order response:"+JSON.stringify(msg));
 			}
 		});
 	});
@@ -123,8 +126,15 @@ $(function() {
 									总价:<input type="text" name="totalPrice" style="width: 60px" value="118">总价=菜品价+外送费+服务费
 								</td>							</tr>
 							<tr>
-								<th width="120">发票抬头:</th>
-								<td><input type="text" name="recieptDept" style="width: 440px" value="某著名公司"></td>
+								<th width="120">是否需要发票:</th>
+								<td>不需要<input type="radio" name="needReciept" value="0" checked/>&ensp;需要<input type="radio" name="needReciept" value="1"/> 
+								</td>
+							</tr>
+							<tr>
+								<th width="120">发票类型:</th>
+								<td>
+									公司<input type="radio" name="recieptType" value="1" />&ensp;个人<input type="radio" name="recieptType" value="0" checked/>&ensp;
+									发票抬头:<input type="text" name="recieptDept" style="width: 245px" value="某著名公司"></td>
 							</tr>
 							<tr>
 								<th width="120">备注:</th>

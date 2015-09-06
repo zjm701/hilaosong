@@ -13,20 +13,22 @@ import com.hi.model.RecieptDept;
 public class RecieptDeptDaoImpl extends AbstractDao implements RecieptDeptDao {
 
 	@Override
-	public RecieptDept getRecieptDept(String customerId, String department) {
-		String sql = "select r.deptId as \"deptId\", r.customerId as \"customerId\", r.department as \"department\" "
-				+ " from T_CATER_RECIEPTDEPT r where r.customerId = :customerId and r.department = :department order by deptId desc";
+	public RecieptDept getRecieptDept(String customerId, String recieptType, String department) {
+		String sql = "select r.deptId as \"deptId\", r.customerId as \"customerId\", r.recieptType as \"recieptType\", r.department as \"department\" "
+				+ " from T_CATER_RECIEPTDEPT r where r.customerId = :customerId and r.recieptType = :recieptType and r.department = :department order by deptId desc";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("customerId", customerId);
+		params.put("recieptType", recieptType);
 		params.put("department", department);
 		return this.getFirstBeanBySql(RecieptDept.class, sql, params);
 	}
 
 	@Override
-	public boolean createRecieptDept(String customerId, String department) {
+	public boolean createRecieptDept(String customerId, String recieptType, String department) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("insert into T_CATER_RECIEPTDEPT ").append("(deptId, customerId, department) ")
-				.append("values (seq_cater_recieptdept.nextval, '").append(customerId).append("', '").append(department).append("') ");
+		sb.append("insert into T_CATER_RECIEPTDEPT ").append("(deptId, customerId, recieptType, department) ")
+				.append("values (seq_cater_recieptdept.nextval, '").append(customerId).append("', '").append(recieptType).append("', '")
+				.append(department).append("') ");
 		return (this.executiveSql(sb.toString(), null) == 1);
 	}
 }

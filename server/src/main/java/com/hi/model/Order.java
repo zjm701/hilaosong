@@ -95,6 +95,16 @@ public class Order extends Pagenation {
 	 * 外送种类,0-外送 1-自助 2-豪华 3-上门自取
 	 */
 	private String deliveryType;
+	
+	/**
+	 * 是否需要发票
+	 */
+	private int needReciept;
+	
+	/**
+	 * 发票类型
+	 */
+	private String recieptType;
 
 	/**
 	 * 发票抬头
@@ -272,6 +282,26 @@ public class Order extends Pagenation {
 
 	public void setDeliveryType(String deliveryType) {
 		this.deliveryType = deliveryType;
+	}
+
+	public boolean isNeedReciept() {
+		return needReciept == 1;
+	}
+
+	public int getNeedReciept() {
+		return needReciept;
+	}
+
+	public void setNeedReciept(int needReciept) {
+		this.needReciept = needReciept;
+	}
+
+	public String getRecieptType() {
+		return recieptType;
+	}
+
+	public void setRecieptType(String recieptType) {
+		this.recieptType = recieptType;
 	}
 
 	public String getRecieptDept() {

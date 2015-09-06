@@ -22,6 +22,11 @@ public class RecieptDept {
 	 * 发票抬头
 	 */
 	private String department;
+	
+	/**
+	 * 发票类型
+	 */
+	private String recieptType;
 
 	public BigDecimal getDeptId() {
 		return deptId;
@@ -45,5 +50,13 @@ public class RecieptDept {
 
 	public void setDepartment(String department) {
 		this.department = department;
+	}
+
+	public String getRecieptType() {
+		return recieptType;
+	}
+
+	public void setRecieptType(String recieptType) {
+		this.recieptType = recieptType;
 	}
 }

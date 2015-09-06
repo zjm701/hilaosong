@@ -16,12 +16,12 @@ public class RecieptDeptServiceImpl implements RecieptDeptService {
 	private RecieptDeptDao dao;
 
 	@Override
-	public boolean createRecieptDept(String customerId, String department) {
-		RecieptDept rd = dao.getRecieptDept(customerId, department);
+	public boolean createRecieptDept(String customerId, String recieptType, String department) {
+		RecieptDept rd = dao.getRecieptDept(customerId, recieptType, department);
 		if (rd != null) {
 			return true;
 		} else {
-			return dao.createRecieptDept(customerId, department);
+			return dao.createRecieptDept(customerId, recieptType, department);
 		}
 	}
 }
