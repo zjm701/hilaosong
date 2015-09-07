@@ -48,8 +48,8 @@ public class DishServiceImpl implements DishService {
 		return ddao.countDishes(storeId, catId);
 	}
 	
-	public List<Dish> getDishes(String storeId, String catId, int pageIndex) {
-		return ddao.getDishes(storeId, catId, pageIndex);
+	public List<Dish> getDishes(String storeId, String catId, int pageIndex,  int pageSize) {
+		return ddao.getDishes(storeId, catId, pageIndex, pageSize);
 	}
 
 	public Dish getDishDetail(String dishId) {

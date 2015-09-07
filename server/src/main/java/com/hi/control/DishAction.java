@@ -47,8 +47,8 @@ public class DishAction extends BaseAction {
 	@Path("/getdishes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDishes(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId,
-			@FormParam("pageIndex") int pageIndex) {
-		return getSuccessJsonResponse(dishService.getDishes(storeId, categoryId, pageIndex));
+			@FormParam("pageIndex") int pageIndex, @FormParam("pageSize") int pageSize) {
+		return getSuccessJsonResponse(dishService.getDishes(storeId, categoryId, pageIndex, pageSize));
 	}
 
 	@GET
@@ -102,7 +102,6 @@ public class DishAction extends BaseAction {
 	/**
 	 * 
 	 * @param userId
-	 * @param pageIndex
 	 * @return
 	 */
 	@GET

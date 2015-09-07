@@ -65,7 +65,9 @@ http://localhost:8080/hilaosong/rest/cntdishes?storeId=020111&catId=003
 
 13, 菜品分类 -> 菜品
 http://localhost:8080/hilaosong/rest/getdishes?storeId=020111&catId=003
-http://localhost:8080/hilaosong/rest/getdishes?storeId=020111&catId=003&pageIndex=2：分页显示，显示第二页， 一页显示9个，如果不提供pageIndex默认为第一页
+http://localhost:8080/hilaosong/rest/getdishes?storeId=020111&catId=003&pageIndex=2
+http://localhost:8080/hilaosong/rest/getdishes?storeId=020111&catId=003&pageIndex=2&pageSize=5
+分页显示，显示第二页， 一页显示5个，如果不提供pageIndex默认为第一页，如果不提供pageSize默认为9
 response： [{"dishId":"30043_020111","storeDishId":"30043","storeDishName":"牛领肉","unitPrice":"60.0000","bigImageAddr":"http://172.16.254.91:9080/TzxRifImage/images/09010040_1.png","type":"1","halfStoreDishId":"30044","halfPrice":"30.0000"}]
 #返回菜品列表， dishId菜品主键（菜品id+店id）， storeDishId菜品id（同一个菜品在不同的店是一样的）， storeDishName菜品名，unitPrice菜品单价， bigImageAddr菜品大图（地址不能用）， type菜品/套餐（1普通菜品，2套餐）， halfStoreDishId半份菜品对应的菜品id（有半份的菜品才显示）， halfPrice半份菜品的价格（有半份才显示）
 

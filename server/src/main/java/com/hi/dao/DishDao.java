@@ -14,7 +14,7 @@ public interface DishDao {
 
 	int countDishes(String storeId, String categoryId);
 
-	List<Dish> getDishes(String storeId, String categoryId, int pageIndex);
+	List<Dish> getDishes(String storeId, String categoryId, int pageIndex, int pageSize);
 
 	Dish getDishDetail(String dishId);
 	

@@ -56,7 +56,7 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 		return this.countBySql(sql, params);
 	}
 	
-	public List<Dish> getDishes(String storeId, String categoryId, int pageIndex) {
+	public List<Dish> getDishes(String storeId, String categoryId, int pageIndex, int pageSize) {
 		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
 		String sql = "select d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
 				+ " d.bigImageAddr as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
@@ -65,7 +65,7 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 				+ " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
 				+ "		where d2.type = '1' and d2.dishShareType = '2' " + sql2 + " ) hd"
 				+ "	on hd.linkStoreDishId = d.storeDishId "
-				+ " where d.type = '1' and d.dishShareType in ('1', '3') " + sql2 + " order by dishSort asc";
+				+ " where d.type = '1' and d.dishShareType in ('1', '3') " + sql2 + " order by dishSort asc, d.dishId asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);
@@ -73,6 +73,7 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 
 		Pagination pagn = new Pagination();
 		pagn.setPageIndex(pageIndex);
+		pagn.setPageSize(pageSize);
 
 		return this.getBeansBySql(Dish.class, sql, params, pagn);
 	}
@@ -104,7 +105,7 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 				+ "  d.unitPrice as \"unitPrice\", d.bigImageAddr as \"bigImageAddr\", d.type as \"type\" "
 				+ " from T_CATER_DISH d "
 				+ " inner join t_cater_dishtype dt on d.dishCategory = dt.dishTypeID "
-				+ " where d.type = '2' and d.packType = '1' " + sql2 + " order by dishSort asc";
+				+ " where d.type = '2' and d.packType = '1' " + sql2 + " order by d.dishSort asc, d.dishId asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);

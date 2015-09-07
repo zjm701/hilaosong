@@ -28,10 +28,10 @@ public final class Pagination {
 
 	public Pagination(int pageIndex, int pageSize) {
 		if (pageIndex < 1) {
-			pageIndex = 1;
+			pageIndex = DEF_INDEX;
 		}
 		if (pageSize < 1) {
-			pageSize = 1;
+			pageSize = DEF_SIZE;
 		}
 		this.pageIndex = pageIndex;
 		this.pageSize = pageSize;
@@ -43,7 +43,7 @@ public final class Pagination {
 
 	public void setPageIndex(int pageIndex) {
 		if (pageIndex < 1) {
-			pageIndex = 1;
+			pageIndex = DEF_INDEX;
 		}
 		this.pageIndex = pageIndex;
 	}
@@ -54,7 +54,7 @@ public final class Pagination {
 
 	public void setPageSize(int pageSize) {
 		if (pageSize < 1) {
-			pageSize = 1;
+			pageSize = DEF_SIZE;
 		}
 		this.pageSize = pageSize;
 	}

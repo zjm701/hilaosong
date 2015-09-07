@@ -12,8 +12,8 @@ public interface DishService {
 	List<DishType> getCategories(String storeId);
 
 	int countDishes(String storeId, String catId);
-	
-	List<Dish> getDishes(String storeId, String catId, int pageIndex);
+
+	List<Dish> getDishes(String storeId, String catId, int pageIndex, int pageSize);
 	
 	Dish getDishDetail(String dishId);
 
