@@ -207,12 +207,14 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 		if (saveflag) {
 			if (o.getPacks() != null && o.getPacks().size() > 0) {
 				String part1 = "insert into T_CATER_ORDERDISHES (id, orderid, dishid, dishnumber, dishtype, packid, unitprice, packcount, innerid) "
-						+ "select SEQ_CATER_ORDERDISHES.Nextval , '"
-						+ o.getOrderId()
-						+ "', pd.dishid, pd.dishnumber, '1', pd.packid, d.unitprice, '";
+						+ "select SEQ_CATER_ORDERDISHES.Nextval , '" + o.getOrderId() + "', pd.dishid, pd.dishnumber, '1', pd.packid, d.unitprice, '";
 				String part2 = "', pd.innerid from T_CATER_PACKDISH pd inner join T_CATER_DISH d on pd.dishid = d.dishid where pd.packId= :packId ";
 				String part3 = "and pd.innerid not in ('1','2') ";
-				String part4 = "and pd.dishId = :dishId ";
+				
+				String part4 = "insert into T_CATER_ORDERDISHES (id, orderid, dishid, dishnumber, dishtype, packid, unitprice, packcount, innerid) "
+						+ "select SEQ_CATER_ORDERDISHES.Nextval , '" + o.getOrderId() + "', pd.dishid, '";
+				String part5 = "', '1', pd.packid, d.unitprice, '";
+				String part6 = "and pd.dishId = :dishId ";
 
 				Map<String, Object> params = new HashMap<String, Object>();
 				for (OrderPack pack : o.getPacks()) {
@@ -221,9 +223,13 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 					params.put("packId", pack.getPackId());
 					this.executiveSql(sb.toString(), params);// insert 除锅底，小料外的固定的套餐菜品
 					
-					sb.setLength(0);
-					sb.append(part1).append(pack.getPackCount()).append(part2).append(part4);
-					for (OrderPackDish dish : pack.getDishes()) {	//insert 锅底，小料
+					for (OrderPackDish dish : pack.getDishes()) { // insert 锅底，小料
+						sb.setLength(0);
+						int dishNumber = 1;
+						if (dish.getDishNumber() != null) {
+							dishNumber = dish.getDishNumber().intValue();
+						}
+						sb.append(part4).append(dishNumber).append(part5).append(pack.getPackCount()).append(part2).append(part6);
 						params.put("dishId", dish.getDishId());
 						saveflag = (this.executiveSql(sb.toString(), params) == 1);
 					}

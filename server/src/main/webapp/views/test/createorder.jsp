@@ -41,9 +41,9 @@ $(function() {
 				        { packId: $.trim($("input[name='packId']").val()),
 						   packCount : $.trim($("input[name='packCount']").val()),
 						   dishes: [
-						            {dishId: $.trim($("input[name='packDishId1']").val())},
-						            {dishId: $.trim($("input[name='packDishId2']").val())},
-						            {dishId: $.trim($("input[name='packDishId3']").val())}
+						            {dishId: $.trim($("input[name='packDishId1']").val()), dishNumber: $.trim($("input[name='packDishNumber1']").val())},
+						            {dishId: $.trim($("input[name='packDishId2']").val()), dishNumber: $.trim($("input[name='packDishNumber2']").val())},
+						            {dishId: $.trim($("input[name='packDishId3']").val()), dishNumber: $.trim($("input[name='packDishNumber3']").val())}
 						           ]
 						 }
 				       ],
@@ -158,13 +158,30 @@ $(function() {
 							</tr>
 							<tr>
 								<th width="120">选择锅底</th>
-								<td><input type="text" name="packDishId1" style="width: 440px" value="10001_0201">N选1： 10001_0201,10002_0201 等 (套餐详情中"innerId":"1"的都是锅底)</td>
+								<td>套餐详情中"innerId":"1"的都是锅底，可选10001_0201,10002_0201 等 (N选?： "innerNumber":1的值表示最多可选几个锅底)</td>
+							</tr>
+							<tr>
+								<th width="120"></th>
+								<td><input type="text" name="packDishId1" style="width: 150px" value="10001_0201">
+									锅底数量<input type="text" name="packDishNumber1" style="width: 100px" value="1">默认为本套餐中的该锅底的dishNumber的值</td>
 							</tr>
 							<tr>
 								<th width="120">选择小料</th>
+								<td>套餐详情中"innerId":"2"的都是小料，可选61008_0201,61012_0201 等，(N选?： "innerNumber":4的值表示最多可选几个小料)</td>
+							</tr>
+							<tr>
+								<th width="120"></th>
 								<td>
 									小料1：<input type="text" name="packDishId2" style="width: 150px" value="61008_0201">
-									小料2：<input type="text" name="packDishId3" style="width: 150px" value="61012_0201">N选?： 61008_0201,61012_0201 等 (套餐详情中"innerId":"2"的都是小料)</td>
+									小料数量<input type="text" name="packDishNumber2" style="width: 100px" value="1">默认为本套餐中的该小料的dishNumber的值
+								</td>
+							</tr>
+							<tr>
+								<th width="120"></th>
+								<td>
+									小料2：<input type="text" name="packDishId3" style="width: 150px" value="61012_0201">
+									小料数量<input type="text" name="packDishNumber3" style="width: 100px" value="1">默认为本套餐中的该小料的dishNumber的值
+								</td>
 							</tr>
 							<tr>
 								<th width="120">套餐中其他菜品</th>
