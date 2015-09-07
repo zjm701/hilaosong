@@ -21,17 +21,25 @@ import com.google.gson.Gson;
 import com.hi.common.HIConstants;
 import com.hi.common.MessageCode;
 import com.hi.common.OrderType;
+import com.hi.model.DeliveryLimit;
 import com.hi.model.Order;
 import com.hi.model.OrderAddress;
+import com.hi.model.Store;
 import com.hi.model.User;
+import com.hi.service.CityService;
 import com.hi.service.OrderService;
 import com.hi.service.RecieptDeptService;
 import com.hi.service.StoreService;
 import com.hi.tools.CalendarTools;
+import com.hi.tools.CityTools;
+import com.hi.tools.StringTools;
 
 @Path("/")
 public class OrderAction extends BaseAction {
 
+	@Autowired
+	private CityService cityService;
+	
 	@Autowired
 	private OrderService orderService;
 
@@ -123,6 +131,15 @@ public class OrderAction extends BaseAction {
 				dinningTime = CalendarTools.timeStr2Date(order.getDinningTime(), CalendarTools.DATETIME_DEFAULT);
 				if (dinningTime.before(CalendarTools.now())) {
 					return getJsonString(MessageCode.VERIFICATION_PASSED_DINNINGTIME);
+				}else{
+					Store s = storeService.getStore(order.getStoreId());
+					if (s != null) {
+						String cityId = CityTools.isDirectMunicipalities(s.getProvinceId()) ? s.getProvinceId() : s.getCityId();
+						DeliveryLimit dl = cityService.getDeliveryLimit(order.getStoreId(), cityId, order.getOrderType());
+						if(!CalendarTools.isValidDinningTime(dinningTime, dl)){
+							return getJsonString(MessageCode.VERIFICATION_NO_SERVICE_DINNINGTIME);
+						}
+					}
 				}
 			}
 			if (StringUtils.isEmpty(order.getContactName())) {

@@ -134,33 +134,38 @@ public enum MessageCode {
 	VERIFICATION_PASSED_DINNINGTIME("321", "\u8ba2\u9910\u65f6\u95f4\u4e0d\u5f97\u5c0f\u4e8e\u5f53\u524d\u65f6\u95f4"),
 
 	/**
+	 * 此订餐时间不送餐
+	 */
+	VERIFICATION_NO_SERVICE_DINNINGTIME("322", "\u6B64\u8BA2\u9910\u65F6\u95F4\u4E0D\u9001\u9910"),
+
+	/**
 	 * 订单联系人不能为空
 	 */
-	VERIFICATION_EMPTY_CONTACTNAME("322", "\u8ba2\u5355\u8054\u7cfb\u4eba\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_CONTACTNAME("323", "\u8ba2\u5355\u8054\u7cfb\u4eba\u4e0d\u80fd\u4e3a\u7a7a"),
 	/**
 	 * 订单联系电话不能为空
 	 */
-	VERIFICATION_EMPTY_CONTACTPHONE("323", "\u8ba2\u5355\u8054\u7cfb\u7535\u8bdd\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_CONTACTPHONE("324", "\u8ba2\u5355\u8054\u7cfb\u7535\u8bdd\u4e0d\u80fd\u4e3a\u7a7a"),
 	/**
 	 * 预订门店不能为空
 	 */
-	VERIFICATION_EMPTY_STORE("324", "\u9884\u8ba2\u95e8\u5e97\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_STORE("325", "\u9884\u8ba2\u95e8\u5e97\u4e0d\u80fd\u4e3a\u7a7a"),
 	/**
 	 * 订单菜品不能为空
 	 */
-	VERIFICATION_EMPTY_DISHES("325", "\u8ba2\u5355\u83dc\u54c1\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_DISHES("326", "\u8ba2\u5355\u83dc\u54c1\u4e0d\u80fd\u4e3a\u7a7a"),
 	/**
 	 * 订单类型不能为空
 	 */
-	VERIFICATION_EMPTY_ORDERTYPE("326", "\u8ba2\u5355\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_ORDERTYPE("327", "\u8ba2\u5355\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"),
 	/**
 	 * 外送地址不能为空
 	 */
-	VERIFICATION_EMPTY_ADDRESS("327", "\u5916\u9001\u5730\u5740\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_ADDRESS("328", "\u5916\u9001\u5730\u5740\u4e0d\u80fd\u4e3a\u7a7a"),
 	/**
 	 * 支付类型不能为空
 	 */
-	VERIFICATION_EMPTY_PAYCHANNEL("328", "\u652f\u4ed8\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"),
+	VERIFICATION_EMPTY_PAYCHANNEL("329", "\u652f\u4ed8\u7c7b\u578b\u4e0d\u80fd\u4e3a\u7a7a"),
 
 
 	/*

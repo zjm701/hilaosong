@@ -152,13 +152,12 @@ http://localhost:8080/hilaosong/rest/calcdeliveryfee?storeId=020101&address=北�
 返回{"deliveryFee":"10"}
 
 44, 获取起送金额标准
-http://localhost:8080/hilaosong/rest/getdeliverylimitmoney?storeId=020101
+http://localhost:8080/hilaosong/rest/getdeliverylimitmoney?storeId=020115
 返回{"deliveryLimitMoney":"276"}
 
 45, 获取起送所有限制
-http://localhost:8080/hilaosong/rest/getdeliverylimit?storeId=020101
-{"deliveryLimitMoney":"276","startDay":"1","endDay":"60","firstDayStartTime":"17:00:00","startTime":"16:00:00","endTime":"17:00:00","message":"","busyTimes":[],"closeTimes":[]}
-
+http://localhost:8080/hilaosong/rest/getdeliverylimit?storeId=020115
+{"deliveryLimitMoney":"276","startDay":"1","endDay":"60","firstDayStartTime":"17:00:00","startTime":"16:00:00","endTime":"17:00:00","message":"","busyTimes":[{"start":"2015-01-08 01:15:00","end":"2015-01-08 03:30:00"}],"closeTimes":[{"start":"2015-01-21 09:45:00","end":"2015-01-24 00:00:00"}]}
 50, 下单
 http://localhost:8080/hilaosong/rest/createorder
 test page： http://localhost:8082/hilaosong/views/test/createorder.jsp 

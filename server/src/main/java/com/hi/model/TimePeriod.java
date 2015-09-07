@@ -1,5 +1,9 @@
 package com.hi.model;
 
+import java.util.Date;
+
+import com.hi.tools.CalendarTools;
+
 public class TimePeriod {
 
 	// 繁忙时间起始点
@@ -10,7 +14,7 @@ public class TimePeriod {
 
 	public TimePeriod() {
 	}
-	
+
 	public TimePeriod(String start, String end) {
 		this.start = start;
 		this.end = end;
@@ -30,5 +34,13 @@ public class TimePeriod {
 
 	public void setEnd(String end) {
 		this.end = end;
+	}
+
+	public boolean contains(Date date) {
+		if (date != null) {
+			return date.after(CalendarTools.timeStr2Date(this.start, CalendarTools.DATETIME_DEFAULT))
+					&& date.before(CalendarTools.timeStr2Date(this.end, CalendarTools.DATETIME_DEFAULT));
+		}
+		return false;
 	}
 }

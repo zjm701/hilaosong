@@ -87,27 +87,29 @@ public class CityServiceImpl implements CityService {
 		if (cfg != null) {
 			ol.setMessage(StringTools.clobToString(cfg.getStartValue()));
 		}
+		//busy time
 		List<SysConfig> cfgs = sdao.getSysConfigs(storeId, "92", orderType);
 		if (cfgs != null && cfgs.size() > 0) {
 			for (SysConfig c : cfgs) {
 				TimePeriod tp = new TimePeriod();
 				tp.setStart(CalendarTools.date2TimeStr(
 						CalendarTools.timeStr2Date(StringTools.clobToString(c.getStartValue()) + ":00", CalendarTools.DATETIME_SYSCONFIG),
-						CalendarTools.TIME));
+						CalendarTools.DATETIME_DEFAULT));
 				tp.setEnd(CalendarTools.date2TimeStr(CalendarTools.timeStr2Date(c.getEndValue() + ":00", CalendarTools.DATETIME_SYSCONFIG),
-						CalendarTools.TIME));
+						CalendarTools.DATETIME_DEFAULT));
 				ol.addBusyTime(tp);
 			}
 		}
+		//close time
 		cfgs = sdao.getSysConfigs(storeId, "106", orderType);
 		if (cfgs != null && cfgs.size() > 0) {
 			for (SysConfig c : cfgs) {
 				TimePeriod tp = new TimePeriod();
 				tp.setStart(CalendarTools.date2TimeStr(
 						CalendarTools.timeStr2Date(StringTools.clobToString(c.getStartValue()) + ":00", CalendarTools.DATETIME_SYSCONFIG),
-						CalendarTools.TIME));
+						CalendarTools.DATETIME_DEFAULT));
 				tp.setEnd(CalendarTools.date2TimeStr(CalendarTools.timeStr2Date(c.getEndValue() + ":00", CalendarTools.DATETIME_SYSCONFIG),
-						CalendarTools.TIME));
+						CalendarTools.DATETIME_DEFAULT));
 				ol.addCloseTime(tp);
 			}
 		}

@@ -91,7 +91,7 @@ $(function() {
 							</tr>
 							<tr>
 								<th width="120">门店Id:</th>
-								<td><input type="text" name="storeId" style="width: 440px" value="020102">0外卖，自动选取距离近的门店，2自取，用户自行输入</td>
+								<td><input type="text" name="storeId" style="width: 440px" value="020115">0外卖，自动选取距离近的门店，2自取，用户自行输入</td>
 							</tr>
 							<tr>
 								<th width="120">联系人姓名:</th>
