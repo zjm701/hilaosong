@@ -39,8 +39,9 @@ public class DishAction extends BaseAction {
 	@GET
 	@Path("/cntdishes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String countDishes(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId) {
-		return getJsonString(dishService.countDishes(storeId, categoryId));
+	public String countDishes(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId,
+			@FormParam("pageSize") int pageSize) {
+		return getJsonString(dishService.countDishes(storeId, categoryId), pageSize);
 	}
 
 	@GET

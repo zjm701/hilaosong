@@ -57,6 +57,12 @@ public abstract class BaseAction {
 		return "{\"totalRowsCount\":" + pagn.getTotalRowsCount() + ", \"totalPagesCount\":" + pagn.getTotalPagesCount() + "}";
 	}
 
+	protected String getJsonString(int totalRowsCount, int pageSize) {
+		Pagination pagn = new Pagination(pageSize);
+		pagn.setTotalRowsCount(totalRowsCount);
+		return "{\"totalRowsCount\":" + pagn.getTotalRowsCount() + ", \"totalPagesCount\":" + pagn.getTotalPagesCount() + "}";
+	}
+
 	protected HttpSession getSession() {
 		return getRequest().getSession();
 	}

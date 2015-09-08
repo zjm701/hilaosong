@@ -72,7 +72,7 @@ response： [{"dishId":"30043_020111","storeDishId":"30043","storeDishName":"牛
 #返回菜品列表， dishId菜品主键（菜品id+店id）， storeDishId菜品id（同一个菜品在不同的店是一样的）， storeDishName菜品名，unitPrice菜品单价， bigImageAddr菜品大图（地址不能用）， type菜品/套餐（1普通菜品，2套餐）， halfStoreDishId半份菜品对应的菜品id（有半份的菜品才显示）， halfPrice半份菜品的价格（有半份才显示）
 
 14, 菜品分类 -> 套餐的分页信息
-http://localhost:8080/hilaosong/rest/cntpacks?storeId=020111&catId=012
+http://localhost:8080/hilaosong/rest/cntpacks?storeId=020111&catId=012&pageSize=5
 {"totalRowsCount":5, "totalPagesCount":1}
 
 15, 菜品分类 -> 套餐
