@@ -633,6 +633,27 @@ $(document).ready(function(e) {
 			alert('请填写用餐人数');
 			return false;
 		}
+		
+		if($("input[name='participantNumber']").val() == ''){
+			alert('请填写用餐人数');
+			return false;
+		}
+		var userformjson = eval('(' + $.cookie("userformjson") + ')');
+		var tmp = $.trim($("input[name='storeId']").val());
+	    if(typeof(userformjson) == 'undefined' ||  userformjson == null ||  userformjson == 'null' ||  userformjson == ''){
+		    //alert('请填写订餐信息');
+	    } else {
+			if( tmp !=  userformjson['storeId']){
+				if(confirm('由于您更改了门店，将会清空购物篮？')){
+					$.cookie('storeid1', null, { expires: 30 });
+					$.cookie('cartdish', null, { expires: 30 }); 
+					$.cookie('cartpack', null, { expires: 30 });
+					$.cookie('cartdiyguodi', null, { expires: 30 }); 
+				} else {
+					return false;
+				}
+			}
+		}
 
 		
 
