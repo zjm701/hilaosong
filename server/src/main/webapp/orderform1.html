@@ -327,7 +327,7 @@ $(document).ready(function(e) {
 
 
 
-				$("input[name='payChannel']").val(userformjson.payChannel);
+				//$("input[name='payChannel']").val(userformjson.payChannel);
 
 				
 
@@ -504,12 +504,12 @@ $(document).ready(function(e) {
 		var payChannel = $("input[name='payChannel']").val();
 		//alert($("input[name='reciept']:checked").val());
 
-		if($("input[name='reciept']:checked").val() == '1' && $("input[name='recieptDept']").val() == ''){
+		if($("input[name='needReciept']:checked").val() == '1' &&$("input[name='recieptType']:checked").val() == '1' && $("input[name='recieptDept']").val() == ''){
 			alert('请填写发票抬头');
 			return false;
 		}
 		if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0){
-			alert('请选择炉具数量');
+			alert('如果不选炉具，请选择自备炉具');
 			return false;
 		}
 
@@ -573,7 +573,7 @@ $(document).ready(function(e) {
 
 					//alert(obj);
 
-					  var tmp = {dishId: obj1.id};
+					  var tmp = {dishId: obj1.id,dishNumber: obj1.num};
 
 					  tmppacks.push(tmp);
 
@@ -591,7 +591,7 @@ $(document).ready(function(e) {
 
 					//alert(obj);
 
-						var tmp = {dishId: obj2.id};
+						var tmp = {dishId: obj2.id,dishNumber: obj2.num};
 
 						tmppacks.push(tmp);
 
@@ -629,6 +629,8 @@ $(document).ready(function(e) {
 
 				dinningTime: $.trim($("input[name='dinningTime']").val())+':00',
 
+				needReciept: $.trim($("input[name='needReciept']").val()),
+				recieptType: $.trim($("input[name='recieptType']").val()),
 				recieptDept: $.trim($("input[name='recieptDept']").val()),
 
 				custMemo: $.trim($("input[name='custMemo']").val()),
@@ -686,10 +688,16 @@ $(document).ready(function(e) {
 			success: function(msg){//msg为返回的数据，在这里做数据绑定
 
 				//alert("login response:"+JSON.stringify(msg));
-
 				alert(msg.respMsg);
+				if(msg.respCode != '310'){
+
 				//window.location='./index.html';
+				
+				} else { 
+				//成功
+				alert('订单号：'+msg.orderId);
 				goLocationWithCity('index.html');
+				}
 
 			}
 
@@ -849,7 +857,7 @@ f
 
 <div id="dizhi">
 
-<span class="m_t_10">地址：</span><span class="m_t_10"><input name="detailAddress" readonly="readonly" type="text" style="width:270px; border:0;" onblur="ordertype0addr(this);"  value="" />
+<!--<span class="m_t_10">地址：</span>--><span class="m_t_10"><input name="detailAddress" readonly="readonly" type="text" style="width:270px; border:0;" onblur="ordertype0addr(this);"  value="" />
 
 <input type="hidden" name="cityId" value="" />
 
@@ -941,13 +949,20 @@ f
 
 <dl><dt>是否开发票</dt><dd><div class="d_leixing">
 
-<span onclick="$('#fapiao').show();"><input type="radio" name="reciept" value="1" /></span><span class="p_r_10">是</span>
+<span onclick="$('#fapiao').show();"><input type="radio" name="needReciept" value="1" /></span><span class="p_r_10">是</span>
 
-<span onclick="$('#fapiao').hide();"><input type="radio" name="reciept" value="0" checked="checked" /></span><span>否</span>
+<span onclick="$('#fapiao').hide();"><input type="radio" name="needReciept" value="0" checked="checked" /></span><span>否</span>
 
 </div></dd></dl>
 
-<dl id="fapiao" style="display:none;"><dt>发票抬头</dt><dd><div class="d_input"><input name="recieptDept" type="text" value="" /></div></dd></dl>
+<dl id="fapiao" style="display:none;"><dt>发票类型</dt><dd><div class="d_leixing1">
+
+<span onclick="$('#fapiaott').show();"><input type="radio" name="recieptType" value="1" /></span><span class="p_r_10">公司</span>
+
+<span onclick="$('#fapiaott').hide();"><input type="radio" name="recieptType" value="0" checked="checked" /></span><span>个人</span>
+
+</div></dd></dl>
+<dl id="fapiaott" style="display:none;"><dt>发票抬头</dt><dd><div class="d_input"><input name="recieptDept" type="text" value="" /></div></dd></dl>
 
 
 
@@ -998,10 +1013,27 @@ f
 <div class="clear"></div>
 
 </div>
+<script>
+function checkform1(){
+	if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0){
+			alert('如果不选炉具，请选择自备炉具');
+			return false;
+		}
 
-<div class="btn_queren" id="orderform1_btn" style="margin-top:30px; cursor:pointer;" onclick="$('#orderform2').show();$('#orderform1').hide();$('#orderform1_btn').hide();$('#orderform2_btn').show();$('#orderform2_btn1').show();getfee();">下一步</div>
+	$('#orderform2').show();
+	$('#orderform1').hide();
+	$('#orderform1_btn').hide();
+	$('#orderform2_btn').show();
+	$('#orderform2_btn1').show();
+	getfee();
+}
+function backform1(){
+	$('#orderform1').show();$('#orderform2').hide();$('#orderform1_btn').show();$('#orderform2_btn').hide();$('#orderform2_btn1').hide();
+}
+</script>
+<div class="btn_queren" id="orderform1_btn" style="margin-top:30px; cursor:pointer;" onclick="checkform1();">下一步</div>
 
-<div class="btn_queren" id="orderform2_btn" style="margin-top:30px; cursor:pointer; display:none;" onclick="$('#orderform1').show();$('#orderform2').hide();$('#orderform1_btn').show();$('#orderform2_btn').hide();$('#orderform2_btn1').hide();">返回修改</div>
+<div class="btn_queren" id="orderform2_btn" style="margin-top:30px; cursor:pointer; display:none;" onclick="backform1();">返回修改</div>
 
 <div class="btn_queren" id="orderform2_btn1" style="margin-top:30px; cursor:pointer; display:none;" onclick="orderform1();">确认提交</div>
 

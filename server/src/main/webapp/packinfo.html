@@ -34,6 +34,8 @@
 
 <script src="js/jquery.easing.js"></script>
 
+<script src="js/jquery.pager.js"></script>
+
 <script type="text/javascript" src="js/md5.js"></script>
 
 <script src="js/common.js"></script>
@@ -105,7 +107,7 @@ function addcartpack(n){
 
 		$.cookie("cartpack",JSON.stringify(cartpack), { expires: 30 })
 
-		$('#'+id+'').remove();
+		//$('#'+id+'').remove();
 
 		_html ='';
 
@@ -113,13 +115,14 @@ function addcartpack(n){
 
 		_html +='<div class="carttitle">'+name+'</div>';
 
-		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num">×'+num+'</div></div>';
+		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+id+'\')" /> '+num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+id+'\')" /> ';
 
-		_html +='<span class=" btn btn-danger" onclick="delcartpack(\''+id+'\');">删除</span>';
+		_html +='<span  onclick="delcartpack(\''+id+'\');">X</span></div></div>';
 
 		_html +='</div>';
 
-		$('#cartpackbox').append(_html)
+		//$('#cartpackbox').append(_html)
+		$('#cartpackbox').html(_html);
 
 	}
 
@@ -204,7 +207,9 @@ function getpackinfo(n,m,l,k){
 
 				_html +='<div class="left d_num"><span><img src="images/img_jian.gif" onclick="cartpackd()" /></span>';
 
-				if(typeof(cartpack) == 'undefined' || typeof(cartpack.num) == 'undefined' ||  cartpack.num == null){
+				//alert(cartpack);
+				//alert(cartpack.num);
+				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.num) == 'undefined' ||  cartpack.num == null){
 
 					_html +='<span class="f12px fB f_c6000a"><input name="packnum" id="packnum" value="1" style="width:40px;text-align:center;"></span>';
 
@@ -228,7 +233,7 @@ function getpackinfo(n,m,l,k){
 
 				_html +='<div id="guodi">';
 
-				if(typeof(cartpack) == 'undefined' || typeof(cartpack.guodi) == 'undefined' ||  cartpack.guodi == null){
+				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.guodi) == 'undefined' ||  cartpack.guodi == null){
 
 					_html +='无';
 
@@ -262,7 +267,7 @@ function getpackinfo(n,m,l,k){
 
 				_html +='<div id="xiaoliao">';
 
-				if(typeof(cartpack) == 'undefined' || typeof(cartpack.xiaoliao) == 'undefined' ||  cartpack.xiaoliao == null){
+				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.xiaoliao) == 'undefined' ||  cartpack.xiaoliao == null){
 
 					_html +='无';
 
@@ -276,7 +281,7 @@ function getpackinfo(n,m,l,k){
 
 						} else{
 
-							_html += '<dl id="xiaoliao'+obj.dishId+'" onclick="guodidel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd>'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
+							_html += '<dl id="xiaoliao'+obj.dishId+'" onclick="guodidel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd>'+obj.dishName+'</dd><dt><img src="images/img_jian.gif" onclick="xiaoliaod1(\''+obj.dishId+'\')" /> <span class="num">'+obj.dishNumber+'</span> <img src="images/img_jia.gif" onclick="xiaoliaop1(\''+obj.dishId+'\')" /> <span onclick="delxiaoliao(\''+obj.dishId+'\');">X</span></dt></dl>';
 
 						}
 
@@ -388,7 +393,7 @@ function packxiaoliao(n){
 
 	$.fancybox(
 
-		'<center onclick="xiaoliaozb()"><input type=checkbox>自备小料</center><div> <ul id="xiaoliaolist"></ul><div class="clear"></div></div>',
+		'<center onclick="xiaoliaozb()"><input type=checkbox>自备小料</center><div> <ul id="xiaoliaolist"></ul></div><div class="clear"></div></div>',
 
 		{
 
@@ -447,8 +452,9 @@ function guodidel(n){
 
 }
 
-function xiaoliaodel(){
+function xiaoliaodel(m){
 
+	var n = $(m).parent().parent();
 	var id = $(n).attr('data-id');
 
 	var innernumber = $(n).attr('data-innernumber');
@@ -488,7 +494,8 @@ function guodisel(n){
 
 		guodijson[id] = {
 
-			'id': id
+			'id': id,
+			'num': 1
 
 		};
 
@@ -528,6 +535,18 @@ function guodisel(n){
 
 }
 
+function xiaoliaonum(){
+	var num = 0;
+	//alert(JSON.stringify(xiaoliaojson));
+	$.each(xiaoliaojson,function(index,obj){
+			if(typeof(obj) == 'undefined' ||  obj == null){
+			} else {
+				num += obj.num;
+			}
+		});
+	return num;
+}
+
 function xiaoliaosel(n){
 
 	var id = $(n).attr('data-id');
@@ -548,11 +567,12 @@ function xiaoliaosel(n){
 
 		var innerNumber = $(n).attr('data-innernumber');
 
-		length = JSONLength(xiaoliaojson);
+		//length = JSONLength(xiaoliaojson);
+		length = xiaoliaonum();
 
 		//alert(length);
 
-		if(length >= 4){
+		if(length >= innerNumber){
 
 			alert('小料只能选择'+innerNumber+'个！');
 
@@ -562,11 +582,13 @@ function xiaoliaosel(n){
 
 		xiaoliaojson[id] = {
 
-			'id': id
+			'id': id,
+			'num': 1
 
 		};
 
-		_html += '<dl id="xiaoliao'+id+'" onclick="guodidel(this);" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><span class="f_c6000a">x'+num+'</span></dt></dl>';
+		//_html += '<dl id="xiaoliao'+id+'" onclick="guodidel(this);" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><span class="f_c6000a">x'+num+'</span></dt></dl>';
+		_html += '<dl id="xiaoliao'+id+'" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><img src="images/img_jian.gif" onclick="xiaoliaod1(\''+id+'\')" /> <span class="num">'+num+'</span> <img src="images/img_jia.gif" onclick="xiaoliaop1(\''+id+'\')" /> <span class="del" onclick="xiaoliaodel(this);">X</span></dt></dl>';
 
 		if($('#xiaoliao').html() == '无'){
 
@@ -597,6 +619,60 @@ function xiaoliaosel(n){
 	}
 
 	//alert(JSON.stringify(xiaoliaojson));
+
+}
+
+function xiaoliaod1(id){
+
+	var num = xiaoliaojson[id]['num'];
+
+	if(num > 2){
+
+		num -= 1;
+
+	} else {
+
+		num = 1;
+
+	}
+
+	xiaoliaojson[id]['num'] = num;
+
+	$('#xiaoliao'+n+' .num').html(num);
+
+}
+
+function xiaoliaop1(id){
+
+	var innerNumber = $('#xiaoliao'+id).attr('data-innernumber');
+    var length = xiaoliaonum();
+
+		//alert(length);
+
+		if(length >= innerNumber){
+
+			alert('小料只能选择'+innerNumber+'个！');
+
+			return false;
+
+		}
+
+    
+    var num = xiaoliaojson[id]['num'];
+
+	num = parseInt(num);
+
+	num += 1;
+
+	if(num < 2){
+
+		num = 2;
+
+	} 
+
+	xiaoliaojson[id]['num'] = num;
+
+	$('#xiaoliao'+id+' .num').html(num);
 
 }
 

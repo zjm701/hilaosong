@@ -104,7 +104,11 @@ function checkcarttotl(){
 }
 
 </script>
-
+<style>
+#cartallbox{  max-height: 385px;
+  padding-right: 5px;
+  overflow-y: scroll;}
+</style>
 <div class="menu">
 
 <div id="userlogin">
@@ -149,6 +153,10 @@ function checkcarttotl(){
 
 <span id="userid" style="display:none;"></span>
 
+<a href="javascript:;" onClick="if(confirm('修改订餐信息会清空购物篮？')){$.cookie('storeid1', null, { expires: 30 });$.cookie('cartdish', null, { expires: 30 }); $.cookie('cartpack', null, { expires: 30 });$.cookie('cartdiyguodi', null, { expires: 30 }); goLocationWithCity('userform.html'); }">修改订餐信息</a>
+
+<div class="blank5"></div>
+
 <a href="historyorder.html" class="btn btn-danger blcok">历史订单</a>
 
 <div class="blank5"></div>
@@ -172,7 +180,7 @@ function checkcarttotl(){
 <div class="car_gw">
 
 <div class="blank10"></div>
-
+<div id="cartallbox">
 <div id="cartbox">
 
 
@@ -190,7 +198,7 @@ function checkcarttotl(){
 
 
 </div>
-
+</div>
 <div class="blank10"></div>
 
 <div class="xyh_box">

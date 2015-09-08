@@ -54,6 +54,7 @@ nowpage ='diyguodi';
 
 var diyguodijson = {};
 
+
 userid = $.cookie('userid');//
 
 function editdiyguodi(n){
@@ -79,44 +80,10 @@ function editdiyguodi(n){
 	diyguodijson['id2'] = null;
 	
 	storeid = $.cookie('storeid');
+	
+	$.fancybox(
 
-	$.ajax({
-
-        url: apiurl+'getdishes?storeId='+storeid+'&catId=001',
-
-        type: 'GET',
-
-        dataType: 'JSON',//here
-
-        success: function (data) {
-
-				//alert(JSON.stringify(data));
-
-			if(typeof(data.error)=='undefined'){
-
-				//alert(JSON.stringify(data));
-
-				var _html = '';
-
-				$.each(data,function(index,obj){
-
-					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
-
-					
-
-					                    
-
-					_html += '<dl onclick="diyguodisel(this);" data-name="'+obj.storeDishName+'" data-id="'+obj.dishId+'" data-price="'+obj.unitPrice+'" ><dd><img src="'+obj.bigImageAddr+'" width=100 height="100">'+obj.storeDishName+'</dd><dt><span class="f_c6000a">'+obj.unitPrice+'元</span></dt></dl>';
-
-					
-
-					
-
-				});
-
-				$.fancybox(
-
-					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center >'+name+'（修改）</center><center ><div class="btn btn-success" onclick="diyguodiupdate(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
+					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div id="diyguodipager"></div><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center >'+name+'（修改）</center><center ><div class="btn btn-success" onclick="diyguodiupdate(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
 
 					{
 
@@ -125,10 +92,9 @@ function editdiyguodi(n){
 								//getcities('#cities');
 
 								//alert(_html);
+								getNowDish('001','1',storeid);
 
-								$('#guodilist').html(_html);
-
-								$.fancybox.resize();
+								
 
 							}
 
@@ -136,13 +102,7 @@ function editdiyguodi(n){
 
 				);
 
-			
-
-			}
-
-        }
-
-    });
+	
 
 	
 
@@ -280,43 +240,9 @@ function adddiyguodi(){
 	
 	storeid = $.cookie('storeid');
 
-	$.ajax({
+	$.fancybox(
 
-        url: apiurl+'getdishes?storeId='+storeid+'&catId=001',
-
-        type: 'GET',
-
-        dataType: 'JSON',//here
-
-        success: function (data) {
-
-				//alert(JSON.stringify(data));
-
-			if(typeof(data.error)=='undefined'){
-
-				//alert(JSON.stringify(data));
-
-				var _html = '';
-
-				$.each(data,function(index,obj){
-
-					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
-
-					
-
-					                    
-
-					_html += '<dl onclick="diyguodisel(this);" data-name="'+obj.storeDishName+'" data-id="'+obj.dishId+'" data-price="'+obj.unitPrice+'" ><dd><img src="'+obj.bigImageAddr+'" width=100 height="100">'+obj.storeDishName+'</dd><dt><span class="f_c6000a">'+obj.unitPrice+'元</span></dt></dl>';
-
-					
-
-					
-
-				});
-
-				$.fancybox(
-
-					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center ><div class="btn btn-success" onclick="diyguodicreat(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
+					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div id="diyguodipager"></div><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center ><div class="btn btn-success" onclick="diyguodicreat(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
 
 					{
 
@@ -326,23 +252,13 @@ function adddiyguodi(){
 
 								//alert(_html);
 
-								$('#guodilist').html(_html);
-
-								$.fancybox.resize();
+								getNowDish('001','1',storeid);
 
 							}
 
 					}
 
 				);
-
-			
-
-			}
-
-        }
-
-    });
 
 }
 
@@ -436,9 +352,11 @@ function diyguodicreat(n,j){
 
 function getdiyguodi(n,m,l){
 
+	var num = 0;
+    var cartdiyguodi = getcartdiyguodiinfo();
 	$.ajax({
 
-        url: apiurl+'getgds?userId='+n+'',
+        url: apiurl+'getgds?userId='+n+'&pageIndex='+l,
 
         type: 'GET',
 
@@ -456,23 +374,28 @@ function getdiyguodi(n,m,l){
 
 				$.each(data,function(index,obj){
 
+					num = 0;
+					if(typeof(cartdiyguodi[obj.guodiId]) == 'undefined' || cartdiyguodi[obj.guodiId] == null || cartdiyguodi[obj.guodiId] == 'null' || cartdiyguodi[obj.guodiId] == '' ){
+					} else {
+						num = cartdiyguodi[obj.guodiId]['num'];
+					}
+					
 					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
 
 					_html += '<li><span style=" width:200px; height:36px; overflow:hidden;">'+obj.guodiName+'</span>    '; 
-
-					
-
 					                    
 
 					_html += '<span style=" width:220px; height:36px; overflow:hidden;">'+obj.dishName+'</span>';
 
-					_html += '<span style=" width:140px; height:36px; color:#c6000a;">￥'+obj.unitPrice+'</span>';
+					_html += '<span style=" width:120px; height:36px; color:#c6000a;">￥'+obj.unitPrice+'</span>';
 
 					_html += '';
 
 					_html += '<a class="btn btn-danger" data-id="'+obj.guodiId+'" data-name="'+obj.guodiName+'" data-id1="'+obj.dishId+'" data-id2="'+obj.dishId2+'" onclick="editdiyguodi(this)">修改</a> ';
 
 					_html += '<a class="btn btn-danger" onclick="deldiyguodi(\''+obj.guodiId+'\')">删除</a> ';
+					
+					_html += '<a class="num">'+num+'</a> ';
 
 					_html += '<a class="btn btn-danger" data-id="'+obj.guodiId+'" data-name="'+obj.guodiName+'" data-price="'+obj.unitPrice+'"   onclick="cartdiyguodi(this)">选取</a>';
 
@@ -537,7 +460,67 @@ function getdiyguodi(n,m,l){
     });
 
 }
+function getNowDish(n,l,p){
+	$.ajax({
 
+        url: apiurl+'getdishes?storeId='+p+'&catId=001&pageSize=8&pageIndex='+l,
+
+        type: 'GET',
+
+        dataType: 'JSON',//here
+
+        success: function (data) {
+
+				//alert(JSON.stringify(data));
+
+			if(typeof(data.error)=='undefined'){
+
+				//alert(JSON.stringify(data));
+
+				var _html = '';
+
+				$.each(data,function(index,obj){
+
+					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
+
+					
+
+					                    
+
+					_html += '<dl onclick="diyguodisel(this);" data-name="'+obj.storeDishName+'" data-id="'+obj.dishId+'" data-price="'+obj.unitPrice+'" ><dd><img src="'+obj.bigImageAddr+'" width=100 height="100">'+obj.storeDishName+'</dd><dt><span class="f_c6000a">'+obj.unitPrice+'元</span></dt></dl>';
+
+					
+
+					
+
+				});
+
+				$('#guodilist').html(_html);
+				$.ajax({
+				  url: apiurl+'cntdishes?storeId='+p+'&catId='+catid+'&pageSize=8',
+				  type: 'GET',
+				  dataType: 'JSON',//here
+				  success: function (data) {
+						  //alert(JSON.stringify(data));
+					  if(typeof(data.error)=='undefined'){
+						  var pagetotal = data.totalPagesCount;
+						  $("#diyguodipager").pager({ pagenumber: l, pagecount: pagetotal, buttonClickCallback: newDishPageClick });
+		  
+					  
+					  }
+				  }
+			  });
+
+		     $.fancybox.resize();
+
+			
+
+			}
+
+        }
+
+    });
+}
 $(document).ready(function(e) {
 
     getcategories(cityid,'#catul',cityname);
@@ -557,6 +540,11 @@ $(document).ready(function(e) {
 PageClick = function(pageclickednumber) {
 
 	getdiyguodi(userid,'#diyguodilist',pageclickednumber);
+
+}
+newDishPageClick = function(pageclickednumber) {
+
+	getNowDish('001',pageclickednumber,storeid);
 
 }
 

@@ -33,7 +33,7 @@ $(document).ready(function(e) {
 	//页面加载
 	if(nowpage != 'index' && nowpage != 'dish' && nowpage != 'pack'){
 		//getcurrentuser();
-		//getuser();
+		//if(getuser()){return false;}
 	}
 	if(nowpage == 'index'){
 		//getcurrentuser();
@@ -456,8 +456,8 @@ function getcartdishinfo(){
 }
 
 function addcarthalf(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
@@ -500,8 +500,8 @@ function delcart(n){
 	getcartfee();
 }
 function cartdishd(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
@@ -536,8 +536,8 @@ function cartdishd(n){
 }
 
 function cartdishd1(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
@@ -559,8 +559,8 @@ function cartdishd1(n){
 	getcartfee();
 }
 function cartdishp1(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
@@ -584,8 +584,8 @@ function cartdishp1(n){
 }
 
 function cartdishp(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
@@ -618,6 +618,8 @@ function cartdishp(n){
 	getcartfee();
 }
 function cartpack(n,m,l){
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	if(nowpage != 'packinfo'){
 		$.cookie("packid", n, { expires: 30 }); 
 		$.cookie("packname", m, { expires: 30 }); 
@@ -629,8 +631,8 @@ function cartpack(n,m,l){
 }
 
 function cartpackd1(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
@@ -653,8 +655,8 @@ function cartpackd1(n){
 	getcartfee();
 }
 function cartpackp1(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
@@ -693,7 +695,7 @@ function getcartpackinfo(){
 			//alert(obj);
 			_html +='<div id="'+obj.id+'" class="cartli">';
 			_html +='<div class="carttitle">'+obj.name+'</div>';
-			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+obj.id+'\')" />';
+			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+obj.id+'\')" /> ';
 			_html +='<span  onclick="delcartpack(\''+obj.id+'\');">X</span></div></div>';
 			_html +='</div>';
 			}
@@ -715,9 +717,10 @@ function delcartpack(n){
 	getcartfee();
 }
 function cartdiyguodi(n){
-	getuser();
-	getuserform();
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
 	var tmp = $.cookie("userid");
+	var tmp1 =0;
 	if(typeof(tmp) == 'undefined' || tmp == 'null'){
 	} else {
 		//$(this).attr();
@@ -741,11 +744,63 @@ function cartdiyguodi(n){
 		_html ='';
 		_html +='<div id="'+id+'" class="cartli">';
 		_html +='<div class="carttitle">'+name+'</div>';
-		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num">×'+cartdiyguodi[id]['num']+' ';
-		_html +='<span  onclick="delcart(\''+id+'\');">X</span></div></div>';
+		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdiyguodid1(\''+id+'\')" /> '+cartdiyguodi[id]['num']+' <img src="images/img_jia.gif" onclick="cartdiyguodip1(\''+id+'\')" /> ';
+		_html +='<span  onclick="delcartdiyguodi(\''+id+'\');">X</span></div></div>';
 		_html +='</div>';
-		noticeinfo('您选择了'+name+''+cartdiyguodi[id]['num']+'份！');
+		//noticeinfo('您选择了'+name+''+cartdiyguodi[id]['num']+'份！');
+		tmp1 = cartdiyguodi[id]['num'];
+		$(n).parent().find('.num').html(tmp1);
 		$('#cartdiyguodibox').append(_html);
+	}
+	getcartfee();
+}
+function cartdiyguodid1(n){
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
+	var tmp = $.cookie("userid");
+	if(typeof(tmp) == 'undefined' || tmp == 'null'){
+	} else {
+		//$(this).attr();
+		var cartdiyguodi = {};
+		cartdiyguodi = getcartdiyguodiinfo();
+		//alert(JSON.stringify(cartpack));
+		if(cartdiyguodi[n] == null ){
+		} else {
+			if(cartdiyguodi[n]['num'] > 1){
+				cartdiyguodi[n]['num'] = parseInt(cartdiyguodi[n]['num']);
+				cartdiyguodi[n]['num'] -= 1;
+				
+				$.cookie("cartdiyguodi",JSON.stringify(cartdiyguodi), { expires: 30 });
+				cartdiyguodi = getcartdiyguodiinfo();
+				
+			}
+		}
+	}
+	getcartfee();
+}
+function cartdiyguodip1(n){
+	if(getuser()){return false;}
+	if(getuserform()){return false;}
+	var tmp = $.cookie("userid");
+	if(typeof(tmp) == 'undefined' || tmp == 'null'){
+	} else {
+		//$(this).attr();
+		var  cartdiyguodi = {};
+		 cartdiyguodi = getcartdiyguodiinfo();
+		
+		
+		if(cartdiyguodi[n] == null ){
+		} else {
+			if(cartdiyguodi[n]['num'] > 0){
+				cartdiyguodi[n]['num'] = parseInt(cartdiyguodi[n]['num']);
+				cartdiyguodi[n]['num'] += 1;
+		        //alert(JSON.stringify(cartpack));
+				
+				$.cookie("cartdiyguodi",JSON.stringify(cartdiyguodi), { expires: 30 });
+				cartdiyguodi = getcartdiyguodiinfo();
+				
+			}
+		}
 	}
 	getcartfee();
 }
@@ -763,7 +818,7 @@ function getcartdiyguodiinfo(){
 			//alert(obj);
 			_html +='<div id="'+obj.id+'" class="cartli">';
 			_html +='<div class="carttitle">'+obj.name+'</div>';
-			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num">×'+obj.num+' ';
+			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdiyguodid1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartdiyguodip1(\''+obj.id+'\')" /> ';
 			_html +='<span  onclick="delcartdiyguodi(\''+obj.id+'\');">X</span></div></div>';
 			_html +='</div>';
 			}
@@ -786,12 +841,12 @@ function delcartdiyguodi(n){
 }
 function getuser(){
 	var tmp = $.cookie("userid");
-	if(typeof(tmp) == 'undefined' || tmp == 'null'){
+	if(typeof(tmp) == 'undefined' || tmp == 'null' || tmp == null || tmp == ''){
 		
 		alert('请您先登陆！');
 		goLocationWithCity('index.html');
 		//var tmp1 = setTimeout(function () { /*window.location = './';*/goLocationWithCity('index.html');} ,1000);
-		return false;
+		return true;
 	}
 	var tmp1 = $.cookie("storeid1");
 	if(typeof(tmp1) == 'undefined' || tmp1 == 'null' || tmp1 == null || tmp1 == ''){
@@ -799,20 +854,20 @@ function getuser(){
 		//noticeinfo('请您先登陆！');
 		goLocationWithCity('userform.html');
 		//var tmp1 = setTimeout(function () { /*window.location = './userform.html';*/goLocationWithCity('userform.html');} ,1000);
-		return false;
+		return true;
 	}
-	//return true;
+	return false;
 }
 function getuserform(){
-	var tmp = $.cookie("storeid1");
-	if(typeof(tmp) == 'undefined' || tmp == 'null' || tmp == null || tmp == ''){
+	//var tmp = $.cookie("storeid1");
+	//if(typeof(tmp) == 'undefined' || tmp == 'null' || tmp == null || tmp == ''){
 		
 		//noticeinfo('请您先登陆！');
-		goLocationWithCity('userform.html');
-		//var tmp1 = setTimeout(function () { /*window.location = './userform.html';*/goLocationWithCity('userform.html');} ,1000);
-		return false;
-	}
-	//return true;
+		//goLocationWithCity('userform.html');
+		////////var tmp1 = setTimeout(function () { /*window.location = './userform.html';*/goLocationWithCity('userform.html');} ,1000);
+		//return true;
+	//}
+	return false;
 }
 
 function gethistoryorders(n,m,l){

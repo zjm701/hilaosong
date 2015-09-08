@@ -278,6 +278,139 @@ function orderform1type2(){
 
 }
 
+function orderform1type2new(n){
+
+	$.ajax({
+
+        url: apiurl+'getstores2?cityId='+cityid+'',
+
+        type: 'GET',
+
+        dataType: 'JSON',//here
+
+        success: function (data) {
+
+				//alert(JSON.stringify(data));
+
+			if(typeof(data.error)=='undefined'){
+
+				$('#storeid2').empty();
+
+				_html = '<option value="">请选择门店自取</option>';
+
+				$.each(data,function(index,obj){
+
+					if(typeof(obj) == 'undefined' ||  obj == null){
+
+					} else {
+
+					//alert(obj);
+
+					_html +='<option value="'+obj.storeId+'" data-addr="'+obj.storeAddress+'" >';
+
+					_html +=''+obj.storeName+'，电话：';
+
+					_html +='';
+
+					_html +=''+obj.storeTele+'';
+
+					_html +='</option>';
+					    //alert(obj.storeId);
+					   // alert(n);
+					if(obj.storeId == n){
+					    //alert(n);
+						$('#mendiandizhi').html(obj.storeAddress);
+					}
+
+						
+
+					}
+
+				});
+
+				$('#storeid2').html(_html);
+				$('#storeid2 option[value='+n+']').attr("selected",true);
+
+			
+
+			}
+
+        }
+
+    });
+
+}
+function getType0Md(){
+	
+	var addr = $("input[name='detailAddress']").val();
+	if(addr == '' || addr == null){
+		alert('请填写地址');
+		return false;
+	}
+	$.ajax({
+
+        url: apiurl+'getstores0?cityId='+cityid+'&address='+addr+'',
+
+        type: 'GET',
+
+        dataType: 'JSON',//here
+
+        success: function (data) {
+
+				//alert(JSON.stringify(data));
+
+			if(typeof(data.error)=='undefined'){
+
+				//alert(JSON.stringify(data));
+
+				var _html = '';
+
+				$.each(data,function(index,obj){
+
+					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
+
+					
+
+					                    
+
+					_html += '<dl onclick="$(\'input[name=\"storeId\"]\').val('+obj.storeId+');" >'+obj.storeName+' '+obj.storeTele+'</dd><dt>'+obj.storeAddress+'</dt></dl>';
+
+					
+
+					
+
+				});
+
+				$.fancybox(
+
+					'<center ></center><div> <ul id="newstorelist"></ul><div class="clear"></div>',
+
+					{
+
+							'onComplete'		: function() {
+
+								//getcities('#cities');
+
+								//alert(_html);
+
+								$('#newstorelist').html(_html);
+
+								$.fancybox.resize();
+
+							}
+
+					}
+
+				);
+
+			
+
+			}
+
+        }
+
+    });
+}
 $(document).ready(function(e) {
 
 	 
@@ -431,6 +564,49 @@ $(document).ready(function(e) {
 		$("#mendiandizhi").html(tmp1);
 
 	});
+	
+	
+	var userformjson = eval('(' + $.cookie("userformjson") + ')');
+	 if(typeof(userformjson) == 'undefined' ||  userformjson == null ||  userformjson == 'null' ||  userformjson == ''){
+		 //alert('请填写订餐信息');
+	 } else {
+	 
+	 //alert(JSON.stringify(userformjson));
+	 
+	 $("input[name='storeId']").val(userformjson.storeId);
+
+				$("input[name='contactName']").val(userformjson.contactName);
+
+				$("input[name='contactPhone']").val(userformjson.contactPhone);
+
+				$("input[name='participantNumber']").val(userformjson.participantNumber);
+
+
+
+				//$("input[name='payChannel']").val(userformjson.payChannel);
+
+				
+
+				//$("input[name='orderType']").val(userformjson.contactName);
+				
+				$("input[name='orderType'][value="+userformjson.orderType+"]").attr("checked",true); 
+				
+				if(userformjson.orderType == '2'){
+					//alert(userformjson.orderType);
+					$('#dizhi').hide();
+					$('#mendian').show();
+				}
+				
+						  
+		  
+			    orderform1type2new(userformjson.storeId);
+
+				$("input[name='cityId']").val(userformjson.cityId);
+
+					$("input[name='detailAddress']").val(userformjson.detailAddress);
+				
+				$("input[name='deliveryFee']").val(userformjson.deliveryFee);
+	 }
 
 });
 
@@ -654,7 +830,8 @@ f
 
 <div id="dizhi">
 
-<span class="m_t_10">地址：</span><span class="m_t_10"><input name="detailAddress" type="text" style="width:270px;" onblur="ordertype0addr(this);"  value="" />
+<!--<span class="m_t_10">地址：</span>--><span class="m_t_10"><input name="detailAddress" type="text" style="width:270px;" onblur="ordertype0addr(this);"  value="" /> 
+<a href="javascript:void(0);" onclick="getType0Md();">选择外卖门店</a>
 
 <input type="hidden" name="cityId" value="" />
 

@@ -1,266 +1,266 @@
- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<meta http-equiv="x-ua-compatible" content="ie=7" /> 
-
-<title>确认订单</title>
-
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
-
-<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
-
-<link rel="stylesheet" type="text/css" href="style/base.css"/>
-
-<link rel="stylesheet" type="text/css" href="style/index.css"/>
-
-<script type="text/javascript"src="js/json2.js"></script>
-
-<script src="js/jquery.min.js"></script>
-
-<script src="js/jquery-migrate.min.js"></script>
-
-<script src="js/jquery-ui.min.js"></script>
-
-<script src="js/jquery.cookie.js"></script>
-
-<script src="js/jquery.fancybox-1.3.4.js"></script>
-
-<script src="js/jquery.mousewheel.js"></script>
-
-<script src="js/jquery.easing.js"></script>
-
-<script type="text/javascript" src="js/md5.js"></script>
-
-<script src="js/common.js"></script>
-
-<script src="js/config.js"></script>
-
-<style>
-
-
-
-</style>
-
-<script>
-
-nowpage ='pay';
-
-
-
-$(document).ready(function(e) {
-
-    getcategories(cityid,'#catul',cityname);
-
-	//$(n).parent().find('li').removeClass('li_hover');
-
-	//
-
-});
-
-</script>
-
-</head>
-
-
-
-<body>
-
-<div id="top1">
-
-<div id="header">
-
-<a href="http://hi.haidilao.com:80/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0"><img src="http://hi.haidilao.com:80/pages/haidl/images/logo.png" alt="" id="logo" /></a>
-
-
-
-
-
-<ul id="nav">
-
-
-
-	<li><a href="http://hi.haidilao.com/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0#height=362" id="indexTop">Hi捞汇首页</a></li>
-
-	<li>
-
-		<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbS9DYXRlci9zdG9yZWxpc3QuYWN0aW9uP29yZGVyVHlwZT0xJnNzb2lkPW51bGwmY3VzdG9tZXJLZXk9JmxvZ2luSWQ9MCZ0eXBlPTM=#height=920" >Hi订餐</a>
-
-	</li>
-
-	<li><a href="./"  class="now">Hi捞送</a></li>
-
-	<li>
-
-		<a style="cursor:pointer"  href="http://hi.haidilao.com/pages/haidl/member.jsp?ssoid=null&customerKey=&loginId=0">Hi地盘</a>
-
-	
-
-	</li>
-
-	<li><a style="cursor:pointer"  href="http://hi.haidilao.com:80/pages/promotion/promotion_index.jsp?ssoid=null&customerKey=&loginId=0">Hi活动</a></li>
-
-	<li><a style="cursor:pointer"  href="http://cater.haidilao.com/hifarm/index.html">Hi农场</a></li>
-
-		
-
-</ul>
-
-<div id="user_nav">
-
-	   
-
-	
-
-	欢迎来到Hi捞汇社区！ 
-
-	<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0w" style="cursor:pointer;border-left:1px dotted #FFFFFF;">iPhone版</a>
-
-	<a style="border:none;cursor:pointer" href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0x">Android版</a>
-
-	<a id ="loginTop" style="cursor:pointer;border-left:1px dotted #FFFFFF;" onclick="loginshow()">登录</a><a href="logins/registerJump.action">注册</a>
-
-	
-
-	<a href="http://hi.haidilao.com:80/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci9oZWxwL3ByZUhlbHBJbmZvLmFjdGlvbg==">帮助</a>
-
-	<a href="./historyorder.html">订单查询</a>
-
-	<a href="http://www.haidilao.com" style="border:none;cursor:pointer">企业门户</a>
-
-</div>
-
-
-
-</div>
-
-</div>
-
-<div class="box_01"> 
-
-<div class="left left_01 m_t_15" >
-
-<img src="images/left_img.jpg" width="144" border="0" usemap="#Map" id="id_left_01"/>
-
-  <map name="Map" id="Map">
-
-    <area shape="circle" coords="134,11,8" href="#" onclick="ceng()" />
-
-  </map>
-
-</div>
-
-<div class="left mid">
-
-<div class=" f14px fB m_t_35">选择支付方式</div>
-
-<div class="zf_list m_t_10">
-
-<div><span><input type="radio" /></span><span>货到付款</span></div>
-
-<div class="clear"></div>
-
-<div class=" m_t_15"><span><input type="radio" /></span><span>网上支付</span></div>
-
-<div class="clear"></div>
-
-
-
-<div class="p_l_20 m_t_15"><span class="p_t_20"><input type="radio" /></span><span><img src="images/zf_img.jpg" /></span>
-
-<span  class="p_t_20"><input type="radio" /></span><span><img src="images/weixin_img.jpg" /></span></div>
-
-<div class="clear"></div>
-
-</div>
-
-<div class="bank_list">
-
-<ul><li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank01.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank02.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank03.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank04.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank05.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank06.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank07.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank08.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank09.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank10.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank11.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank12.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank13.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank14.jpg" /></span></li>
-
-<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank15.jpg" /></span></li>
-
-</ul>
-
-<div class="clear"></div>
-
-</div>
-
-
-
-<div class="btn_queren">确认</div>
-
-
-
-
-
-<div class="clear"></div>
-
-<div class="foot">
-
-<span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
-
-<span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>
-
-<span class="p_l_15"><!--<select></select>--></span>
-
-</div>
-
-</div>
-
-
-
-<div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
-
-  <map name="id_right_01Map" id="id_right_01Map">
-
-    <area shape="rect" coords="1,4,24,22" href="#" onclick="right_ceng()" />
-
-    <area shape="rect" coords="8,222,87,242" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes" />
-
-    <area shape="rect" coords="92,223,163,241" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes"  />
-
-  </map>
-
-</div>
-
-
-
-</div>
-
-
-
-</body>
-
-</html>
-
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<meta http-equiv="x-ua-compatible" content="ie=7" /> 
+
+<title>确认订单</title>
+
+<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
+
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
+
+<link rel="stylesheet" type="text/css" href="style/base.css"/>
+
+<link rel="stylesheet" type="text/css" href="style/index.css"/>
+
+<script type="text/javascript"src="js/json2.js"></script>
+
+<script src="js/jquery.min.js"></script>
+
+<script src="js/jquery-migrate.min.js"></script>
+
+<script src="js/jquery-ui.min.js"></script>
+
+<script src="js/jquery.cookie.js"></script>
+
+<script src="js/jquery.fancybox-1.3.4.js"></script>
+
+<script src="js/jquery.mousewheel.js"></script>
+
+<script src="js/jquery.easing.js"></script>
+
+<script type="text/javascript" src="js/md5.js"></script>
+
+<script src="js/common.js"></script>
+
+<script src="js/config.js"></script>
+
+<style>
+
+
+
+</style>
+
+<script>
+
+nowpage ='pay';
+
+
+
+$(document).ready(function(e) {
+
+    getcategories(cityid,'#catul',cityname);
+
+	//$(n).parent().find('li').removeClass('li_hover');
+
+	//
+
+});
+
+</script>
+
+</head>
+
+
+
+<body>
+
+<div id="top1">
+
+<div id="header">
+
+<a href="http://hi.haidilao.com:80/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0"><img src="http://hi.haidilao.com:80/pages/haidl/images/logo.png" alt="" id="logo" /></a>
+
+
+
+
+
+<ul id="nav">
+
+
+
+	<li><a href="http://hi.haidilao.com/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0#height=362" id="indexTop">Hi捞汇首页</a></li>
+
+	<li>
+
+		<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbS9DYXRlci9zdG9yZWxpc3QuYWN0aW9uP29yZGVyVHlwZT0xJnNzb2lkPW51bGwmY3VzdG9tZXJLZXk9JmxvZ2luSWQ9MCZ0eXBlPTM=#height=920" >Hi订餐</a>
+
+	</li>
+
+	<li><a href="./"  class="now">Hi捞送</a></li>
+
+	<li>
+
+		<a style="cursor:pointer"  href="http://hi.haidilao.com/pages/haidl/member.jsp?ssoid=null&customerKey=&loginId=0">Hi地盘</a>
+
+	
+
+	</li>
+
+	<li><a style="cursor:pointer"  href="http://hi.haidilao.com:80/pages/promotion/promotion_index.jsp?ssoid=null&customerKey=&loginId=0">Hi活动</a></li>
+
+	<li><a style="cursor:pointer"  href="http://cater.haidilao.com/hifarm/index.html">Hi农场</a></li>
+
+		
+
+</ul>
+
+<div id="user_nav">
+
+	   
+
+	
+
+	欢迎来到Hi捞汇社区！ 
+
+	<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0w" style="cursor:pointer;border-left:1px dotted #FFFFFF;">iPhone版</a>
+
+	<a style="border:none;cursor:pointer" href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0x">Android版</a>
+
+	<a id ="loginTop" style="cursor:pointer;border-left:1px dotted #FFFFFF;" onclick="loginshow()">登录</a><a href="logins/registerJump.action">注册</a>
+
+	
+
+	<a href="http://hi.haidilao.com:80/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci9oZWxwL3ByZUhlbHBJbmZvLmFjdGlvbg==">帮助</a>
+
+	<a href="./historyorder.html">订单查询</a>
+
+	<a href="http://www.haidilao.com" style="border:none;cursor:pointer">企业门户</a>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+<div class="box_01"> 
+
+<div class="left left_01 m_t_15" >
+
+<img src="images/left_img.jpg" width="144" border="0" usemap="#Map" id="id_left_01"/>
+
+  <map name="Map" id="Map">
+
+    <area shape="circle" coords="134,11,8" href="#" onclick="ceng()" />
+
+  </map>
+
+</div>
+
+<div class="left mid">
+
+<div class=" f14px fB m_t_35">选择支付方式</div>
+
+<div class="zf_list m_t_10">
+
+<div><span><input type="radio" /></span><span>货到付款</span></div>
+
+<div class="clear"></div>
+
+<div class=" m_t_15"><span><input type="radio" /></span><span>网上支付</span></div>
+
+<div class="clear"></div>
+
+
+
+<div class="p_l_20 m_t_15"><span class="p_t_20"><input type="radio" /></span><span><img src="images/zf_img.jpg" /></span>
+
+<span  class="p_t_20"><input type="radio" /></span><span><img src="images/weixin_img.jpg" /></span></div>
+
+<div class="clear"></div>
+
+</div>
+
+<div class="bank_list">
+
+<ul><li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank01.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank02.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank03.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank04.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank05.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank06.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank07.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank08.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank09.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank10.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank11.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank12.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank13.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank14.jpg" /></span></li>
+
+<li><span class="p_t_15 p_r_10"><input type="radio" /></span><span><img src="images/bank15.jpg" /></span></li>
+
+</ul>
+
+<div class="clear"></div>
+
+</div>
+
+
+
+<div class="btn_queren">确认</div>
+
+
+
+
+
+<div class="clear"></div>
+
+<div class="foot">
+
+<span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
+
+<span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>
+
+<span class="p_l_15"><!--<select></select>--></span>
+
+</div>
+
+</div>
+
+
+
+<div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
+
+  <map name="id_right_01Map" id="id_right_01Map">
+
+    <area shape="rect" coords="1,4,24,22" href="#" onclick="right_ceng()" />
+
+    <area shape="rect" coords="8,222,87,242" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes" />
+
+    <area shape="rect" coords="92,223,163,241" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes"  />
+
+  </map>
+
+</div>
+
+
+
+</div>
+
+
+
+</body>
+
+</html>
+
