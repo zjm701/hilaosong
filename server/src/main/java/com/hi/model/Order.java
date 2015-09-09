@@ -82,6 +82,11 @@ public class Order extends Pagenation {
 	private BigDecimal potNumber;
 
 	/**
+	 * 锅具套数
+	 */
+	private BigDecimal panNumber;
+
+	/**
 	 * 炉具回收状态0-无锅；1-有锅，未收；2-有锅，已收
 	 */
 	private String potStatus;
@@ -258,6 +263,14 @@ public class Order extends Pagenation {
 
 	public void setPotNumber(BigDecimal potNumber) {
 		this.potNumber = potNumber;
+	}
+
+	public BigDecimal getPanNumber() {
+		return panNumber;
+	}
+
+	public void setPanNumber(BigDecimal panNumber) {
+		this.panNumber = panNumber;
 	}
 
 	public String getPotStatus() {

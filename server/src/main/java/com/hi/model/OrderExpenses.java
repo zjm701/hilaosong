@@ -33,6 +33,11 @@ public class OrderExpenses {
 	 * 送餐费用
 	 */
 	private String deliveryFee;
+	
+	/**
+	 * 炉锅 押金
+	 */
+	private BigDecimal depositFee;
 
 	/**
 	 * 送餐费用备注（表示选择指定费用时必填的备注信息）
@@ -112,6 +117,14 @@ public class OrderExpenses {
 
 	public void setDeliveryFee(String deliveryFee) {
 		this.deliveryFee = deliveryFee;
+	}
+
+	public BigDecimal getDepositFee() {
+		return depositFee;
+	}
+
+	public void setDepositFee(BigDecimal depositFee) {
+		this.depositFee = depositFee;
 	}
 
 	public String getFeeMemo() {

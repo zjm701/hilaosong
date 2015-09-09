@@ -25,6 +25,7 @@ $(function() {
 				custMemo: $.trim($("input[name='custMemo']").val()),
 				payChannel: $.trim($("input[name='payChannel']").val()),
 				potNumber: $.trim($("input[name='potNumber']").val()),
+				panNumber: $.trim($("input[name='panNumber']").val()),
 				orderType: $.trim($("input[name='orderType']").val()),
 				address: {
 					provinceId: $.trim($("input[name='provinceId']").val()),
@@ -34,6 +35,7 @@ $(function() {
 				expenses: {
 					waiterFee: $.trim($("input[name='waiterFee']").val()),
 					deliveryFee: $.trim($("input[name='deliveryFee']").val()),
+					depositFee: $.trim($("input[name='depositFee']").val()),
 					dishPrice: $.trim($("input[name='dishPrice']").val()),
 					totalPrice: $.trim($("input[name='totalPrice']").val())
 				},
@@ -118,13 +120,26 @@ $(function() {
 								</td>
 							</tr>
 							<tr>
+								<th width="120">选择炉锅</th>
+								<td>炉具押金400， 锅具押金100</td>
+							</tr>
+							<tr>
+								<th width="120"></th>
+								<td>
+									炉具数量：<input type="text" name="potNumber" style="width: 100px" value="0">
+									锅具数量：<input type="text" name="panNumber" style="width: 100px" value="0">  0表示自备
+								</td>
+							</tr>
+							<tr>
 								<th width="120">金额:</th>
 								<td>
-									服务费：<input type="text" name="waiterFee" style="width: 50px" value="10">
-									外送费：<input type="text" name="deliveryFee" style="width: 50px" value="20">
 									菜品价：<input type="text" name="dishPrice" style="width: 50px" value="88">
-									总价:<input type="text" name="totalPrice" style="width: 60px" value="118">总价=菜品价+外送费+服务费
-								</td>							</tr>
+									外送费：<input type="text" name="deliveryFee" style="width: 50px" value="10">
+									服务费：<input type="text" name="waiterFee" style="width: 50px" value="8.8">
+									押金：<input type="text" name="depositFee" style="width: 50px" value="0">
+									总价:<input type="text" name="totalPrice" style="width: 60px" value="106.8">总价=菜品价+外送费+服务费+押金
+								</td>
+							</tr>
 							<tr>
 								<th width="120">是否需要发票:</th>
 								<td>不需要<input type="radio" name="needReciept" value="0" checked/>&ensp;需要<input type="radio" name="needReciept" value="1"/> 
@@ -139,10 +154,6 @@ $(function() {
 							<tr>
 								<th width="120">备注:</th>
 								<td><input type="text" name="custMemo" style="width: 440px" value="请美女送餐"></td>
-							</tr>
-							<tr>
-								<th width="120">炉具套数:</th>
-								<td><input type="text" name="potNumber" style="width: 440px" value="1"></td>
 							</tr>
 							<tr>
 								<th width="120">支付方式:</th>

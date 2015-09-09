@@ -82,7 +82,8 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 				+ " o.storeId as \"storeId\", s.storename as \"storeName\", o.contactName as \"contactName\", "
 				+ " o.contactPhone as \"contactPhone\", participantNumber as \"participantNumber\", "
 				+ " to_char(o.dinningTime, " + DT_FORMAT + ") as \"dinningTime\", o.status as \"status\", "
-				+ " o.potNumber as \"potNumber\", o.potStatus as \"potStatus\", o.orderType as \"orderType\", o.deliveryType as \"deliveryType\", "
+				+ " o.potNumber as \"potNumber\", o.panNumber as \"panNumber\", o.potStatus as \"potStatus\", "
+				+ " o.orderType as \"orderType\", o.deliveryType as \"deliveryType\", "
 				+ " o.recieptDept as \"recieptDept\", o.payChannel as \"payChannel\", o.custMemo as \"custMemo\", "
 				+ " o.orderNature as \"orderNature\", o.payStatus as \"payStatus\", "
 				+ " to_char(created_dt, " + DT_FORMAT + ") as \"createdDt\" "
@@ -169,16 +170,16 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 		StringBuilder sb = new StringBuilder();
 		sb.append("insert into T_CATER_ORDERMAININFO ")
 				.append("(serialId, orderId, customerId, storeId, contactName, contactPhone, sex, participantNumber, dinningTime, order_dinning_time_type, ")
-				.append(" status, potNumber, potStatus, orderType, deliveryType, recieptDept, payChannel, payStatus, custMemo, order_src, created_by, ")
+				.append(" status, potNumber, panNumber, potStatus, orderType, deliveryType, recieptDept, payChannel, payStatus, custMemo, order_src, created_by, ")
 				.append(" created_dt, ordernature, feedbackable, channel, arrived) values ('").append(o.getSerialId()).append("', '")
 				.append(o.getOrderId()).append("', '").append(o.getCustomerId()).append("', '").append(o.getStoreId()).append("', '")
 				.append(o.getContactName()).append("', '").append(o.getContactPhone()).append("', '").append(o.getSex()).append("', '")
 				.append(o.getParticipantNumber()).append("', to_date('").append(o.getDinningTime()).append("', ").append(DT_FORMAT)
 				.append("), '").append(o.getDinningTimeType()).append("', '").append(o.getStatus()).append("', '").append(o.getPotNumber())
-				.append("', '").append(o.getPotStatus()).append("', '").append(o.getOrderType()).append("', '").append(o.getDeliveryType())
-				.append("', '").append(o.getRecieptDept()).append("', '").append(o.getPayChannel()).append("', '").append(o.getPayStatus())
-				.append("', '").append(o.getCustMemo()).append("', '").append(o.getOrderSrc()).append("', '").append(o.getCustomerId())
-				.append("', sysdate, '2', '1', '0', '0') ");
+				.append("', '").append(o.getPanNumber()).append("', '").append(o.getPotStatus()).append("', '").append(o.getOrderType())
+				.append("', '").append(o.getDeliveryType()).append("', '").append(o.getRecieptDept()).append("', '")
+				.append(o.getPayChannel()).append("', '").append(o.getPayStatus()).append("', '").append(o.getCustMemo()).append("', '")
+				.append(o.getOrderSrc()).append("', '").append(o.getCustomerId()).append("', sysdate, '2', '1', '0', '0') ");
 
 		boolean saveflag = (this.executiveSql(sb.toString(), null) == 1);
 		if (saveflag) {
@@ -197,10 +198,11 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 			if (o.getExpenses() != null) {
 				sb.setLength(0);
 				OrderExpenses e = o.getExpenses();
-				sb.append("insert into T_CATER_ORDEREXPENSESINFO ").append("(id, waiterFee, deliveryFee, dishPrice, totalPrice, orderId) ")
+				sb.append("insert into T_CATER_ORDEREXPENSESINFO ")
+						.append("(id, waiterFee, deliveryFee, depositFee, dishPrice, totalPrice, orderId) ")
 						.append("values (seq_cater_orderexpensesinfo.nextval, '").append(e.getWaiterFee()).append("', '")
-						.append(e.getDeliveryFee()).append("', '").append(e.getDishPrice()).append("', '").append(e.getTotalPrice())
-						.append("', '").append(o.getOrderId()).append("') ");
+						.append(e.getDeliveryFee()).append("', '").append(e.getDepositFee()).append("', '").append(e.getDishPrice())
+						.append("', '").append(e.getTotalPrice()).append("', '").append(o.getOrderId()).append("') ");
 				saveflag = (this.executiveSql(sb.toString(), null) == 1);
 			}
 		}
