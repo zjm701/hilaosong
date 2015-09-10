@@ -2,6 +2,9 @@ package com.hi.model;
 
 import java.math.BigDecimal;
 
+import com.hi.common.HIConstants;
+import com.hi.tools.StringTools;
+
 public class PackDish {
 
 	/**
@@ -183,7 +186,11 @@ public class PackDish {
 	}
 
 	public void setBigImageAddr(String bigImageAddr) {
-		this.bigImageAddr = bigImageAddr;
+		if (StringTools.isEmpty(bigImageAddr)) {
+			this.bigImageAddr = bigImageAddr;
+		} else {
+			this.bigImageAddr = HIConstants.PRE_IMAGE + bigImageAddr;
+		}
 	}
 
 	public String getMediumImageAddr() {

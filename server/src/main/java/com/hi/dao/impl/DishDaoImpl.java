@@ -59,10 +59,11 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	public List<Dish> getDishes(String storeId, String categoryId, int pageIndex, int pageSize) {
 		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
 		String sql = "select d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
-				+ " d.bigImageAddr as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
+				+ " i.imgurl as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
 				+ " from T_CATER_DISH d "
 				+ " inner join t_cater_dishtype dt on d.dishCategory = dt.dishTypeID "
-				+ " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
+				+ "	left join T_CATER_IMAGE i on d.dishId = i.dishId "
+	            + " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
 				+ "		where d2.type = '1' and d2.dishShareType = '2' " + sql2 + " ) hd"
 				+ "	on hd.linkStoreDishId = d.storeDishId "
 				+ " where d.type = '1' and d.dishShareType in ('1', '3') " + sql2 + " order by dishSort asc, d.dishId asc";
@@ -79,11 +80,13 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	}
 	
 	public Dish getDishDetail(String dishId) {
-		String sql = "select dishid as \"dishId\", dishname as \"dishName\", guideprice as \"guidePrice\", unitprice as \"unitPrice\", "
-				+ " description as \"description\", isrequired as \"isRequired\", dishunit as \"dishUnit\", dishweight as \"dishWeight\", "
-				+ " dishsharetype as \"dishShareType\", isrecommend as \"isRecommend\", linkstoredishid as \"linkStoreDishId\", type as \"type\", "
-				+ " bigImageAddr as \"bigImageAddr\", mediumImageAddr as \"mediumImageAddr\", storeDishId as \"storeDishId\" "
-				+ " from T_CATER_DISH " + " where dishId = :dishId ";
+		String sql = "select d.dishid as \"dishId\", d.dishname as \"dishName\", d.guideprice as \"guidePrice\", d.unitprice as \"unitPrice\", "
+				+ " d.description as \"description\", d.isrequired as \"isRequired\", d.dishunit as \"dishUnit\", d.dishweight as \"dishWeight\", "
+				+ " d.dishsharetype as \"dishShareType\", d.isrecommend as \"isRecommend\", d.linkstoredishid as \"linkStoreDishId\", d.type as \"type\", "
+				+ " i.imgurl as \"bigImageAddr\", d.mediumImageAddr as \"mediumImageAddr\", d.storeDishId as \"storeDishId\" "
+				+ " from T_CATER_DISH d "
+				+ "	left join T_CATER_IMAGE i on d.dishId = i.dishId "
+				+ " where d.dishId = :dishId ";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("dishId", dishId);
 		return this.getFirstBeanBySql(Dish.class, sql, params);
@@ -102,9 +105,10 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	public List<Pack> getPacks(String storeId, String categoryId, int pageIndex) {
 		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
 		String sql = "select d.dishId as \"packId\", d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", "
-				+ "  d.unitPrice as \"unitPrice\", d.bigImageAddr as \"bigImageAddr\", d.type as \"type\" "
+				+ "  d.unitPrice as \"unitPrice\", i.imgurl as \"bigImageAddr\", d.type as \"type\" "
 				+ " from T_CATER_DISH d "
-				+ " inner join t_cater_dishtype dt on d.dishCategory = dt.dishTypeID "
+				+ " inner join T_CATER_DISHTYPE dt on d.dishCategory = dt.dishTypeID "
+				+ "	left join T_CATER_IMAGE i on d.dishId = i.dishId "
 				+ " where d.type = '2' and d.packType = '1' " + sql2 + " order by d.dishSort asc, d.dishId asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -121,8 +125,9 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 		String sql = "select p.packId as \"packId\", p.dishId as \"dishId\", p.dishNumber as \"dishNumber\", "
 				+ " p.innerId as \"innerId\", p.innerNumber as \"innerNumber\", p.innerName as \"innerName\", "
 				+ " d.dishName as \"dishName\", d.unitPrice as \"unitPrice\", "
-				+ " d.bigImageAddr as \"bigImageAddr\", d.mediumImageAddr as \"mediumImageAddr\" " + " from T_CATER_PACKDISH p "
+				+ " i.imgurl as \"bigImageAddr\", d.mediumImageAddr as \"mediumImageAddr\" " + " from T_CATER_PACKDISH p "
 				+ " inner join T_CATER_DISH d on d.dishId = p.dishId " 
+				+ "	left join T_CATER_IMAGE i on d.dishId = i.dishId "
 				+ " where p.packId = :packId ";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
