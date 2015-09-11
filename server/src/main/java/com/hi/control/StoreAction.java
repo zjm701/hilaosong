@@ -2,6 +2,7 @@ package com.hi.control;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -130,13 +131,14 @@ public class StoreAction extends BaseAction {
 			String cityId = CityTools.isDirectMunicipalities(s.getProvinceId()) ? s.getProvinceId() : s.getCityId();
 			double unitPrice = cityService.getDeliveryUnitPrice(cityId);
 			if (s.getDistance() != null) {
-				Double dis = s.getDistance().doubleValue() * 1d / 1000;
+				// 总价四舍五入到小数点后1位
+				Double dis = Double.valueOf(new DecimalFormat("0.0").format(s.getDistance().doubleValue()));
 				if (dis.compareTo(1d) < 0) {
 					dis = 1d;
 				}
 				Double totalPrice = unitPrice * dis;
 				// 总价四舍五入到整数位
-				return Integer.parseInt(new java.text.DecimalFormat("0").format(totalPrice));
+				return Integer.parseInt(new DecimalFormat("0").format(totalPrice));
 			}
 		}
 		return 0;
