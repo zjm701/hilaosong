@@ -1,896 +1,896 @@
- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<meta http-equiv="x-ua-compatible" content="ie=7" /> 
-
-<title>套餐详情</title>
-
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
-
-<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
-
-<link rel="stylesheet" type="text/css" href="style/base.css"/>
-
-<link rel="stylesheet" type="text/css" href="style/index.css"/>
-
-<script type="text/javascript"src="js/json2.js"></script>
-
-<script src="js/jquery.min.js"></script>
-
-<script src="js/jquery-migrate.min.js"></script>
-
-<script src="js/jquery-ui.min.js"></script>
-
-<script src="js/jquery.cookie.js"></script>
-
-<script src="js/jquery.fancybox-1.3.4.js"></script>
-
-<script src="js/jquery.mousewheel.js"></script>
-
-<script src="js/jquery.easing.js"></script>
-
-<script src="js/jquery.pager.js"></script>
-
-<script type="text/javascript" src="js/md5.js"></script>
-
-<script src="js/common.js"></script>
-
-<script src="js/config.js"></script>
-
-<style>
-#xiaoliaolist .on dd{ font-weight:bold;}
-#guodilist .on dd{ font-weight:bold;}
-
-
-</style>
-
-<script>
-
-nowpage ='packinfo';
-
-
-
-	var guodilist;
-
-	var xiaoliaolist;
-
-	var guodijson = {};
-
-	var xiaoliaojson = {};
-
-function addcartpack(n){
-
-	getuser();
-
-	var tmp = $.cookie("userid");
-
-	if(typeof(tmp) == 'undefined' || tmp == 'null'){
-
-	} else {
-
-		//$(this).attr();
-
-		var name = $(n).attr('data-name');
-
-		var price = $(n).attr('data-price');
-
-		var id = $(n).attr('data-id');
-
-		var num = $('#packnum').val();
-
-		var cartpack = {};
-
-		//cartpack = getcartpackinfo();
-
-		price = (Math.round(price*100)/100);
-
-		cartpack[id] = {};
-
-			cartpack[id]['id'] = id;
-
-            cartpack[id]['num'] = num;
-
-            cartpack[id]['name'] = name;
-
-            cartpack[id]['price'] = price;
-
-            cartpack[id]['guodi'] = guodijson;
-
-            cartpack[id]['xiaoliao'] = xiaoliaojson;
-
-		
-
-		$.cookie("cartpack",JSON.stringify(cartpack), { expires: 30 })
-
-		//$('#'+id+'').remove();
-
-		_html ='';
-
-		_html +='<div id="'+id+'" class="cartli">';
-
-		_html +='<div class="carttitle">'+name+'</div>';
-
-		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+id+'\')" /> '+num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+id+'\')" /> ';
-
-		_html +='<span  onclick="delcartpack(\''+id+'\');">X</span></div></div>';
-
-		_html +='</div>';
-
-		//$('#cartpackbox').append(_html)
-		$('#cartpackbox').html(_html);
-
-	}
-
-}
-
-function cartpackd(){
-
-	var num = $('#packnum').val();
-
-	if(num > 2){
-
-		num -= 1;
-
-	} else {
-
-		num = 1;
-
-	}
-
-	
-
-	$('#packnum').val(num);
-
-}
-
-function cartpackp(){
-
-	var num = $('#packnum').val();
-
-	num = parseInt(num);
-
-	num += 1;
-
-	if(num < 2){
-
-		num = 2;
-
-	} 
-
-	$('#packnum').val(num);
-
-}
-
-function getpackinfo(n,m,l,k){
-
-	if(nowpage != 'packinfo'){
-
-		$.cookie("packid", n, { expires: 30 }); 
-
-		$.cookie("packname", l, { expires: 30 }); 
-
-		$.cookie("packprice", k, { expires: 30 }); 
-
-		//window.location = 'packinfo.html';
-		goLocationWithCity('packinfo.html');
-
-	}
-
-	$.ajax({
-
-        url: apiurl+'getpackdishes?dishId='+n+'',
-
-        type: 'GET',
-
-        dataType: 'JSON',//here
-
-        success: function (data) {
-
-				//alert(JSON.stringify(data));
-
-				cartpack = eval('(' + $.cookie("cartpack") + ')');  
-
-			if(typeof(data.error)=='undefined'){
-
-				var _html = '';
-
-				_html += '<div class="m_nav">'+l+'</div>';
-
-				_html +='<div class="blank10" ></div>';				
-
-				_html +='<div class="m_input left"><span style="font-weight:bold;">套餐份数</span></div>';
-
-				_html +='<div class="left d_num"><span><img src="images/img_jian.gif" onclick="cartpackd()" /></span>';
-
-				//alert(cartpack);
-				//alert(cartpack.num);
-				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.num) == 'undefined' ||  cartpack.num == null){
-
-					_html +='<span class="f12px fB f_c6000a"><input name="packnum" id="packnum" value="1" style="width:40px;text-align:center;"></span>';
-
-				} else {
-
-					_html +='<span class="f12px fB f_c6000a"><input name="packnum" id="packnum" value="'+cartpack.num+'" style="width:40px;text-align:center;"></span>';
-
-				}
-
-				_html +='<span><img src="images/img_jia.gif" id="btn-type" onclick="cartpackp()" /></span>';
-
-				_html +='</div>';
-
-				_html +='<div class="clear"></div>';
-
-				_html +='<div class="blank10" ></div>';
-
-				_html +='<div class="btn btn-danger blcok" onclick="packguodi(packid);">选择锅底</div>';
-
-				_html +='<div class="blank10" ></div>';
-
-				_html +='<div id="guodi">';
-
-				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.guodi) == 'undefined' ||  cartpack.guodi == null){
-
-					_html +='无';
-
-				} else {
-
-					$.each(cartpack.guodi,function(index,obj){
-
-						obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
-
-						if(obj.innerId == '1'){
-
-						} else{
-
-							_html += '<dl id="guodi'+obj.dishId+'" onclick="guodidel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd>'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
-
-						}
-
-					});
-
-					_html +='<span class="f12px fB f_c6000a"><input name="packnum" id="packnum" value="1" style="width:40px;text-align:center;"></span>';
-
-				}
-
-				_html +='</div>';
-
-				_html +='<div class="blank10" ></div>';
-
-				_html +='<div class="btn btn-danger blcok" onclick="packxiaoliao(packid);">选择小料</div>';
-
-				_html +='<div class="blank10" ></div>';
-
-				_html +='<div id="xiaoliao">';
-
-				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.xiaoliao) == 'undefined' ||  cartpack.xiaoliao == null){
-
-					_html +='无';
-
-				} else {
-
-					$.each(cartpack.xiaoliao,function(index,obj){
-
-						obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
-
-						if(obj.innerId == '1'){
-
-						} else{
-
-							_html += '<dl id="xiaoliao'+obj.dishId+'" onclick="guodidel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd>'+obj.dishName+'</dd><dt><img src="images/img_jian.gif" onclick="xiaoliaod1(\''+obj.dishId+'\')" /> <span class="num">'+obj.dishNumber+'</span> <img src="images/img_jia.gif" onclick="xiaoliaop1(\''+obj.dishId+'\')" /> <span onclick="delxiaoliao(\''+obj.dishId+'\');">X</span></dt></dl>';
-
-						}
-
-					});
-
-				}
-
-				_html +='</div>';
-
-				_html +='<div class="blank10" ></div>';
-
-				
-
-				_html += '<div class="m_nav">包含菜品</div>';
-
-				_html += '<div class="mu_list">';
-
-				
-
-				var _htmlguodi = '';
-
-				var _htmlxiaoliao = '';
-
-				
-
-				$.each(data,function(index,obj){
-
-					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
-
-					if(obj.innerId == '1'){
-
-						_htmlguodi += '<dl onclick="guodisel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd><img src="'+obj.mediumImageAddr+'" width=100 height="100">'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
-
-					} else if(obj.innerId == '2'){
-
-						_htmlxiaoliao += '<dl onclick="xiaoliaosel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'"><dd><img src="'+obj.mediumImageAddr+'" width=100 height="100">'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
-
-					} else{
-
-						_html += '<dl><dd>'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
-
-					}
-
-				});
-
-				guodilist = _htmlguodi;
-
-				xiaoliaolist = _htmlxiaoliao;
-
-				_html +='<div class="clear"></div><div class="btn btn-danger blcok" data-id="'+packid+'" data-name="'+packname+'" data-price="'+packprice+'" onclick="addcartpack(this);">确定</div>';
-
-				_html +='</div>';
-
-				$.cookie("packid", n, { expires: 30 }); 
-
-				$.cookie("packname", l, { expires: 30 }); 
-
-		        $.cookie("packprice", k, { expires: 30 }); 
-
-				packid = n;
-
-				packname = l;
-
-				packprice = k;
-
-				$(m).html(_html);
-
-				if(_html == ''){
-
-					$(m).html('<div id="noticecon">暂无</div>');
-
-				}
-
-			
-
-			}
-
-        }
-
-    });
-
-
-
-}
-
-function packguodi(n){
-
-	$.fancybox(
-
-		'<center onclick="guodizb()"><input type=checkbox>自备锅底</center><div> <ul id="guodilist"></ul><div class="clear"></div></div>',
-
-		{
-
-        		'onComplete'		: function() {
-
-					//getcities('#cities');
-
-					$('#guodilist').html(guodilist);
-
-				}
-
-		}
-
-	);
-
-}
-
-function packxiaoliao(n){
-
-	$.fancybox(
-
-		'<center onclick="xiaoliaozb()"><input type=checkbox>自备小料</center><div> <ul id="xiaoliaolist"></ul></div><div class="clear"></div></div>',
-
-		{
-
-        		'onComplete'		: function() {
-
-					$('#xiaoliaolist').html(xiaoliaolist);
-
-				}
-
-		}
-
-	);
-
-}
-
-function guodizb(){
-
-	$.fancybox.close();
-
-	guodijson = {};
-
-	$("#guodi").html("无");
-
-}
-
-function xiaoliaozb(){
-
-	$.fancybox.close();
-
-	xiaoliaojson = {};
-
-	$("#xiaoliao").html("无");
-
-}
-
-function guodidel(n){
-
-	var id = $(n).attr('data-id');
-
-	var innernumber = $(n).attr('data-innernumber');
-
-	var name = $(n).attr('data-name');
-
-	var num = $(n).attr('data-num');
-
-	//guodijson[id] = 'null';
-	delete guodijson[id];
-
-	$('#guodi'+id+'').remove();
-
-	if($('#guodi').html() == ''){
-
-		$('#guodi').html('无');
-
-	}
-
-}
-
-function xiaoliaodel(m){
-
-	var n = $(m).parent().parent();
-	var id = $(n).attr('data-id');
-
-	var innernumber = $(n).attr('data-innernumber');
-
-	var name = $(n).attr('data-name');
-
-	var num = $(n).attr('data-num');
-
-	//xiaoliaojson[id] = 'null';
-	delete xiaoliaojson[id];
-
-	$('#xiaoliao'+id+'').remove();
-
-	if($('#xiaoliao').html() == ''){
-
-		$('#xiaoliao').html('无');
-
-	}
-
-}
-
-function guodisel(n){
-
-	var id = $(n).attr('data-id');
-
-	var innernumber = $(n).attr('data-innernumber');
-
-	var name = $(n).attr('data-name');
-
-	var num = $(n).attr('data-num');
-
-	var _html = '';
-
-	if(typeof(guodijson[id]) == 'undefined' || guodijson[id] == 'null'){
-
-		guodijson = {};
-
-		guodijson[id] = {
-
-			'id': id,
-			'num': 1
-
-		};
-
-		_html += '<dl id="guodi'+id+'" onclick="guodidel(this);" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><span class="f_c6000a">x'+num+'</span></dt></dl>';
-
-		if($('#guodi').html() == '无'){
-
-			$('#guodi').html('');
-
-		}
-
-		$('#guodi').html('');
-
-		$('#guodi').append(_html);
-		
-		$('#guodilist dl').removeClass('on');
-		$(n).addClass('on');
-
-	} else {
-
-		//guodijson[id] = 'null';
-		delete guodijson[id];
-
-		$('#guodi'+id+'').remove();
-		
-		$(n).removeClass('on');
-
-		if($('#guodi').html() == ''){
-
-			$('#guodi').html('无');
-
-		}
-
-	}
-
-	//alert(JSON.stringify(guodijson));
-
-}
-
-function xiaoliaonum(){
-	var num = 0;
-	//alert(JSON.stringify(xiaoliaojson));
-	$.each(xiaoliaojson,function(index,obj){
-			if(typeof(obj) == 'undefined' ||  obj == null){
-			} else {
-				num += obj.num;
-			}
-		});
-	return num;
-}
-
-function xiaoliaosel(n){
-
-	var id = $(n).attr('data-id');
-
-	var innernumber = $(n).attr('data-innernumber');
-
-	var name = $(n).attr('data-name');
-
-	var num = $(n).attr('data-num');
-
-	var _html = '';
-
-	var length = 0;
-	
-	//alert(JSON.stringify(xiaoliaojson));
-
-	if(typeof(xiaoliaojson[id]) == 'undefined' || xiaoliaojson[id] == 'null'){
-
-		var innerNumber = $(n).attr('data-innernumber');
-
-		//length = JSONLength(xiaoliaojson);
-		length = xiaoliaonum();
-
-		//alert(length);
-
-		if(length >= innerNumber){
-
-			alert('小料只能选择'+innerNumber+'个！');
-
-			return false;
-
-		}
-
-		xiaoliaojson[id] = {
-
-			'id': id,
-			'num': 1
-
-		};
-
-		//_html += '<dl id="xiaoliao'+id+'" onclick="guodidel(this);" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><span class="f_c6000a">x'+num+'</span></dt></dl>';
-		_html += '<dl id="xiaoliao'+id+'" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><img src="images/img_jian.gif" onclick="xiaoliaod1(\''+id+'\')" /> <span class="num">'+num+'</span> <img src="images/img_jia.gif" onclick="xiaoliaop1(\''+id+'\')" /> <span class="del" onclick="xiaoliaodel(this);">X</span></dt></dl>';
-
-		if($('#xiaoliao').html() == '无'){
-
-			$('#xiaoliao').html('');
-
-		}
-
-		$('#xiaoliao').append(_html);
-		
-		$(n).addClass('on');
-
-	} else {
-
-		//xiaoliaojson[id] = 'null';
-		//xiaoliaojson.remove(id);
-		delete xiaoliaojson[id];
-
-		$('#xiaoliao'+id+'').remove();
-		
-		$(n).removeClass('on');
-
-		if($('#xiaoliao').html() == ''){
-
-			$('#xiaoliao').html('无');
-
-		}
-
-	}
-
-	//alert(JSON.stringify(xiaoliaojson));
-
-}
-
-function xiaoliaod1(id){
-
-	var num = xiaoliaojson[id]['num'];
-
-	if(num > 2){
-
-		num -= 1;
-
-	} else {
-
-		num = 1;
-
-	}
-
-	xiaoliaojson[id]['num'] = num;
-
-	$('#xiaoliao'+n+' .num').html(num);
-
-}
-
-function xiaoliaop1(id){
-
-	var innerNumber = $('#xiaoliao'+id).attr('data-innernumber');
-    var length = xiaoliaonum();
-
-		//alert(length);
-
-		if(length >= innerNumber){
-
-			alert('小料只能选择'+innerNumber+'个！');
-
-			return false;
-
-		}
-
-    
-    var num = xiaoliaojson[id]['num'];
-
-	num = parseInt(num);
-
-	num += 1;
-
-	if(num < 2){
-
-		num = 2;
-
-	} 
-
-	xiaoliaojson[id]['num'] = num;
-
-	$('#xiaoliao'+id+' .num').html(num);
-
-}
-
-$(document).ready(function(e) {
-
-    getcategories(cityid,'#catul',cityname);
-
-	packid = $.cookie("packid");
-
-	packname = $.cookie("packname");
-
-	packprice = $.cookie("packprice");
-
-	if(typeof(packid) == 'undefined' || packid == 'null'){
-
-		window.history.go(-1);
-
-	}
-
-	userid = $.cookie('userid');//
-
-	if(typeof(userid) == 'undefined' || userid == 'null'){ //如果没有登录报错
-
-		window.history.go(-1);
-
-	}
-
-	getpackinfo(packid,'#packinfo',packname,packprice);
-
-});
-
-</script>
-
-</head>
-
-
-
-<body>
-
-<div id="top1">
-
-<div id="header">
-
-<a href="http://hi.haidilao.com:80/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0"><img src="http://hi.haidilao.com:80/pages/haidl/images/logo.png" alt="" id="logo" /></a>
-
-
-
-
-
-<ul id="nav">
-
-
-
-	<li><a href="http://hi.haidilao.com/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0#height=362" id="indexTop">Hi捞汇首页</a></li>
-
-	<li>
-
-		<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbS9DYXRlci9zdG9yZWxpc3QuYWN0aW9uP29yZGVyVHlwZT0xJnNzb2lkPW51bGwmY3VzdG9tZXJLZXk9JmxvZ2luSWQ9MCZ0eXBlPTM=#height=920" >Hi订餐</a>
-
-	</li>
-
-	<li><a href="./"  class="now">Hi捞送</a></li>
-
-	<li>
-
-		<a style="cursor:pointer"  href="http://hi.haidilao.com/pages/haidl/member.jsp?ssoid=null&customerKey=&loginId=0">Hi地盘</a>
-
-	
-
-	</li>
-
-	<li><a style="cursor:pointer"  href="http://hi.haidilao.com:80/pages/promotion/promotion_index.jsp?ssoid=null&customerKey=&loginId=0">Hi活动</a></li>
-
-	<li><a style="cursor:pointer"  href="http://cater.haidilao.com/hifarm/index.html">Hi农场</a></li>
-
-		
-
-</ul>
-
-<div id="user_nav">
-
-	   
-
-	
-
-	欢迎来到Hi捞汇社区！ 
-
-	<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0w" style="cursor:pointer;border-left:1px dotted #FFFFFF;">iPhone版</a>
-
-	<a style="border:none;cursor:pointer" href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0x">Android版</a>
-
-	<a id ="loginTop" style="cursor:pointer;border-left:1px dotted #FFFFFF;" onclick="loginshow()">登录</a><a href="logins/registerJump.action">注册</a>
-
-	
-
-	<a href="http://hi.haidilao.com:80/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci9oZWxwL3ByZUhlbHBJbmZvLmFjdGlvbg==">帮助</a>
-
-	<a href="./historyorder.html">订单查询</a>
-
-	<a href="http://www.haidilao.com" style="border:none;cursor:pointer">企业门户</a>
-
-</div>
-
-
-
-</div>
-
-</div>
-
-<div class="box_01"> 
-
-<div class="left left_01 m_t_15" >
-
-<img src="images/left_img.jpg" width="144" border="0" usemap="#Map" id="id_left_01"/>
-
-  <map name="Map" id="Map">
-
-    <area shape="circle" coords="134,11,8" href="#" onclick="ceng()" />
-
-  </map>
-
-</div>
-
-<div class="left mid">
-
-<div class="mid_left left">
-
-<div class="m_l_title">选择城市</div>
-
-<div class="m_l_menu">
-
-<div class="m_diqu" id="cityname" onclick="citylist()">北京市</div>
-
-<!--<div class="m_adv m_t_10"><img src="images/left_adv_01.jpg" /></div>-->
-
-<ul id="catul">
-
-</ul>
-
-</div>
-
-<div class="sc_date">
-
-送餐时间：11:30-23:00<br />
-
-电话订餐时间：08:00-23：00
-
-</div>
-
-</div>
-
-<div class="mid_mid left">
-
-<div id="packinfo" >
-
-
-
-</div>
-
-</div>
-
-<div class="mid_right m_t_20" >
-
-<div class="title">开始订餐</div>
-
-<div id="userinfo">
-
-
-
-
-
-</div>
-
-<div class="mid_right m_t_5">
-
-<div class="tishi"><span class="f_red ">提示</span></div>
-
-</div>
-
-</div>
-
-<div class="clear"></div>
-
-<div class="foot">
-
-<span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
-
-<span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>
-
-<span class="p_l_15"><!--<select></select>--></span>
-
-</div>
-
-</div>
-
-
-
-<div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
-
-  <map name="id_right_01Map" id="id_right_01Map">
-
-    <area shape="rect" coords="1,4,24,22" href="#" onclick="right_ceng()" />
-
-    <area shape="rect" coords="8,222,87,242" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes" />
-
-    <area shape="rect" coords="92,223,163,241" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes"  />
-
-  </map>
-
-</div>
-
-
-
-</div>
-
-
-
-</body>
-
-</html>
-
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<meta http-equiv="x-ua-compatible" content="ie=7" /> 
+
+<title>套餐详情</title>
+
+<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
+
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
+
+<link rel="stylesheet" type="text/css" href="style/base.css"/>
+
+<link rel="stylesheet" type="text/css" href="style/index.css"/>
+
+<script type="text/javascript"src="js/json2.js"></script>
+
+<script src="js/jquery.min.js"></script>
+
+<script src="js/jquery-migrate.min.js"></script>
+
+<script src="js/jquery-ui.min.js"></script>
+
+<script src="js/jquery.cookie.js"></script>
+
+<script src="js/jquery.fancybox-1.3.4.js"></script>
+
+<script src="js/jquery.mousewheel.js"></script>
+
+<script src="js/jquery.easing.js"></script>
+
+<script src="js/jquery.pager.js"></script>
+
+<script type="text/javascript" src="js/md5.js"></script>
+
+<script src="js/common.js"></script>
+
+<script src="js/config.js"></script>
+
+<style>
+#xiaoliaolist .on dd{ font-weight:bold;}
+#guodilist .on dd{ font-weight:bold;}
+
+
+</style>
+
+<script>
+
+nowpage ='packinfo';
+
+
+
+	var guodilist;
+
+	var xiaoliaolist;
+
+	var guodijson = {};
+
+	var xiaoliaojson = {};
+
+function addcartpack(n){
+
+	getuser();
+
+	var tmp = $.cookie("userid");
+
+	if(typeof(tmp) == 'undefined' || tmp == 'null'){
+
+	} else {
+
+		//$(this).attr();
+
+		var name = $(n).attr('data-name');
+
+		var price = $(n).attr('data-price');
+
+		var id = $(n).attr('data-id');
+
+		var num = $('#packnum').val();
+
+		var cartpack = {};
+
+		//cartpack = getcartpackinfo();
+
+		price = (Math.round(price*100)/100);
+
+		cartpack[id] = {};
+
+			cartpack[id]['id'] = id;
+
+            cartpack[id]['num'] = num;
+
+            cartpack[id]['name'] = name;
+
+            cartpack[id]['price'] = price;
+
+            cartpack[id]['guodi'] = guodijson;
+
+            cartpack[id]['xiaoliao'] = xiaoliaojson;
+
+		
+
+		$.cookie("cartpack",JSON.stringify(cartpack), { expires: 30 })
+
+		//$('#'+id+'').remove();
+
+		_html ='';
+
+		_html +='<div id="'+id+'" class="cartli">';
+
+		_html +='<div class="carttitle">'+name+'</div>';
+
+		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+id+'\')" /> '+num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+id+'\')" /> ';
+
+		_html +='<span  onclick="delcartpack(\''+id+'\');">X</span></div></div>';
+
+		_html +='</div>';
+
+		//$('#cartpackbox').append(_html)
+		$('#cartpackbox').html(_html);
+
+	}
+
+}
+
+function cartpackd(){
+
+	var num = $('#packnum').val();
+
+	if(num > 2){
+
+		num -= 1;
+
+	} else {
+
+		num = 1;
+
+	}
+
+	
+
+	$('#packnum').val(num);
+
+}
+
+function cartpackp(){
+
+	var num = $('#packnum').val();
+
+	num = parseInt(num);
+
+	num += 1;
+
+	if(num < 2){
+
+		num = 2;
+
+	} 
+
+	$('#packnum').val(num);
+
+}
+
+function getpackinfo(n,m,l,k){
+
+	if(nowpage != 'packinfo'){
+
+		$.cookie("packid", n, { expires: 30 }); 
+
+		$.cookie("packname", l, { expires: 30 }); 
+
+		$.cookie("packprice", k, { expires: 30 }); 
+
+		//window.location = 'packinfo.html';
+		goLocationWithCity('packinfo.html');
+
+	}
+
+	$.ajax({
+
+        url: apiurl+'getpackdishes?dishId='+n+'',
+
+        type: 'GET',
+
+        dataType: 'JSON',//here
+
+        success: function (data) {
+
+				//alert(JSON.stringify(data));
+
+				cartpack = eval('(' + $.cookie("cartpack") + ')');  
+
+			if(typeof(data.error)=='undefined'){
+
+				var _html = '';
+
+				_html += '<div class="m_nav">'+l+'</div>';
+
+				_html +='<div class="blank10" ></div>';				
+
+				_html +='<div class="m_input left"><span style="font-weight:bold;">套餐份数</span></div>';
+
+				_html +='<div class="left d_num"><span><img src="images/img_jian.gif" onclick="cartpackd()" /></span>';
+
+				//alert(cartpack);
+				//alert(cartpack.num);
+				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.num) == 'undefined' ||  cartpack.num == null){
+
+					_html +='<span class="f12px fB f_c6000a"><input name="packnum" id="packnum" value="1" style="width:40px;text-align:center;"></span>';
+
+				} else {
+
+					_html +='<span class="f12px fB f_c6000a"><input name="packnum" id="packnum" value="'+cartpack.num+'" style="width:40px;text-align:center;"></span>';
+
+				}
+
+				_html +='<span><img src="images/img_jia.gif" id="btn-type" onclick="cartpackp()" /></span>';
+
+				_html +='</div>';
+
+				_html +='<div class="clear"></div>';
+
+				_html +='<div class="blank10" ></div>';
+
+				_html +='<div class="btn btn-danger blcok" onclick="packguodi(packid);">选择锅底</div>';
+
+				_html +='<div class="blank10" ></div>';
+
+				_html +='<div id="guodi">';
+
+				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.guodi) == 'undefined' ||  cartpack.guodi == null){
+
+					_html +='无';
+
+				} else {
+
+					$.each(cartpack.guodi,function(index,obj){
+
+						obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
+
+						if(obj.innerId == '1'){
+
+						} else{
+
+							_html += '<dl id="guodi'+obj.dishId+'" onclick="guodidel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd>'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
+
+						}
+
+					});
+
+					_html +='<span class="f12px fB f_c6000a"><input name="packnum" id="packnum" value="1" style="width:40px;text-align:center;"></span>';
+
+				}
+
+				_html +='</div>';
+
+				_html +='<div class="blank10" ></div>';
+
+				_html +='<div class="btn btn-danger blcok" onclick="packxiaoliao(packid);">选择小料</div>';
+
+				_html +='<div class="blank10" ></div>';
+
+				_html +='<div id="xiaoliao">';
+
+				if(typeof(cartpack) == 'undefined' ||  cartpack == null || typeof(cartpack.xiaoliao) == 'undefined' ||  cartpack.xiaoliao == null){
+
+					_html +='无';
+
+				} else {
+
+					$.each(cartpack.xiaoliao,function(index,obj){
+
+						obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
+
+						if(obj.innerId == '1'){
+
+						} else{
+
+							_html += '<dl id="xiaoliao'+obj.dishId+'" onclick="guodidel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd>'+obj.dishName+'</dd><dt><img src="images/img_jian.gif" onclick="xiaoliaod1(\''+obj.dishId+'\')" /> <span class="num">'+obj.dishNumber+'</span> <img src="images/img_jia.gif" onclick="xiaoliaop1(\''+obj.dishId+'\')" /> <span onclick="delxiaoliao(\''+obj.dishId+'\');">X</span></dt></dl>';
+
+						}
+
+					});
+
+				}
+
+				_html +='</div>';
+
+				_html +='<div class="blank10" ></div>';
+
+				
+
+				_html += '<div class="m_nav">包含菜品</div>';
+
+				_html += '<div class="mu_list">';
+
+				
+
+				var _htmlguodi = '';
+
+				var _htmlxiaoliao = '';
+
+				
+
+				$.each(data,function(index,obj){
+
+					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
+
+					if(obj.innerId == '1'){
+
+						_htmlguodi += '<dl onclick="guodisel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'" ><dd><img src="'+obj.mediumImageAddr+'" width=100 height="100">'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
+
+					} else if(obj.innerId == '2'){
+
+						_htmlxiaoliao += '<dl onclick="xiaoliaosel(this);" data-name="'+obj.dishName+'" data-innernumber="'+obj.innerNumber+'" data-id="'+obj.dishId+'" data-num="'+obj.dishNumber+'"><dd><img src="'+obj.mediumImageAddr+'" width=100 height="100">'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
+
+					} else{
+
+						_html += '<dl><dd>'+obj.dishName+'</dd><dt><span class="f_c6000a">x'+obj.dishNumber+'</span></dt></dl>';
+
+					}
+
+				});
+
+				guodilist = _htmlguodi;
+
+				xiaoliaolist = _htmlxiaoliao;
+
+				_html +='<div class="clear"></div><div class="btn btn-danger blcok" data-id="'+packid+'" data-name="'+packname+'" data-price="'+packprice+'" onclick="addcartpack(this);">确定</div>';
+
+				_html +='</div>';
+
+				$.cookie("packid", n, { expires: 30 }); 
+
+				$.cookie("packname", l, { expires: 30 }); 
+
+		        $.cookie("packprice", k, { expires: 30 }); 
+
+				packid = n;
+
+				packname = l;
+
+				packprice = k;
+
+				$(m).html(_html);
+
+				if(_html == ''){
+
+					$(m).html('<div id="noticecon">暂无</div>');
+
+				}
+
+			
+
+			}
+
+        }
+
+    });
+
+
+
+}
+
+function packguodi(n){
+
+	$.fancybox(
+
+		'<center onclick="guodizb()"><input type=checkbox>自备锅底</center><div> <ul id="guodilist"></ul><div class="clear"></div></div>',
+
+		{
+
+        		'onComplete'		: function() {
+
+					//getcities('#cities');
+
+					$('#guodilist').html(guodilist);
+
+				}
+
+		}
+
+	);
+
+}
+
+function packxiaoliao(n){
+
+	$.fancybox(
+
+		'<center onclick="xiaoliaozb()"><input type=checkbox>自备小料</center><div> <ul id="xiaoliaolist"></ul></div><div class="clear"></div></div>',
+
+		{
+
+        		'onComplete'		: function() {
+
+					$('#xiaoliaolist').html(xiaoliaolist);
+
+				}
+
+		}
+
+	);
+
+}
+
+function guodizb(){
+
+	$.fancybox.close();
+
+	guodijson = {};
+
+	$("#guodi").html("无");
+
+}
+
+function xiaoliaozb(){
+
+	$.fancybox.close();
+
+	xiaoliaojson = {};
+
+	$("#xiaoliao").html("无");
+
+}
+
+function guodidel(n){
+
+	var id = $(n).attr('data-id');
+
+	var innernumber = $(n).attr('data-innernumber');
+
+	var name = $(n).attr('data-name');
+
+	var num = $(n).attr('data-num');
+
+	//guodijson[id] = 'null';
+	delete guodijson[id];
+
+	$('#guodi'+id+'').remove();
+
+	if($('#guodi').html() == ''){
+
+		$('#guodi').html('无');
+
+	}
+
+}
+
+function xiaoliaodel(m){
+
+	var n = $(m).parent().parent();
+	var id = $(n).attr('data-id');
+
+	var innernumber = $(n).attr('data-innernumber');
+
+	var name = $(n).attr('data-name');
+
+	var num = $(n).attr('data-num');
+
+	//xiaoliaojson[id] = 'null';
+	delete xiaoliaojson[id];
+
+	$('#xiaoliao'+id+'').remove();
+
+	if($('#xiaoliao').html() == ''){
+
+		$('#xiaoliao').html('无');
+
+	}
+
+}
+
+function guodisel(n){
+
+	var id = $(n).attr('data-id');
+
+	var innernumber = $(n).attr('data-innernumber');
+
+	var name = $(n).attr('data-name');
+
+	var num = $(n).attr('data-num');
+
+	var _html = '';
+
+	if(typeof(guodijson[id]) == 'undefined' || guodijson[id] == 'null'){
+
+		guodijson = {};
+
+		guodijson[id] = {
+
+			'id': id,
+			'num': 1
+
+		};
+
+		_html += '<dl id="guodi'+id+'" onclick="guodidel(this);" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><span class="f_c6000a">x'+num+'</span></dt></dl>';
+
+		if($('#guodi').html() == '无'){
+
+			$('#guodi').html('');
+
+		}
+
+		$('#guodi').html('');
+
+		$('#guodi').append(_html);
+		
+		$('#guodilist dl').removeClass('on');
+		$(n).addClass('on');
+
+	} else {
+
+		//guodijson[id] = 'null';
+		delete guodijson[id];
+
+		$('#guodi'+id+'').remove();
+		
+		$(n).removeClass('on');
+
+		if($('#guodi').html() == ''){
+
+			$('#guodi').html('无');
+
+		}
+
+	}
+
+	//alert(JSON.stringify(guodijson));
+
+}
+
+function xiaoliaonum(){
+	var num = 0;
+	//alert(JSON.stringify(xiaoliaojson));
+	$.each(xiaoliaojson,function(index,obj){
+			if(typeof(obj) == 'undefined' ||  obj == null){
+			} else {
+				num += obj.num;
+			}
+		});
+	return num;
+}
+
+function xiaoliaosel(n){
+
+	var id = $(n).attr('data-id');
+
+	var innernumber = $(n).attr('data-innernumber');
+
+	var name = $(n).attr('data-name');
+
+	var num = $(n).attr('data-num');
+
+	var _html = '';
+
+	var length = 0;
+	
+	//alert(JSON.stringify(xiaoliaojson));
+
+	if(typeof(xiaoliaojson[id]) == 'undefined' || xiaoliaojson[id] == 'null'){
+
+		var innerNumber = $(n).attr('data-innernumber');
+
+		//length = JSONLength(xiaoliaojson);
+		length = xiaoliaonum();
+
+		//alert(length);
+
+		if(length >= innerNumber){
+
+			alert('小料只能选择'+innerNumber+'个！');
+
+			return false;
+
+		}
+
+		xiaoliaojson[id] = {
+
+			'id': id,
+			'num': 1
+
+		};
+
+		//_html += '<dl id="xiaoliao'+id+'" onclick="guodidel(this);" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><span class="f_c6000a">x'+num+'</span></dt></dl>';
+		_html += '<dl id="xiaoliao'+id+'" data-name="'+name+'" data-innernumber="'+innernumber+'" data-id="'+id+'" data-num="'+num+'" ><dd>'+name+'</dd><dt><img src="images/img_jian.gif" onclick="xiaoliaod1(\''+id+'\')" /> <span class="num">'+num+'</span> <img src="images/img_jia.gif" onclick="xiaoliaop1(\''+id+'\')" /> <span class="del" onclick="xiaoliaodel(this);">X</span></dt></dl>';
+
+		if($('#xiaoliao').html() == '无'){
+
+			$('#xiaoliao').html('');
+
+		}
+
+		$('#xiaoliao').append(_html);
+		
+		$(n).addClass('on');
+
+	} else {
+
+		//xiaoliaojson[id] = 'null';
+		//xiaoliaojson.remove(id);
+		delete xiaoliaojson[id];
+
+		$('#xiaoliao'+id+'').remove();
+		
+		$(n).removeClass('on');
+
+		if($('#xiaoliao').html() == ''){
+
+			$('#xiaoliao').html('无');
+
+		}
+
+	}
+
+	//alert(JSON.stringify(xiaoliaojson));
+
+}
+
+function xiaoliaod1(id){
+
+	var num = xiaoliaojson[id]['num'];
+
+	if(num > 2){
+
+		num -= 1;
+
+	} else {
+
+		num = 1;
+
+	}
+
+	xiaoliaojson[id]['num'] = num;
+
+	$('#xiaoliao'+n+' .num').html(num);
+
+}
+
+function xiaoliaop1(id){
+
+	var innerNumber = $('#xiaoliao'+id).attr('data-innernumber');
+    var length = xiaoliaonum();
+
+		//alert(length);
+
+		if(length >= innerNumber){
+
+			alert('小料只能选择'+innerNumber+'个！');
+
+			return false;
+
+		}
+
+    
+    var num = xiaoliaojson[id]['num'];
+
+	num = parseInt(num);
+
+	num += 1;
+
+	if(num < 2){
+
+		num = 2;
+
+	} 
+
+	xiaoliaojson[id]['num'] = num;
+
+	$('#xiaoliao'+id+' .num').html(num);
+
+}
+
+$(document).ready(function(e) {
+
+    getcategories(cityid,'#catul',cityname);
+
+	packid = $.cookie("packid");
+
+	packname = $.cookie("packname");
+
+	packprice = $.cookie("packprice");
+
+	if(typeof(packid) == 'undefined' || packid == 'null'){
+
+		window.history.go(-1);
+
+	}
+
+	userid = $.cookie('userid');//
+
+	if(typeof(userid) == 'undefined' || userid == 'null'){ //如果没有登录报错
+
+		window.history.go(-1);
+
+	}
+
+	getpackinfo(packid,'#packinfo',packname,packprice);
+
+});
+
+</script>
+
+</head>
+
+
+
+<body>
+
+<div id="top1">
+
+<div id="header">
+
+<a href="http://hi.haidilao.com:80/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0"><img src="http://hi.haidilao.com:80/pages/haidl/images/logo.png" alt="" id="logo" /></a>
+
+
+
+
+
+<ul id="nav">
+
+
+
+	<li><a href="http://hi.haidilao.com/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0#height=362" id="indexTop">Hi捞汇首页</a></li>
+
+	<li>
+
+		<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbS9DYXRlci9zdG9yZWxpc3QuYWN0aW9uP29yZGVyVHlwZT0xJnNzb2lkPW51bGwmY3VzdG9tZXJLZXk9JmxvZ2luSWQ9MCZ0eXBlPTM=#height=920" >Hi订餐</a>
+
+	</li>
+
+	<li><a href="./"  class="now">Hi捞送</a></li>
+
+	<li>
+
+		<a style="cursor:pointer"  href="http://hi.haidilao.com/pages/haidl/member.jsp?ssoid=null&customerKey=&loginId=0">Hi地盘</a>
+
+	
+
+	</li>
+
+	<li><a style="cursor:pointer"  href="http://hi.haidilao.com:80/pages/promotion/promotion_index.jsp?ssoid=null&customerKey=&loginId=0">Hi活动</a></li>
+
+	<li><a style="cursor:pointer"  href="http://cater.haidilao.com/hifarm/index.html">Hi农场</a></li>
+
+		
+
+</ul>
+
+<div id="user_nav">
+
+	   
+
+	
+
+	欢迎来到Hi捞汇社区！ 
+
+	<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0w" style="cursor:pointer;border-left:1px dotted #FFFFFF;">iPhone版</a>
+
+	<a style="border:none;cursor:pointer" href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0x">Android版</a>
+
+	<a id ="loginTop" style="cursor:pointer;border-left:1px dotted #FFFFFF;" onclick="loginshow()">登录</a><a href="logins/registerJump.action">注册</a>
+
+	
+
+	<a href="http://hi.haidilao.com:80/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci9oZWxwL3ByZUhlbHBJbmZvLmFjdGlvbg==">帮助</a>
+
+	<a href="./historyorder.html">订单查询</a>
+
+	<a href="http://www.haidilao.com" style="border:none;cursor:pointer">企业门户</a>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+<div class="box_01"> 
+
+<div class="left left_01 m_t_15" >
+
+<img src="images/left_img.jpg" width="144" border="0" usemap="#Map" id="id_left_01"/>
+
+  <map name="Map" id="Map">
+
+    <area shape="circle" coords="134,11,8" href="#" onclick="ceng()" />
+
+  </map>
+
+</div>
+
+<div class="left mid">
+
+<div class="mid_left left">
+
+<div class="m_l_title">选择城市</div>
+
+<div class="m_l_menu">
+
+<div class="m_diqu" id="cityname" onclick="citylist()">北京市</div>
+
+<!--<div class="m_adv m_t_10"><img src="images/left_adv_01.jpg" /></div>-->
+
+<ul id="catul">
+
+</ul>
+
+</div>
+
+<div class="sc_date">
+
+送餐时间：11:30-23:00<br />
+
+电话订餐时间：08:00-23：00
+
+</div>
+
+</div>
+
+<div class="mid_mid left">
+
+<div id="packinfo" >
+
+
+
+</div>
+
+</div>
+
+<div class="mid_right m_t_20" >
+
+<div class="title">开始订餐</div>
+
+<div id="userinfo">
+
+
+
+
+
+</div>
+
+<div class="mid_right m_t_5">
+
+<div class="tishi"><span class="f_red ">提示</span></div>
+
+</div>
+
+</div>
+
+<div class="clear"></div>
+
+<div class="foot">
+
+<span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
+
+<span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>
+
+<span class="p_l_15"><!--<select></select>--></span>
+
+</div>
+
+</div>
+
+
+
+<div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
+
+  <map name="id_right_01Map" id="id_right_01Map">
+
+    <area shape="rect" coords="1,4,24,22" href="#" onclick="right_ceng()" />
+
+    <area shape="rect" coords="8,222,87,242" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes" />
+
+    <area shape="rect" coords="92,223,163,241" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes"  />
+
+  </map>
+
+</div>
+
+
+
+</div>
+
+
+
+</body>
+
+</html>
+

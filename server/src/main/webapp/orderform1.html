@@ -1,723 +1,1579 @@
  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
+
+
 
 <head>
 
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
 
 <meta http-equiv="x-ua-compatible" content="ie=7" /> 
 
+
+
 <title>外卖表单</title>
+
+
 
 <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
 
+
+
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
+
+
 
 <link rel="stylesheet" type="text/css" href="style/calendar.css"/>
 
+
+
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
+
+
 
 <link rel="stylesheet" type="text/css" href="style/index.css"/>
 
 
+
+
+
 <script type="text/javascript"src="js/json2.js"></script>
+
+
 
 <script src="js/jquery.min.js"></script>
 
+
+
 <script src="js/jquery-migrate.min.js"></script>
+
+
 
 <script src="js/jquery-ui.min.js"></script>
 
+
+
 <script src="js/jquery.cookie.js"></script>
+
+
 
 <script src="js/jquery.fancybox-1.3.4.js"></script>
 
+
+
 <script src="js/jquery.mousewheel.js"></script>
+
+
 
 <script src="js/jquery.easing.js"></script>
 
+
+
 <script src="js/dyndatetime.js"></script>
+
+
 
 <script type="text/javascript" src="js/md5.js"></script>
 
+
+
 <script src="js/common.js"></script>
+
+
 
 <script src="js/config.js"></script>
 
+
+
 <style>
+
 #feiyong dt{ line-height:32px;}
+
 #feiyong .m_t_10{ float:left; display:block;line-height:32px; margin-top:0;}
 
+
+
 </style>
+
 <script>
+
+
 
 nowpage ='orderform';
 
+
+
 storeid = '';
+
+
 
 var userformjson = {};
 
+
+
 userformjson = $.cookie('userformjson');
+
+
 
 $(document).ready(function(e) {
 
+
+
     //alert(cityname.innerHTML );
+
 	//$('#test').html(cityname.html())
+
 	getcategories(cityid,'#catul',cityname);
+
+
 
 	//getdishes(catid,'#dishul','1');
 
+
+
 	//$(n).parent().find('li').removeClass('li_hover');
+
+
 
 	//
 
+
+
 });
+
+
 
 </script>
 
+
+
 <script type="text/javascript" >
+
+
 
 function getfee(){
 
+
+
+	getFfeeYfee();
 	var waiterFee = $('#waiterFee').val();
 
+
+
 		var deliveryFee = $('#deliveryFee').val();
+		var depositFee = $('#depositFee').val();
+
+
 
 		var dishtotal = $('#dishPrice').val();
 
+
+
 		waiterFee = (Math.round(waiterFee*100)/100);
 
+
+
 		deliveryFee = (Math.round(deliveryFee*100)/100);
+		depositFee = (Math.round(depositFee*100)/100);
+
+
 
 		dishtotal = (Math.round(dishtotal*100)/100);
 
-		var totalPrice = waiterFee +  deliveryFee + dishtotal;
+
+
+		var totalPrice = waiterFee +  depositFee +  deliveryFee + dishtotal;
+
+
 
 		$('#waiterFee').val(waiterFee);
+
 		$('#deliveryFee').val(deliveryFee);
+
 		$('#dishPrice').val(dishtotal);
+
 		$('#totalPrice').val(totalPrice);
 
+
+
 }
+
+
 
 function orderform1type0(){
 
+
+
 	$.ajax({
+
+
 
         url: apiurl+'testbaidu'+'',
 
+
+
         type: 'GET',
+
+
 
         dataType: 'JSON',//here
 
+
+
         success: function (data) {
 
+
+
 				//alert(JSON.stringify(data));
+
+
 
 			if(typeof(data.error)=='undefined'){
 
+
+
 				//alert(JSON.stringify(data));
+
+
 
 				storeid = data[0];
 
+
+
 				$("input[name='storeId']").val(data[0]);
+
+
 
 				var tmp = $("input[name='storeId']").val();
 
+
+
 				//alert(tmp);
+
+
 
 			
 
+
+
 			}
+
+
 
         }
 
+
+
     });
 
+
+
 }
+
+
 
 function ordertype0(){
 
+
+
 	$('#dizhi').show();
+
+
 
 	$('#mendian').hide();
 
+
+
 	//$("#mendiandizhi").html('');
+
+
 
 	$("#deliveryFee").val(0);
 
+
+
 	var addr = $("input[name='detailAddress']").val();
+
+
 
 	if(addr != ''){
 
+
+
 		ordertype0addr();
+
+
 
 	}
 
+
+
 	getfee();
 
+
+
 }
+
+
 
 function ordertype0addr(){
 
+
+
 	var addr = $("input[name='detailAddress']").val();
 
+
+
 	var storeid = $("input[name='storeId']").val();
+
 	
+
 	if(addr && storeid){
 
+
+
 		$.ajax({
+
 	
+
 			url: apiurl+'calcdeliveryfee?storeId='+storeid+'&address='+addr+'',
+
 	
+
 			type: 'GET',
+
 	
+
 			dataType: 'JSON',//here
+
 	
+
 			success: function (data) {
+
 	
+
 					//alert(JSON.stringify(data));
+
 	
+
 				if(typeof(data.error)=='undefined'){
+
 	
+
 					//alert(JSON.stringify(data));
+
 	
+
 					//$("input[name='storeId']").val(data[0]);
+
 	
+
 					//var tmp = $("input[name='storeId']").val();
+
 	
+
 					//alert(tmp);
+
 	
+
 					if(typeof(data.deliveryFee)=='undefined'){
+
 	
+
 						$('#deliveryFee').val(10);				
+
 	
+
 					} else {
+
 	
+
 						$('#deliveryFee').val(data.deliveryFee);
+
 	
+
 					}
+
 	
+
 					getfee();
+
 	
+
 				
+
 	
+
 				}
+
 	
+
 			}
+
 	
+
 		});
+
 	}
 
+
+
 }
+
+
 
 function ordertype2(){
 
+
+
 	$('#dizhi').hide();
+
+
 
 	$('#mendian').show();
 
+
+
 	//$("#mendiandizhi").html('');
+
+
 
 	$("#deliveryFee").val(0);
 
+
+
 	getfee();
+
+
 
 }
 
+
+
 function orderform1type2(n){
+
+
 
 	$.ajax({
 
+
+
         url: apiurl+'getstores2?cityId='+cityid+'',
+
+
 
         type: 'GET',
 
+
+
         dataType: 'JSON',//here
+
+
 
         success: function (data) {
 
+
+
 				//alert(JSON.stringify(data));
+
+
 
 			if(typeof(data.error)=='undefined'){
 
+
+
 				$('#storeid2').empty();
+
+
 
 				_html = '<option value="">请选择门店自取</option>';
 
+
+
 				$.each(data,function(index,obj){
+
+
 
 					if(typeof(obj) == 'undefined' ||  obj == null){
 
+
+
 					} else {
+
+
 
 					//alert(obj);
 
+
+
 					_html +='<option value="'+obj.storeId+'" data-addr="'+obj.storeAddress+'" >';
+
+
 
 					_html +=''+obj.storeName+'，电话：';
 
+
+
 					_html +='';
+
+
 
 					_html +=''+obj.storeTele+'';
 
+
+
 					_html +='</option>';
+
 					    //alert(obj.storeId);
+
 					   // alert(n);
+
 					if(obj.storeId == n){
+
 					    //alert(n);
+
 						$('#mendiandizhi').html(obj.storeAddress);
+
 					}
+
+
 
 						
 
+
+
 					}
+
+
 
 				});
 
+
+
 				$('#storeid2').html(_html);
+
 				$('#storeid2 option[value='+n+']').attr("selected",true);
+
+
 
 			
 
+
+
 			}
+
+
 
         }
 
+
+
     });
 
+
+
+}
+
+function getFfeeYfee(){
+	var potNum = $("input[name='potNumber']").val();
+	var panNum = $("input[name='panNumber']").val();
+	var ordertype = $("input[name='orderType']:checked").val();
+	var dishPrice = $("input[name='dishPrice']").val();
+	var tmp = 0;
+	tmp = parseInt(potNum) + parseInt(panNum);
+	var tmp1 = 0;
+	
+	//alert(ordertype);
+	
+	if(ordertype =='2'){
+    	
+		if(tmp > 0){
+			tmp1 = potNum*400 + panNum*100;
+			tmp1 = (Math.round(tmp1*100)/100);
+			$("input[name='depositFee']").val(tmp1);
+		}
+		
+	} else if(ordertype =='0'){
+		if(tmp > 0){
+			tmp1 = dishPrice/10;
+			tmp1 = (Math.round(tmp1*100)/100);
+			$("input[name='waiterFee']").val(tmp1);
+		}
+		
+	}
 }
 
 $(document).ready(function(e) {
 
-	 
+
 
 	 
+
+
+
+	 
+
 			    orderform1type0();
+
+
 
 	$('#dizhi').show();
 
+
+
 	$('#mendian').hide();
+
+
+
 
 
 	 $("input[name='dinningTime']").val(getNowFormatDate());
 
+
+
 	 $("input[name='cityId']").val(cityid);
+
 	 
+
 	 //alert('11');
 
+
+
 	 show_date('dinningTime',true);
+
 	 
+
 	 var userformjson = {};
+
 	 userformjson = eval('(' + $.cookie("userformjson") + ')');
+
 	 if(typeof(userformjson) == 'undefined' ||  userformjson == null ||  userformjson == 'null' ||  userformjson == ''){
+
 		 alert('请填写订餐信息');
+		 goLocationWithCity('userform.html');
+		 return false;
+
 	 }
+
 	 
+
 	 //alert(JSON.stringify(userformjson));
+
 	 
+
 	 $("input[name='storeId']").val(userformjson.storeId);
+
+
 
 				$("input[name='contactName']").val(userformjson.contactName);
 
+
+
 				$("input[name='contactPhone']").val(userformjson.contactPhone);
+
+
 
 				$("input[name='participantNumber']").val(userformjson.participantNumber);
 
 
 
+
+
+
+
 				//$("input[name='payChannel']").val(userformjson.payChannel);
 
+
+
 				
 
+
+
 				//$("input[name='orderType']").val(userformjson.contactName);
+
 				
+
 				$("input[name='orderType'][value="+userformjson.orderType+"]").attr("checked",true); 
+
 				
+
 				if(userformjson.orderType == '2'){
+
 					//alert(userformjson.orderType);
+
 					$('#dizhi').hide();
+
 					$('#mendian').show();
+					$('#feiyong #yfee').show();
+
 				}
+				if(userformjson.orderType == '0'){
+
+					//alert(userformjson.orderType);
+
+					$('#feiyong #ffee').show();
+
+				}
+
 				
+
 						  
+
 		  
+
 			    orderform1type2(userformjson.storeId);
+
+
 
 				$("input[name='cityId']").val(userformjson.cityId);
 
+
+
 					$("input[name='detailAddress']").val(userformjson.detailAddress);
+
 				
+
 				$("input[name='deliveryFee']").val(userformjson.deliveryFee);
+
+
 
 	 var cartdish = {};
 
+
+
 	cartdish = getcartdishinfo();
+
+
 
 	cartpack = getcartpackinfo();
 
+
+
 	cartdiyguodi = getcartdiyguodiinfo();
+
+
 
 	_html ='';
 
+
+
 	var dishtotal = 0;
+
+
 
 		$.each(cartdish,function(index,obj){
 
+
+
 			if(typeof(obj) == 'undefined' ||  obj == null){
+
+
 
 			} else {
 
+
+
 			//alert(obj);
+
+
 
 			dishtotal += obj.price * obj.num;
 
+
+
 			_html +='<dl><dt>'+obj.name+'</dt><dd><span class="f_c6000a p_r_50">x'+obj.num+'</span><span class="f_c6000a">'+obj.price+'元</span></dd></dl>';
+
+
 
 			}
 
+
+
 		});
+
+
 
 		$.each(cartpack,function(index,obj){
 
+
+
 			if(typeof(obj) == 'undefined' ||  obj == null){
+
+
 
 			} else {
 
+
+
 			//alert(obj);
+
+
 
 			dishtotal += obj.price * obj.num;
 
+
+
 			_html +='<dl><dt>'+obj.name+'</dt><dd><span class="f_c6000a p_r_50">x'+obj.num+'</span><span class="f_c6000a">'+obj.price+'元</span></dd></dl>';
+
+
 
 			}
 
+
+
 		});
+
+
 
 		$.each(cartdiyguodi,function(index,obj){
 
+
+
 			if(typeof(obj) == 'undefined' ||  obj == null){
+
+
 
 			} else {
 
+
+
 			//alert(obj);
+
+
 
 			dishtotal += obj.price * obj.num;
 
+
+
 			_html +='<dl><dt>'+obj.name+'</dt><dd><span class="f_c6000a p_r_50">x'+obj.num+'</span><span class="f_c6000a">'+obj.price+'元</span></dd></dl>';
+
+
 
 			}
 
+
+
 		});
+
+
 
 		$('#dishlist').html(_html);
 
+
+
 		$('#dishPrice').val(dishtotal);
+
+
 
 		var waiterFee = $('#waiterFee').val();
 
+
+
+		var depositFee = $('#depositFee').val();
 		var deliveryFee = $('#deliveryFee').val();
 
+
+
 		waiterFee = (Math.round(waiterFee*100)/100);
+		depositFee = (Math.round(depositFee*100)/100);
+
+
 
 		deliveryFee = (Math.round(deliveryFee*100)/100);
 
-		var totalPrice = waiterFee +  deliveryFee + dishtotal;
+
+
+		var totalPrice = waiterFee +  depositFee +  deliveryFee + dishtotal;
+
+
 
 		$('#totalPrice').val(totalPrice);
+		
+		
+
+
 
 	
 
+
+
 	$('#imgjian').click(function(){
+
+
 
 		var tmp = $('#potNumber').val();
 
+
+
 		tmp = parseInt(tmp);
 
+
+
 		if(tmp > 0){
+
+
 
 			tmp--;
 
+
+
 			$('#potNumber').val(tmp);
 
+
+
 		} else {
+
+
 
 			$('#potNumber').val('0');
 
-		}		
+
+
+		}	
+		getFfeeYfee();	
+
+
 
 	});
+	$('#imgjian1').click(function(){
 
-	$('#imgjia').click(function(){
 
-		var tmp = $('#potNumber').val();
+
+		var tmp = $('#panNumber').val();
+
+
 
 		tmp = parseInt(tmp);
 
+
+
 		if(tmp > 0){
 
-			tmp++;
 
-			$('#potNumber').val(tmp);
+
+			tmp--;
+
+
+
+			$('#panNumber').val(tmp);
+
+
 
 		} else {
 
-			$('#potNumber').val('1');
 
-		}
+
+			$('#panNumber').val('0');
+
+
+
+		}	
+		getFfeeYfee();	
+
+
 
 	});
+
+
+
+	$('#imgjia').click(function(){
+
+
+
+		var tmp = $('#potNumber').val();
+
+
+
+		tmp = parseInt(tmp);
+
+
+
+		if(tmp > 0){
+
+
+
+			tmp++;
+
+
+
+			$('#potNumber').val(tmp);
+
+
+
+		} else {
+
+
+
+			$('#potNumber').val('1');
+
+
+
+		}
+		getFfeeYfee();
+
+
+
+	});
+	$('#imgjia1').click(function(){
+
+
+
+		var tmp = $('#panNumber').val();
+
+
+
+		tmp = parseInt(tmp);
+
+
+
+		if(tmp > 0){
+
+
+
+			tmp++;
+
+
+
+			$('#panNumber').val(tmp);
+
+
+
+		} else {
+
+
+
+			$('#panNumber').val('1');
+
+
+
+		}
+		getFfeeYfee();
+
+
+
+	});
+
+
 
 	$("#storeid2").change(function(){
 
+
+
 		var tmp = $("#storeid2").val();
+
+
 
 		$("input[name='storeId']").val(tmp);
 
+
+
 		//alert();
+
+
 
 		var tmp1 = $("#storeid2  option:selected").attr('data-addr');
 
+
+
 		$("#mendiandizhi").html(tmp1);
+
+
 
 	});
 
+
+
 });
+
+
 
 	function orderform1() {
 
+
+
 		 var cartdish = {};
+
+
 
 	    cartdish = getcartdishinfo();
 
+
+
 		 var cartpack = {};
+
+
 
 	    cartpack = getcartpackinfo();
 
+
+
 		 var cartdiyguodi = {};
+
+
 
 	    cartdiyguodi = getcartdiyguodiinfo();
 
+
+
 		
 
-		var payChannel = $("input[name='payChannel']").val();
+
+
+		var payChannel = $("input[name='payChannel']:checked").val();
+
 		//alert($("input[name='reciept']:checked").val());
 
+
+
 		if($("input[name='needReciept']:checked").val() == '1' &&$("input[name='recieptType']:checked").val() == '1' && $("input[name='recieptDept']").val() == ''){
+
 			alert('请填写发票抬头');
+
 			return false;
+
 		}
-		if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0){
+
+		if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0 && $("input[name='panNumber']").val() == 0){
+
 			alert('如果不选炉具，请选择自备炉具');
+
 			return false;
+
 		}
+
+
 
 		var dishesjson = [];
 
+
+
 		$.each(cartdish,function(index,obj){
+
+
 
 			if(typeof(obj) == 'undefined' ||  obj == null){
 
+
+
 			} else {
 
+
+
 			//alert(obj);
+
+
 
 			var tmp = {dishId: obj.id, dishNumber: obj.num};
 
+
+
 			dishesjson.push(tmp);
+
+
 
 			}
 
+
+
 		});
+
+
 
 		$.each(cartdiyguodi,function(index,obj){
 
+
+
 			if(typeof(obj) == 'undefined' ||  obj == null){
 
+
+
 			} else {
+
+
 
 			//alert(obj);
 
+
+
 			var tmp = {guodiId: obj.id, dishNumber: obj.num};
+
+
 
 			dishesjson.push(tmp);
 
+
+
 			}
 
+
+
 		});
+
+
 
 		var packsjson = [];
 
+
+
 		$.each(cartpack,function(index,obj){
+
+
 
 			if(typeof(obj) == 'undefined' ||  obj == null){
 
+
+
 			} else {
+
+
 
 				//alert(obj);
 
+
+
 				var tmp1 = obj.guodi;
+
+
 
 				var tmp2 = obj.xiaoliao;
 
+
+
 				//alert(JSON.stringify(tmp1));
+
+
 
 				var tmppacks = [];
 
+
+
 				$.each(tmp1,function(index1,obj1){
+
+
 
 					if(typeof(obj1) == 'undefined' ||  obj1 == null){
 
+
+
 					} else {
 
+
+
 					//alert(obj);
+
+
 
 					  var tmp = {dishId: obj1.id,dishNumber: obj1.num};
 
+
+
 					  tmppacks.push(tmp);
+
+
 
 					
 
+
+
 					}
 
+
+
 				});
+
+
 
 				$.each(tmp2,function(index2,obj2){
 
+
+
 					if(typeof(obj2) == 'undefined' ||  obj2 == null){
+
+
 
 					} else {
 
+
+
 					//alert(obj);
+
+
 
 						var tmp = {dishId: obj2.id,dishNumber: obj2.num};
 
+
+
 						tmppacks.push(tmp);
+
+
 
 					
 
+
+
 					}
+
+
 
 				});
 
+
+
 				//alert(JSON.stringify(tmppacks));
+
+
 
 				var tmp = {packId: obj.id, packCount: obj.num , dishes: tmppacks};
 
+
+
 				packsjson.push(tmp);
+
+
 
 			}
 
+
+
 		});
 
-		var reciept = $.trim($("input[name='reciept']").val());
+
+
+		var needReciept = $.trim($("input[name='needReciept']:checked").val());
+
 		var recieptDept = $.trim($("input[name='recieptDept']").val());
-		if(reciept == 1 && recieptDept == ''){
+
+		if(needReciept == 1 && recieptDept == ''){
+
 			//alert('请填写发票抬头');
+
 		}
+
+
 
 		var content = {
 
+
+
 				storeId: $.trim($("input[name='storeId']").val()),
+
+
 
 				contactName: $.trim($("input[name='contactName']").val()),
 
+
+
 				contactPhone: $.trim($("input[name='contactPhone']").val()),
+
+
 
 				participantNumber: $.trim($("input[name='participantNumber']").val()),
 
+
+
 				dinningTime: $.trim($("input[name='dinningTime']").val())+':00',
 
-				needReciept: $.trim($("input[name='needReciept']").val()),
-				recieptType: $.trim($("input[name='recieptType']").val()),
+
+
+				needReciept: $.trim($("input[name='needReciept']:checked").val()),
+
+				recieptType: $.trim($("input[name='recieptType']:checked").val()),
+
 				recieptDept: $.trim($("input[name='recieptDept']").val()),
+
+
 
 				custMemo: $.trim($("input[name='custMemo']").val()),
 
-				payChannel: $.trim($("input[name='payChannel']").val()),
+
+
+				payChannel: $.trim($("input[name='payChannel']:checked").val()),
+
+
 
 				potNumber: $.trim($("input[name='potNumber']").val()),
+				panNumber: $.trim($("input[name='panNumber']").val()),
 
-				orderType: $.trim($("input[name='orderType']").val()),
+
+
+				orderType: $.trim($("input[name='orderType']:checked").val()),
+
+
 
 				address: {
 
+
+
 					//provinceId: '123456',
+
+
 
 					cityId: $.trim($("input[name='cityId']").val()),
 
+
+
 					detailAddress: $.trim($("input[name='detailAddress']").val())
 
+
+
 				},
+
+
 
 				expenses: {
 
+
+
 					waiterFee: $.trim($("input[name='waiterFee']").val()),
+
+
 
 					deliveryFee: $.trim($("input[name='deliveryFee']").val()),
 
+					depositFee: $.trim($("input[name='depositFee']").val()),
+
+
+
 					dishPrice: $.trim($("input[name='dishPrice']").val()),
+
+
 
 					totalPrice: $.trim($("input[name='totalPrice']").val())
 
+
+
 				},
+
+
 
 				packs: packsjson,
 
+
+
 				dishes: dishesjson
+
+
 
 			};
 
+
+
 			//alert(JSON.stringify(content));
+
+
 
 		$.ajax({
 
+
+
 			url:  apiurl+'createorder',//要访问的后台地址
+
+
 
 			data: JSON.stringify(content),//要发送的数据
 
+
+
 			type: "post", //使用post方法访问后台
+
+
 
 			dataType: "json", //返回json格式的数据
 
+
+
 			async: true,
+
+
 
 			contentType: "application/json;charset=utf-8", 
 
+
+
 			success: function(msg){//msg为返回的数据，在这里做数据绑定
 
+
+
 				//alert("login response:"+JSON.stringify(msg));
+
 				alert(msg.respMsg);
+
 				if(msg.respCode != '310'){
 
+
+
 				//window.location='./index.html';
-				
-				} else { 
-				//成功
-				alert('订单号：'+msg.orderId);
-				goLocationWithCity('index.html');
+				if(msg.respCode == '101'){
+					$.cookie("userid",null);
+					$.cookie("username",null);
+					goLocationWithCity('index.html');
+					
 				}
+
+				
+
+				} else { 
+
+				//成功
+
+				alert('订单号：'+msg.orderId);
+
+				goLocationWithCity('index.html');
+
+				}
+
+
 
 			}
 
+
+
 		});
+
+
 
 	}
 
+
+
 </script>
+
+
 
 </head>
 
 
 
+
+
+
+
 <body>
+
+
 
 <div id="top1">
 
+
+
 <div id="header">
 
+
+
 <a href="http://hi.haidilao.com:80/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0"><img src="http://hi.haidilao.com:80/pages/haidl/images/logo.png" alt="" id="logo" /></a>
+
+
+
+
+
+
 
 
 
@@ -727,103 +1583,207 @@ $(document).ready(function(e) {
 
 
 
+
+
+
+
 	<li><a href="http://hi.haidilao.com/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0#height=362" id="indexTop">Hi捞汇首页</a></li>
 
+
+
 	<li>
+
+
 
 		<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbS9DYXRlci9zdG9yZWxpc3QuYWN0aW9uP29yZGVyVHlwZT0xJnNzb2lkPW51bGwmY3VzdG9tZXJLZXk9JmxvZ2luSWQ9MCZ0eXBlPTM=#height=920" >Hi订餐</a>
 
+
+
 	</li>
+
+
 
 	<li><a href="./"  class="now">Hi捞送</a></li>
 
+
+
 	<li>
+
+
 
 		<a style="cursor:pointer"  href="http://hi.haidilao.com/pages/haidl/member.jsp?ssoid=null&customerKey=&loginId=0">Hi地盘</a>
 
+
+
 	
+
+
 
 	</li>
 
+
+
 	<li><a style="cursor:pointer"  href="http://hi.haidilao.com:80/pages/promotion/promotion_index.jsp?ssoid=null&customerKey=&loginId=0">Hi活动</a></li>
+
+
 
 	<li><a style="cursor:pointer"  href="http://cater.haidilao.com/hifarm/index.html">Hi农场</a></li>
 
+
+
 		
 
+
+
 </ul>
+
+
 
 <div id="user_nav">
 
+
+
 	   
 
+
+
 	
+
+
 
 	欢迎来到Hi捞汇社区！ 
 
+
+
 	<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0w" style="cursor:pointer;border-left:1px dotted #FFFFFF;">iPhone版</a>
+
+
 
 	<a style="border:none;cursor:pointer" href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0x">Android版</a>
 
+
+
 	<a id ="loginTop" style="cursor:pointer;border-left:1px dotted #FFFFFF;" onclick="loginshow()">登录</a><a href="logins/registerJump.action">注册</a>
+
+
 
 	
 
+
+
 	<a href="http://hi.haidilao.com:80/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci9oZWxwL3ByZUhlbHBJbmZvLmFjdGlvbg==">帮助</a>
+
+
 
 	<a href="./historyorder.html">订单查询</a>
 
+
+
 	<a href="http://www.haidilao.com" style="border:none;cursor:pointer">企业门户</a>
+
 f
+
+</div>
+
+
+
+
+
+
+
 </div>
 
 
 
 </div>
 
-</div>
+
 
 <div class="box_01"> 
 
+
+
 <div class="left left_01 m_t_15" >
+
+
 
 <img src="images/left_img.jpg" width="144" border="0" usemap="#Map" id="id_left_01"/>
 
+
+
   <map name="Map" id="Map">
+
+
 
     <area shape="circle" coords="134,11,8" href="#" onclick="ceng()" />
 
+
+
   </map>
 
+
+
 </div>
+
+
 
 <div class="left mid">
 
+
+
 <div class="mid_left left">
+
+
 
 <div class="m_l_title">选择城市</div>
 
+
+
 <div class="m_l_menu">
+
+
 
 <div class="m_diqu" id="cityname" onclick="citylist()">北京市</div>
 
+
+
 <!--<div class="m_adv m_t_10"><img src="images/left_adv_01.jpg" /></div>-->
+
+
 
 <ul id="catul">
 
+
+
 </ul>
 
+
+
 </div>
+
+
 
 <div class="sc_date">
 
+
+
 送餐时间：11:30-23:00<br />
+
+
 
 电话订餐时间：08:00-23：00
 
-</div>
+
 
 </div>
+
+
+
+</div>
+
+
+
+
 
 
 
@@ -833,105 +1793,226 @@ f
 
 
 
+
+
+
+
+
+
 <div class="wm_list">
+
+
 
 <dl><dt>联系人</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="contactName" style=" border:0;" value="" /></div></dd></dl>
 
+
+
 <dl><dt>手机</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="contactPhone" style=" border:0;" value="" /></div></dd></dl>
+
+
 
 <dl><dt>用餐人数</dt><dd><div class="d_input"><input type="text" readonly="readonly" name="participantNumber" style=" border:0;" value="1" /></div></dd></dl>
 
+
+
 <dl><dt>类型</dt><dd><div class="d_leixing">
+
+
 
 <span ><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="0" checked="checked" />普通外卖</span>
 
+
+
 <span ><input type="radio" disabled="disabled" name="orderType" readonly="readonly" value="2" />上门自取</span>
 
+
+
 </div></dd></dl>
+
+
+
+
 
 
 
 <dl><dt>地址</dt><dd ><div class="dd_add d_input" style="height:auto;">
 
+
+
 <div class="clear"></div>
+
+
 
 <div id="dizhi">
 
+
+
 <!--<span class="m_t_10">地址：</span>--><span class="m_t_10"><input name="detailAddress" readonly="readonly" type="text" style="width:270px; border:0;" onblur="ordertype0addr(this);"  value="" />
+
+
 
 <input type="hidden" name="cityId" value="" />
 
+
+
 </span>
 
+
+
 </div>
+
+
 
 <div id="mendian">
 
+
+
 <div class="clear" style="height:10px;"></div>
+
+
 
 <span>门店：</span>
 
+
+
 <span><select id="storeid2" disabled="disabled" style=" height:32px; line-height:32px; border:0;appearance:none;-moz-appearance:none; -webkit-appearance:none; " readonly="readonly"></select></span>
 
+
+
 <div class="clear"></div>
+
+
 
 <div>
 
+
+
 <span>地址：</span>
+
+
 
 <span id="mendiandizhi"></span>
 
-</div>
+
 
 </div>
+
+
+
+</div>
+
+
 
 <div class="clear"></div>
+
+
 
 <div id="storelist" style="display:none;">
 
+
+
 <span class="m_t_10">门店：</span><span class="m_t_10">
+
+
 
 <input type="text" name="storeId" style="width: 270px" value="020102">
 
+
+
 </span>
+
+
 
 </div>
 
+
+
 <div class="clear" style="height:10px;"></div>
 
+
+
 </div></dd></dl>
+
 <div class="clear"></div>
+
+
+
 
 
 <div id="orderform1">
 
 
 
+
+
+
+
 <dl><dt>用餐时间</dt><dd><div class="d_input d_rili">
+
+
 
 <span><input name="dinningTime" type="text" id="dinningTime" style="width:160px;"  onfocus="show_date('dinningTime',true);" value="" /></span>
 
+
+
 </div></dd></dl>
+
+
+
+
 
 
 
 <dl><dt>自备炉具</dt><dd><div class="d_leixing">
 
-<span onclick="$('#guoju').hide();$('#potNumber').val('0');"><input type="radio" name="usecup" value="1" /></span><span class="p_r_10">是</span>
 
-<span onclick="$('#guoju').show();"><input type="radio" name="usecup" value="0" checked="checked" /></span><span>否</span>
+
+<span onclick="$('.guoju').hide();$('#potNumber').val('0');$('#panNumber').val('0');getFfeeYfee();"><input type="radio" name="usecup" value="1" /></span><span class="p_r_10">是</span>
+
+
+
+<span onclick="$('.guoju').show();getFfeeYfee();"><input type="radio" name="usecup" value="0" checked="checked" /></span><span>否</span>
+
+
 
 </div></dd></dl>
 
 
 
-<dl id="guoju"><dt style="line-height:40px;">炉具</dt><dd style="padding-left:260px;"><div class="left d_num" style="padding-top:10px;"><span><img src="images/img_jian.gif" id="imgjian" /></span>
+
+
+
+
+<dl class="guoju"><dt style="line-height:40px;">电磁炉</dt><dd style="padding-left:260px;"><div class="left d_num" style="padding-top:10px;"><span><img src="images/img_jian.gif" id="imgjian" /></span>
+
+
 
 <span class="f12px fB f_c6000a"><input name="potNumber" id="potNumber" type="text" value="0" style="width:24px; height:18px; text-align:center;" /></span>
 
+
+
 <span><img src="images/img_jia.gif" id="imgjia" /></span>
 
+
+
 </div></dd></dl>
+<dl class="guoju"><dt style="line-height:40px;">锅具</dt><dd style="padding-left:260px;"><div class="left d_num" style="padding-top:10px;"><span><img src="images/img_jian.gif" id="imgjian1" /></span>
+
+
+
+<span class="f12px fB f_c6000a"><input name="panNumber" id="panNumber" type="text" value="0" style="width:24px; height:18px; text-align:center;" /></span>
+
+
+
+<span><img src="images/img_jia.gif" id="imgjia1" /></span>
+
+
+
+</div></dd></dl>
+
+
+
+
 
 
 
@@ -939,30 +2020,63 @@ f
 
 
 
+
+
+
+
 </div>
+
+
+
+
 
 
 
 <div id="orderform2" style="display:none;">
 
+
+
 <div style="height:20px;"></div>
+
+
 
 <dl><dt>是否开发票</dt><dd><div class="d_leixing">
 
+
+
 <span onclick="$('#fapiao').show();"><input type="radio" name="needReciept" value="1" /></span><span class="p_r_10">是</span>
+
+
 
 <span onclick="$('#fapiao').hide();"><input type="radio" name="needReciept" value="0" checked="checked" /></span><span>否</span>
 
+
+
 </div></dd></dl>
+
+
 
 <dl id="fapiao" style="display:none;"><dt>发票类型</dt><dd><div class="d_leixing1">
 
+
+
 <span onclick="$('#fapiaott').show();"><input type="radio" name="recieptType" value="1" /></span><span class="p_r_10">公司</span>
+
+
 
 <span onclick="$('#fapiaott').hide();"><input type="radio" name="recieptType" value="0" checked="checked" /></span><span>个人</span>
 
+
+
 </div></dd></dl>
+
 <dl id="fapiaott" style="display:none;"><dt>发票抬头</dt><dd><div class="d_input"><input name="recieptDept" type="text" value="" /></div></dd></dl>
+
+
+
+
+
+
 
 
 
@@ -972,76 +2086,155 @@ f
 
 
 
+
+
+
+
 <div id="dishlist" class="cd_list">
 
+
+
 <div class="clear"></div>
+
+
 
 </div>
 
+
+
 <div class="clear"></div>
+
+
 
 <dl id="feiyong"><dt>费用</dt><dd><div class="d_input">
 
-<span style="display:none;">服务费：<input type="text" name="waiterFee" id="waiterFee" style="width: 40px; border:0;" value="0"></span>
+<style>
+#feiyong #ffee{ display:none;}
+#feiyong #yfee{ display:none;}
+</style>
+
+<span id="ffee" class="m_t_10">服务费：<input type="text" name="waiterFee" id="waiterFee" readonly="readonly" style="width: 40px; border:0;" value="0"></span>
+<span id="yfee"  class="m_t_10">押金：<input type="text" name="depositFee" id="depositFee" readonly="readonly" style="width: 40px; border:0;" value="0"></span>
+
+
 
 <span class="m_t_10">外送费：</span><span class="m_t_10"><input type="text" name="deliveryFee" readonly="readonly" id="deliveryFee" style="width: 40px; border:0;" value="0"></span>
 
+
+
 <span class="m_t_10">菜品价：</span><span class="m_t_10"><input type="text" name="dishPrice" readonly="readonly" id="dishPrice" style="width: 40px; border:0;" value="88"></span>
+
+
 
 <span class="m_t_10">总价:</span><span class="m_t_10"><input type="text" name="totalPrice" readonly="readonly" id="totalPrice" style="width: 50px; border:0;" value="118"></span>
 
+
+
 </div></dd></dl>
+
+
+
+
 
 
 
 <dl><dt>支付方式</dt><dd><div class="d_leixing">
 
+
+
 <span><input type="radio" name="payChannel" value="2" checked="checked" /></span><span>餐到付款（现金）</span>
+
+
 
 <span><input type="radio" name="payChannel" value="3"  /></span><span>餐到付款（POS）</span>
 
+
+
 <span><input type="radio" name="payChannel" value="0" /></span><span class="p_r_10">在线支付</span>
+
+
 
 </div></dd></dl>
 
 
 
+
+
+
+
 </div>
+
+
+
+
 
 
 
 <div class="clear"></div>
 
+
+
 </div>
+
 <script>
+
 function checkform1(){
-	if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0){
+
+	if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0 && $("input[name='panNumber']").val() == 0){
+
 			alert('如果不选炉具，请选择自备炉具');
+
 			return false;
+
 		}
 
+
+
 	$('#orderform2').show();
+
 	$('#orderform1').hide();
+
 	$('#orderform1_btn').hide();
+
 	$('#orderform2_btn').show();
+
 	$('#orderform2_btn1').show();
+
 	getfee();
+
 }
+
 function backform1(){
+
 	$('#orderform1').show();$('#orderform2').hide();$('#orderform1_btn').show();$('#orderform2_btn').hide();$('#orderform2_btn1').hide();
+
 }
+
 </script>
+
 <div class="btn_queren" id="orderform1_btn" style="margin-top:30px; cursor:pointer;" onclick="checkform1();">下一步</div>
+
+
 
 <div class="btn_queren" id="orderform2_btn" style="margin-top:30px; cursor:pointer; display:none;" onclick="backform1();">返回修改</div>
 
+
+
 <div class="btn_queren" id="orderform2_btn1" style="margin-top:30px; cursor:pointer; display:none;" onclick="orderform1();">确认提交</div>
+
+
 
 </div>
 
+
+
 <div class="mid_right m_t_20" >
 
+
+
 <div class="title">开始订餐</div>
+
+
 
 <div id="userinfo">
 
@@ -1049,53 +2242,109 @@ function backform1(){
 
 
 
+
+
+
+
+
+
 </div>
+
+
 
 <div class="mid_right m_t_5">
 
+
+
 <div class="tishi"><span class="f_red ">提示</span></div>
 
-</div>
+
 
 </div>
+
+
+
+</div>
+
+
 
 <div class="clear"></div>
 
+
+
 <div class="foot">
+
+
 
 <span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
 
+
+
 <span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>
+
+
 
 <span class="p_l_15"><!--<select></select>--></span>
 
-</div>
+
 
 </div>
+
+
+
+</div>
+
+
+
+
 
 
 
 <div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
 
+
+
   <map name="id_right_01Map" id="id_right_01Map">
+
+
 
     <area shape="rect" coords="1,4,24,22" href="#" onclick="right_ceng()" />
 
+
+
     <area shape="rect" coords="8,222,87,242" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes" />
+
+
 
     <area shape="rect" coords="92,223,163,241" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes"  />
 
+
+
   </map>
 
+
+
 </div>
 
 
 
+
+
+
+
 </div>
+
+
 
 <div id="test"></div>
 
+
+
 </body>
 
+
+
 </html>
+
+
 

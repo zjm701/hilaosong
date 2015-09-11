@@ -82,6 +82,14 @@ function getcurrentuser(){
     });
 }
 
+function clearcate(){
+	$.cookie("storeid1", null, { expires: 30 }); 
+	$.cookie("userformjson", null, { expires: 30 }); 
+	$.cookie('cartdish', null, { expires: 30 }); 
+	$.cookie('cartpack', null, { expires: 30 });
+	$.cookie('cartdiyguodi', null, { expires: 30 });
+}
+
 Array.prototype.remove=function(dx) 
 { 
     if(isNaN(dx)||dx>this.length){return false;} 
@@ -242,6 +250,9 @@ function getcategories(n,m,l){
 	var k = '#dishul';
 	catid = $.cookie("catid");
 	getareastore(n);
+	if(n != cityid){
+		clearcate();
+	}
 	storeid = $.cookie("storeid");
 		
 	//if(typeof(storeid) == 'undefined' || storeid == 'null' || storeid == null || storeid == '' ){
