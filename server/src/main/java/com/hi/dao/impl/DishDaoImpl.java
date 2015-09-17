@@ -37,7 +37,8 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	public List<DishType> getCategories4Wine(String storeId) {
 		String sql = "select t.dishtypeid as \"dishTypeId\", t.dishtypename as \"dishTypeName\" "
 				+ " from T_CATER_DISHTYPE t " 
-				+ " where t.identifier = '1' and t.dishtypeid in ("
+				+ " where t.identifier = '1' and t.dishtypeid not in (" + SystemSetting.getOutOfDishCategories() 
+				+ " ) and t.dishtypeid in ("
 				+ " select distinct d.dishclass from T_CATER_DISH d where d.type = '1' and d.dishShareType in ('1', '3') " + sql1
 				+ " and d.dishcategory = " + SystemSetting.getWine() 
 				+ " ) order by dishtypeid asc";

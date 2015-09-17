@@ -20,6 +20,8 @@ public interface HIConstants {
 	static final String IS_NOTICE_READED = "isNoticeReaded";
 
 	static final String DUMMY_ORDER = "draftOrder";
-	
+
 	static final String PRE_IMAGE = "http://cater.haidilao.com";
+	
+	static final String DEFALUT_IMAGE = "/Cater/images/dishes/default.png";
 }

@@ -145,7 +145,7 @@ public class Dish extends Pagenation{
 
 	public void setBigImageAddr(String bigImageAddr) {
 		if (StringTools.isEmpty(bigImageAddr)) {
-			this.bigImageAddr = bigImageAddr;
+			this.bigImageAddr = HIConstants.PRE_IMAGE + HIConstants.DEFALUT_IMAGE;
 		} else {
 			this.bigImageAddr = HIConstants.PRE_IMAGE + bigImageAddr;
 		}
