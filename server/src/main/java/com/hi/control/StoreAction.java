@@ -98,8 +98,9 @@ public class StoreAction extends BaseAction {
 	@GET
 	@Path("/getstores2")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStores(@FormParam("cityId") String cityId) {
-		List<Store> stores = storeService.getStores(cityId, OrderType.TAKE_AWAY.getKey());
+	public Response getStores(@FormParam("cityId") String cityId,
+			@FormParam("provinceId") String provinceId,@FormParam("address") String address) {
+		List<Store> stores = storeService.getStores(cityId+"_"+provinceId,OrderType.TAKE_AWAY.getKey());
 		return getSuccessJsonResponse(stores);
 	}
 
