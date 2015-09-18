@@ -45,14 +45,6 @@ public class StoreDaoImpl extends AbstractDao implements StoreDao {
 	}
 	
 	/*
-	 * 不带 距离
-	 * 
-	 */
-	public List<Store> getStores(String cityId, String orderType) {
-		return getStores(cityId, orderType, null);
-	}
-
-	/*
 	 * 带 距离
 	 * 
 	 */

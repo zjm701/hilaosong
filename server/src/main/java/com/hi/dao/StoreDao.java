@@ -10,8 +10,6 @@ public interface StoreDao {
 	
 	Store getAreaStore(String storeId);
 	
-	List<Store> getStores(String cityId, String orderType);
-
 	List<Store> getStores(String cityId, String orderType, String cuspoint);
 	
 	Store getStore(String storeId);
