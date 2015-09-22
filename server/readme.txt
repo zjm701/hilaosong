@@ -134,7 +134,7 @@ http://localhost:8080/hilaosong/rest/getlatestaddress?userId=0200000045250449
 response:  {"addressId":203113,"customerPhone":"15201007041","provinceId":"110000","cityId":"110000","detailAddress":"十店测试","village":"朝阳 十店 十店测试"}
 #返回最近的订单地址
 
-41, 支持外卖的门店列表
+41, 支持外卖的最近的门店
 http://localhost:8080/hilaosong/rest/getstores0?provinceId=110000&address=北京市朝阳区平房路12号
 http://localhost:8080/hilaosong/rest/getstores0?cityId=320500&address=北京市朝阳区平房路12号
 http://localhost:8080/hilaosong/rest/getstores0?provinceId=110000&cityId=110000&address=北京市朝阳区平房路12号

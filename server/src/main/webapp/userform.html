@@ -106,7 +106,7 @@
 
 
 
-nowpage ='orderform';
+nowpage ='userform';
 
 
 
@@ -456,7 +456,8 @@ function orderform1type2(){
 
 
 
-        url: apiurl+'getstores2?cityId='+cityid+'',
+        //url: apiurl+'getstores2?cityId='+cityid+'',
+		url: apiurl+'getstores2?cityId='+cityid+'&provinceId='+provinceid+'',//lt:20150915
 
 
 
@@ -568,7 +569,8 @@ function orderform1type2new(n){
 
 
 
-        url: apiurl+'getstores2?cityId='+cityid+'',
+        //url: apiurl+'getstores2?cityId='+cityid+'',
+		url: apiurl+'getstores2?cityId='+cityid+'&provinceId='+provinceid+'',//lt:20150915
 
 
 
@@ -628,7 +630,7 @@ function orderform1type2new(n){
 
 
 
-					_html +=''+obj.storeTele+'';
+					_html +='4008107107';//门店电话统一//lt:20150920
 
 
 
@@ -1222,8 +1224,6 @@ $(document).ready(function(e) {
 
 });
 
-
-
 	function userform() {
 
 
@@ -1236,27 +1236,34 @@ $(document).ready(function(e) {
 
 		var payChannel = $("input[name='payChannel']").val();
 
-
-
-		if($("input[name='contactName']").val() == ''){
-
+	
+		var cn = $("input[name='contactName']").val()
+		if(cn == ''){
 			alert('请填写联系人');
-
 			return false;
 
 		}
-
-		if($("input[name='contactPhone']").val() == ''){
-
+		var cp = $("input[name='contactPhone']").val();
+		if(cp== ''){
 			alert('请填写手机');
-
 			return false;
-
+		}else if(cp.length!=11){
+			alert('请填写正确的手机号');
+			return false;
 		}
 
+		
 		if($("input[name='orderType']:checked").val() == '0' && $("input[name='detailAddress']").val() == ''){
 
 			alert('请填写地址');
+
+			return false;
+
+		}
+		
+		if($("input[name='orderType']:checked").val() == '2' && $('#storeid2').val()==''){
+
+			alert('请选择门店');
 
 			return false;
 
@@ -1282,7 +1289,7 @@ $(document).ready(function(e) {
 
 	    } else {
 
-			if( tmp !=  userformjson['storeId']){
+			if( tmp !=  userformjson['storeId']){////lt:20150920 根据门店id判断是否清空购物篮，不根据地址判断
 
 				//alert(tmp);
 				//alert(userformjson['storeId']);
@@ -1379,12 +1386,21 @@ $(document).ready(function(e) {
 			
 
 			//alert(tmp1);
+			var referpage = $.cookie("userformrefer");
 
-			
+			if(typeof(referpage) == 'undefined' ||  referpage == null ||  referpage == 'null' ||  referpage == ''){
+				goLocationWithCity('index.html');
+			} else if(referpage == 'userform'){
+				goLocationWithCity('index.html');
+			} else if(referpage == 'pack' || referpage == 'dish' || referpage == 'diyguodi' || referpage == 'orderform1'){
+				goLocationWithCity(referpage+'.html');
+			} else {
+				goLocationWithCity('index.html');
+			}
 
 			//window.location='./index.html';
 
-			goLocationWithCity('index.html');
+			
 
 
 

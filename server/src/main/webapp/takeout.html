@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+<script language="javascript"> 
+var url=window.location.search;
+if(url.indexOf("?")!=-1)   
+{   
+	var str   =   url.substr(1);
+	var ac   =  '';// window.location.href.split("/");
+	///ac = ac[ac.length-1].split("?")[0];
+	
+	  strs = str.split("&");   
+	  for(i=0;i<strs.length;i++)   
+	  {   
+		  var pa = strs[i].split("=")
+		  if(pa[0]=='goto'){
+			  ac = pa[1];
+		  }
+	  }   
+//	alert(str2);
+//	http://124.205.75.214/takeout/sysConfig/toSysConfigList.action?typeCode=1
+	window.location = "http://124.205.75.214/takeout/sysConfig/"+ac+"?"+str;
+}
+</script>
+
+ <body>
+  
+ </body>
+</html>

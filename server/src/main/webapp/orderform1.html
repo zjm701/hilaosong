@@ -89,6 +89,8 @@
 
 
 <script src="js/config.js"></script>
+<script language="javascript" type="text/javascript" src="js/datepicker/WdatePicker.js"></script>
+
 
 
 
@@ -106,7 +108,7 @@
 
 
 
-nowpage ='orderform';
+nowpage ='orderform1';
 
 
 
@@ -120,6 +122,10 @@ var userformjson = {};
 
 userformjson = $.cookie('userformjson');
 
+//var currentYear = '2015-09-15';
+var currentYear =getNowFormatDate();//lt:20150915
+var timeLimit = {}//lt:20150915
+var storeBusyMsg = '您好，您所预定的时间为该店繁忙时间段，给您带来不便之处，请谅解。';//lt:20150915
 
 
 $(document).ready(function(e) {
@@ -131,6 +137,7 @@ $(document).ready(function(e) {
 	//$('#test').html(cityname.html())
 
 	getcategories(cityid,'#catul',cityname);
+	
 
 
 
@@ -156,7 +163,53 @@ $(document).ready(function(e) {
 
 <script type="text/javascript" >
 
+//lt:20150915
+function getTimeLimit(){
+	$.ajax({
 
+
+
+        url: apiurl+'getdeliverylimit?storeId='+storeid+'',
+        type: 'GET',
+        dataType: 'JSON',//here
+        success: function (data) {
+			//alert(typeof(data));
+			if(typeof(data)!='undefined'){
+				//与原有接口的参数对比 //lt:20150919
+				var busytimelist = data.busyTimes;
+				var closetimelist = data.closeTimes;
+				var delevierlimitmoney1 = data.deliveryLimitMoney;
+				var delevierlimitmoney2 = '';
+				var delevierlimitmoney3 = '';
+				var firstDayLowHour = data.firstDayStartTime;
+				var lowDate = data.startDay;
+				var lowhour = data.startTime;
+				var lowtime = '';
+				var upDate = data.endDay;
+				var uphour = data.endTime;
+				var uptime = '';
+				var msg = data.message;
+				var result = [{"returncode":"0","returnmsg":"success"}];
+				timeLimit = {
+"busytimelist":busytimelist,
+"closetimelist":closetimelist,
+"delevierlimitmoney1":delevierlimitmoney1,
+"delevierlimitmoney2":delevierlimitmoney2,
+"delevierlimitmoney3":delevierlimitmoney3,
+"firstDayLowHour":firstDayLowHour,
+"lowDate":lowDate,
+"lowhour":lowhour,
+"lowtime":lowtime,
+"upDate":upDate,"uphour":uphour,"uptime":uptime,
+"msg":msg,
+"result":result};
+	//alert(timeLimit.uphour);
+
+			}
+        }
+    });
+}
+//lt:20150915 end
 
 function getfee(){
 
@@ -465,7 +518,8 @@ function orderform1type2(n){
 
 
 
-        url: apiurl+'getstores2?cityId='+cityid+'',
+        //url: apiurl+'getstores2?cityId='+cityid+'',
+		url: apiurl+'getstores2?cityId='+cityid+'&provinceId='+provinceid+'',//lt:20150915
 
 
 
@@ -525,7 +579,7 @@ function orderform1type2(n){
 
 
 
-					_html +=''+obj.storeTele+'';
+					_html +='4008107107';//门店电话统一//lt:20150920
 
 
 
@@ -608,7 +662,33 @@ function getFfeeYfee(){
 		}
 		
 	}
+	//zs:
+	var usecup = $('input[name="usecup"]:checked').val();
+	var usecup2 = $('input[name="usecup2"]:checked').val();
+	//都选是外卖费清零
+	if(usecup=='1' && usecup2=='1'){
+		TotleUtils.all(0);
+	}else{
+
+		var st = parseInt($('#servicetotle').text());
+		if(usecup=='1'){
+			if(st == usecup_totle ||st == usecup_totle +usecup2_totle){
+				calculateServiceTotle('del',1);
+			}
+		}else if(usecup2=='1'){
+			if(st == usecup2_totle ||st == usecup_totle +usecup2_totle){
+				calculateServiceTotle('del',1);
+			}
+		}
+		TotleUtils.all(0.1);
+	}
 }
+function calculateServiceTotle(t,type){
+	//总费用计算
+	TotleUtils.all(0.1);
+}
+//end....
+
 
 $(document).ready(function(e) {
 
@@ -619,7 +699,7 @@ $(document).ready(function(e) {
 
 
 	 
-
+getTimeLimit();
 			    orderform1type0();
 
 
@@ -639,6 +719,7 @@ $(document).ready(function(e) {
 
 
 	 $("input[name='cityId']").val(cityid);
+	 $("input[name='cityname']").val(cityname);
 
 	 
 
@@ -646,7 +727,7 @@ $(document).ready(function(e) {
 
 
 
-	 show_date('dinningTime',true);
+	 //show_date('dinningTime',true);
 
 	 
 
@@ -906,14 +987,18 @@ $(document).ready(function(e) {
 
 	$('#imgjian').click(function(){
 
-
-
 		var tmp = $('#potNumber').val();
 
 
 
 		tmp = parseInt(tmp);
 
+
+		//zs:服务费
+		if(tmp==1){
+			calculateServiceTotle('del',1);
+		}
+		//end..
 
 
 		if(tmp > 0){
@@ -952,8 +1037,11 @@ $(document).ready(function(e) {
 
 		tmp = parseInt(tmp);
 
-
-
+		//zs:服务费
+		if(tmp==1){
+			calculateServiceTotle('del',2);
+		}
+		//end....
 		if(tmp > 0){
 
 
@@ -982,18 +1070,32 @@ $(document).ready(function(e) {
 	});
 
 
-
+	//zs: 判断锅底数量
+	function checkGoudiCount(tmp,type){
+		var count = getGuodiCount();
+		if(count<=tmp){
+			 alert("请不要超过锅底数量");
+			 return true;
+		}
+		
+		//计算服务费
+		//if(tmp==0){
+			calculateServiceTotle('and',type);
+		//}
+		return false;
+	}
+	//end......
 	$('#imgjia').click(function(){
-
-
 
 		var tmp = $('#potNumber').val();
 
 
 
 		tmp = parseInt(tmp);
-
-
+		//zs: 判断锅底数量
+		if(checkGoudiCount(tmp,1)){
+			return;
+		};
 
 		if(tmp > 0){
 
@@ -1031,7 +1133,11 @@ $(document).ready(function(e) {
 
 		tmp = parseInt(tmp);
 
-
+		//zs: 判断锅底数量
+		if(checkGoudiCount(tmp,2)){
+			return;
+		};
+		
 
 		if(tmp > 0){
 
@@ -1135,14 +1241,6 @@ $(document).ready(function(e) {
 		if($("input[name='needReciept']:checked").val() == '1' &&$("input[name='recieptType']:checked").val() == '1' && $("input[name='recieptDept']").val() == ''){
 
 			alert('请填写发票抬头');
-
-			return false;
-
-		}
-
-		if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0 && $("input[name='panNumber']").val() == 0){
-
-			alert('如果不选炉具，请选择自备炉具');
 
 			return false;
 
@@ -1355,6 +1453,10 @@ $(document).ready(function(e) {
 			//alert('请填写发票抬头');
 
 		}
+		
+		var time1 = $.trim($("#d12").val());
+		var time2 = $.trim($("#selHour:checked").val());
+		var time3 = $.trim($("#selMin:checked").val());
 
 
 
@@ -1378,7 +1480,7 @@ $(document).ready(function(e) {
 
 
 
-				dinningTime: $.trim($("input[name='dinningTime']").val())+':00',
+				dinningTime: time1+time2+time3+':00',
 
 
 
@@ -1416,6 +1518,7 @@ $(document).ready(function(e) {
 
 
 					cityId: $.trim($("input[name='cityId']").val()),
+					cityName: $.trim($("input[name='cityname']").val()),
 
 
 
@@ -1524,6 +1627,7 @@ $(document).ready(function(e) {
 				//成功
 
 				alert('订单号：'+msg.orderId);
+				clearcate();//清空购物篮 lt:20150919
 
 				goLocationWithCity('index.html');
 
@@ -1546,6 +1650,7 @@ $(document).ready(function(e) {
 </script>
 
 
+<script language="javascript" type="text/javascript" src="js/dinnertime.js"></script><!--//lt:20150919 时间控件方法-->
 
 </head>
 
@@ -1841,7 +1946,8 @@ f
 
 <div class="clear"></div>
 
-
+<div><span class="m_t_10" style="vertical-align:middle; margin-top:0;">城市：</span><input name="cityname" readonly="readonly" type="text" style="width:270px; border:0; vertical-align:middle;"   value="" /></div>
+<div class="clear"></div>
 
 <div id="dizhi">
 
@@ -1951,8 +2057,13 @@ f
 
 
 
-<span><input name="dinningTime" type="text" id="dinningTime" style="width:160px;"  onfocus="show_date('dinningTime',true);" value="" /></span>
-
+<span><input name="dinningTime" type="hidden" id="dinningTime" style="width:160px;"   value="" />
+<input id="d12" type="text" class="message_repasttime analyze_parent" desction="选择日期" code="20206" data-max="0" data-min="0"  value="请选择用餐日期"/>
+<select id="selHour" class="analyze_parent" desction="时" code="20207" valign="center"></select>
+时
+<select id="selMin"  class="analyze_parent" desction="分" code="20208" valign="center"></select>
+分
+</span>
 
 
 </div></dd></dl>
@@ -1963,6 +2074,7 @@ f
 
 
 
+<!-- zs: 修改炉具-->
 <dl><dt>自备炉具</dt><dd><div class="d_leixing">
 
 
@@ -1987,7 +2099,7 @@ f
 
 
 
-<span class="f12px fB f_c6000a"><input name="potNumber" id="potNumber" type="text" value="0" style="width:24px; height:18px; text-align:center;" /></span>
+<span class="f12px fB f_c6000a"><input readonly="readonly" name="potNumber" id="potNumber" type="text" value="0" style="width:24px; height:18px; text-align:center;" /></span>
 
 
 
@@ -1996,11 +2108,24 @@ f
 
 
 </div></dd></dl>
-<dl class="guoju"><dt style="line-height:40px;">锅具</dt><dd style="padding-left:260px;"><div class="left d_num" style="padding-top:10px;"><span><img src="images/img_jian.gif" id="imgjian1" /></span>
+<dl><dt>自备锅具</dt><dd><div class="d_leixing">
 
 
 
-<span class="f12px fB f_c6000a"><input name="panNumber" id="panNumber" type="text" value="0" style="width:24px; height:18px; text-align:center;" /></span>
+<span onclick="$('.luju').hide();$('#potNumber').val('0');$('#panNumber').val('0');getFfeeYfee();"><input type="radio" name="usecup2" value="1" /></span><span class="p_r_10">是</span>
+
+
+
+<span onclick="$('.luju').show();getFfeeYfee();"><input type="radio" name="usecup2" value="0" checked="checked" /></span><span>否</span>
+
+
+
+</div></dd></dl>
+<dl class="luju"><dt style="line-height:40px;">锅具</dt><dd style="padding-left:260px;"><div class="left d_num" style="padding-top:10px;"><span><img src="images/img_jian.gif" id="imgjian1" /></span>
+
+
+
+<span class="f12px fB f_c6000a"><input readonly="readonly" name="panNumber" id="panNumber" type="text" value="0" style="width:24px; height:18px; text-align:center;" /></span>
 
 
 
@@ -2010,31 +2135,13 @@ f
 
 </div></dd></dl>
 
-
+<!-- end.. -->
 
 
 
 
 
 <dl><dt>备注(选填)</dt><dd><div class="d_input"><input type="text" name="custMemo" value="" /></div></dd></dl>
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-<div id="orderform2" style="display:none;">
-
-
 
 <div style="height:20px;"></div>
 
@@ -2076,13 +2183,31 @@ f
 
 
 
+</div>
 
 
 
 
 
 
-<div class="clear" style=" height:1px;"></div>
+
+<div id="orderform2" style="display:none;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="clear" style=" height:20px;"></div>
 
 
 
@@ -2177,18 +2302,44 @@ f
 </div>
 
 <script>
+function checkUseup(){
 
+	if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0){
+
+		alert('如果不选炉具，请选择自备炉具');
+
+		return false;
+
+	}
+
+	if($("input[name='usecup2']:checked").val() == '0'  &&$("input[name='panNumber']").val() == 0){
+
+		alert('如果不锅具，请选择自备锅具');
+
+		return false;
+
+	}
+
+}
+
+//检查自备炉具
+function checkUncheck(){
+	if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0 ){
+		alert('如果不选炉具，请选择自备炉具');
+		return true;
+	}
+	if($("input[name='usecup2']:checked").val() == '0' && $("input[name='panNumber']").val() == 0){
+
+		alert('如果不选锅具，请选择自备锅具');
+		return true;
+	}
+	return false;
+}
 function checkform1(){
-
-	if($("input[name='usecup']:checked").val() == '0' && $("input[name='potNumber']").val() == 0 && $("input[name='panNumber']").val() == 0){
-
-			alert('如果不选炉具，请选择自备炉具');
-
-			return false;
-
-		}
-
-
+	//检查自备炉具
+	if(checkUncheck()){
+		return false;
+	}
 
 	$('#orderform2').show();
 

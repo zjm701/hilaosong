@@ -2,6 +2,8 @@
 
 var carttotal = 0;
 
+var putconfig = 258;
+
 
 
 $(document).ready(function(e) {
@@ -108,7 +110,32 @@ $(document).ready(function(e) {
 
 
 
-	
+
+	$.ajax({
+
+		url: apiurl+'getdeliverylimitmoney?storeId='+storeid+'',
+
+		type: 'GET',
+
+		dataType: 'JSON',//here
+
+		success: function (data) {
+
+				//alert(JSON.stringify(data));
+
+			if(typeof(data.deliveryLimitMoney)=='undefined'){
+
+			} else {
+
+				putconfig = data.deliveryLimitMoney;
+
+				
+
+			}
+
+		}
+
+	});
 
 
 
@@ -151,7 +178,7 @@ function logout(){
 }
 
 
-
+//zs:进入结算
 function checkcarttotl(){
 
 	if(carttotal == 0){
@@ -162,50 +189,53 @@ function checkcarttotl(){
 
 	}
 
+
+	//菜品判断
+	var cartbox = $("#cartbox")
+	if(cartbox.children().length==0){
+		alert("您没有选择任何菜品！");
+		return false;
+	}
+
+	//锅底数量大于等于3,
+	var count1 = getGuodiCount();
+	var pc = putconfig;
+	//if(count1>=3){
+		pc *= count1;
+	//}
+	if(carttotal < pc){
+
+		alert('点餐费未达到'+pc+'元的起送标准！');
+
+		return false;
+
+	}
+	//判断是否选择了锅底
+	if(checkOnself('001')){
+		return false;
+	}
+	//判断是否选择了小料
+	if(checkOnself('007')){
+		return false;
+	}
 	
-
-	var putconfig = 258;
-
-	
-
-	$.ajax({
-
-		url: apiurl+'getdeliverylimitmoney?storeId='+storeid+'',
-
-		type: 'GET',
-
-		dataType: 'JSON',//here
-
-		success: function (data) {
-
-				//alert(JSON.stringify(data));
-
-			if(typeof(data.deliveryLimitMoney)=='undefined'){
-
-			} else {
-
-				putconfig = data.deliveryLimitMoney;
-
-				if(carttotal < putconfig){
-
-					alert('点餐费未达到'+putconfig+'元的起送标准！');
-
-					return false;
-
-				}
-
-				
-
-			}
-
-		}
-
-	});
-
-	
-
 }
 
+function checkOnself(n){
+	var ose = _onself[n];
+	var isSelect = $.cookie("onselfClick"+n)=='true';
+	var cou = getCountByType(n);
+	if(n=='001'){
+		cou = getGuodiCount();
+	}
+//	alert(isSelect+"  cou:"+cou
+//	没有选择自备锅底并没有选择锅底
+	if(cou==0 && !isSelect){
+		alert(ose.adder2);
+		return true;
+	}
+	return false;
+}
 
 
 </script>
@@ -308,7 +338,7 @@ function checkcarttotl(){
 
 
 
-<a href="javascript:;" onClick="if(confirm('修改订餐信息？')){goLocationWithCity('userform.html'); }">修改订餐信息</a>
+<a href="javascript:;" onClick="if(confirm('填写或者修改订餐信息？')){goLocationWithCity('userform.html'); }">订餐信息</a>
 
 
 
@@ -416,7 +446,13 @@ function checkcarttotl(){
 
 
 
-<div class="cart" ><div class="left">合计</div><div id="carttotle" class="right">0</div></div>
+<div class="cart" ><div class="left">菜品</div><div id="carttotle" class="right">0</div></div>
+<div class="blank5"></div>
+<div class="cart" ><div class="left">外送费</div><div id="ousidetotle" class="right">0</div></div>
+<div class="blank5"></div>
+<div class="cart" id="servicetotleDiv" ><div class="left">服务费</div><div id="servicetotle" class="right">0</div></div>
+<div class="blank5"></div>
+<div class="cart" ><div class="left">合计</div><div id="alltotle" class="right">0</div></div>
 
 
 
@@ -436,7 +472,7 @@ function checkcarttotl(){
 
 
 
-<span class="m_t_30">提醒：根据您最终提交订单时间，送餐时间可能略有调整。</span>
+<span class="m_t_30"><strong style="color:#FF0000;">提醒：具体送达时间以客服电话或短信回复的时间为准。</strong></span>
 
 
 

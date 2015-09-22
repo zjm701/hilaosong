@@ -503,17 +503,14 @@ function getdishes(n,m,l,p,q){
 				$.each(data,function(index,obj){
 					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
 					_html += '<li onclick="" data-val="'+obj.dishId+'" type="'+n+'"><img src="'+obj.bigImageAddr+'" width="100" height="100"><div class="cp_titel">';
-					_html += '<div class="cp_title1"><span class="f_c6000a f14px fB oh14">'+obj.storeDishName+'</span>  <span class="f_c6000a f14px oh14">一份价格：'+obj.unitPrice+'元';
-					_html += '<div class="right num"><img src="images/img_jian.gif" data-id="'+obj.dishId+'" data-name="'+obj.storeDishName+'"  type="'+n+'"data-price="'+obj.unitPrice+'" onclick="cartdishd(this);">   <img src="images/img_jia.gif" data-id="'+obj.dishId+'" data-name="'+obj.storeDishName+'" type="'+n+'" data-price="'+obj.unitPrice+'" onclick="cartdishp(this);"> </div></span><div class="clear"></div>';//lt:20150919 修改菜品列表界面
+					_html += '<div class="cp_title1"><span class="f_c6000a f14px fB oh14">'+obj.storeDishName+'</span>  <span class="f_c6000a f14px oh14">一份价格：'+obj.unitPrice+'元</span><div class="clear"></div>';
 					if(typeof(obj.halfDishId) == 'undefined'){
 					  } else {
 						  obj.halfPrice = (Math.round(obj.halfPrice*100)/100);
-						  _html += '<span class="f_c6000a f14px oh14">半份价格：'+obj.halfPrice+'元';
-						  _html += '<div class="right num"><img src="images/img_jian.gif" data-id="'+obj.halfDishId+'" data-name="'+obj.storeDishName+'半份"  type="'+n+'"data-price="'+obj.halfPrice+'" onclick="cartdishd(this);">   <img src="images/img_jia.gif" data-id="'+obj.halfDishId+'" data-name="'+obj.storeDishName+'半份" type="'+n+'" data-price="'+obj.halfPrice+'" onclick="cartdishp(this);"> </div></span><div class="clear"></div>';//lt:20150919 修改菜品列表界面
+						  _html += '<span class="f_c6000a f14px oh14">半份价格：'+obj.halfPrice+'元</span><div class="clear"></div>';
 					  }
 					_html += '</div><div class=" p_t_20"><div class="i_box">';
 					//if(obj.type == '1'){
-						/*//lt:20150919 修改菜品列表界面
 					  if(typeof(obj.halfDishId) == 'undefined'){
 					  } else {
 						  _html += '<span onclick="addcarthalf(this);" data-id="'+obj.halfDishId+'"  data-name="'+obj.storeDishName+'半份" type="'+n+'" data-price="'+obj.halfPrice+'">半份选择</span>';
@@ -523,7 +520,7 @@ function getdishes(n,m,l,p,q){
 					 _html += ' <span class="dishp J_add" data-id="'+obj.dishId+'" data-name="'+obj.storeDishName+'" type="'+n+'" data-price="'+obj.unitPrice+'" onclick="cartdishp(this);">+</span></div> ';
 					//} else if(obj.type == '2'){
 					//	_html += '<span class="dishpack" data-id="'+obj.dishId+'" data-name="'+obj.storeDishName+'" data-price="'+obj.unitPrice+'" onclick="cartpack(this);" >套餐选择</span>';
-					//}*///lt:20150919 修改菜品列表界面end
+					//}
 					_html += '</div><div class="clear"></div></div>';
 					_html +='</div></li>';
 				});
@@ -538,6 +535,7 @@ function getdishes(n,m,l,p,q){
 				}
 				$.ajax({
 				  url: apiurl+'cntdishes?storeId='+p+'&catId='+catid+'',
+//				  url: apiurl+'cntdishes?storeId=0201&catId='+catid+'',
 				  type: 'GET',
 				  dataType: 'JSON',//here
 				  success: function (data) {
@@ -587,21 +585,19 @@ function getcartdishinfo(){
 		
 	} else {
 		cartdish = eval('(' + $.cookie("cartdish") + ')'); 
-		$('#cartbox').html('');
+		_html ='';
 		$.each(cartdish,function(index,obj){
 			if(typeof(obj) == 'undefined' ||  obj == null){
 			} else {
 			//alert(obj);
-			var	_html ='';
 			_html +='<div id="'+obj.id+'" type="'+obj.type+'" class="cartli">';
 			_html +='<div class="carttitle">'+obj.name+'</div>';
 			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+obj.id+'\')" /> ';
 			_html +='<span onclick="delcart(\''+obj.id+'\');">X</span></div></div>';
 			_html +='</div>';
 			}
-			$('#cartbox').prepend(_html)
 		});
-		//$('#cartbox').html(_html);
+		$('#cartbox').html(_html);
 	}
 	//alert(cartdish);
 	return cartdish;
@@ -785,7 +781,7 @@ function cartdishp(n){
 		_html +='<div class="cartprice"><div class="left">'+price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+id+'\')" /> '+cartdish[id]['num']+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+id+'\')" /> ';
 		_html +='<span  onclick="delcart(\''+id+'\');">X</span></div></div>';
 		_html +='</div>';
-		$('#cartbox').prepend(_html)
+		$('#cartbox').append(_html)
 	}
 	getcartfee();
 }
@@ -864,17 +860,15 @@ function getcartpackinfo(){
 		$.each(cartpack,function(index,obj){
 			if(typeof(obj) == 'undefined' ||  obj == null){
 			} else {
-
-				buildSetmealBasket(obj);
 			//alert(obj);
-		/*	_html +='<div id="'+obj.id+'" class="cartli">';
+			_html +='<div id="'+obj.id+'" class="cartli">';
 			_html +='<div class="carttitle">'+obj.name+'</div>';
 			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartpackp1(\''+obj.id+'\')" /> ';
 			_html +='<span  onclick="delcartpack(\''+obj.id+'\');">X</span></div></div>';
-			_html +='</div>';*/
+			_html +='</div>';
 			}
 		});
-		//$('#cartpackbox').html(_html);
+		$('#cartpackbox').html(_html);
 	}
 	//alert(cartdish);
 	return cartpack;
@@ -1277,7 +1271,7 @@ function getcartfee(){
 	cartpack = getcartpackinfo();
 
 	cartdiyguodi = getcartdiyguodiinfo();
-	var _html='';	
+	
 	
 	$.each(cartdish,function(index,obj){
 
@@ -1698,7 +1692,7 @@ var TotleUtils  = {
 			var ct = $("#carttotle").text();
 			ct = parseInt(ct);
 			//外送费  公里数乘基数
-			
+
 			var uf = CookUtils.getTakeOutType();
 			var ot = 9;
 			//0是外卖  
@@ -1708,19 +1702,22 @@ var TotleUtils  = {
 				if(count1>=3){
 					ot *= count1;
 				}
-				$("#ousidetotle").prev().text('外送费');
 			}else{
-				$("#ousidetotle").prev().text('押金');
 				//炉具
-				ot = 0;
-				var potN = $("#potNumber").val();
-				var panN = $("#panNumber").val();
-				if(potNumber && panNumber){
-						ot = parseInt(panN)*100+parseInt(potN)*400;
+				ot = 500;
+				var potNumber = $("#potNumber").val();
+				if(potNumber){
+					if(potNumber=="0" || potNumber=="" ){
+						ot -= 400;
+					}
+					var panNumber = $("#panNumber").val();
+					if(panNumber=="0" || panNumber=="" ){
+						ot -= 100;
+					}
 				//菜品列表页面
+				}else{
+					ot = 0;
 				}
-				//自取没有服务费
-				off=0;
 			}
 			$("#ousidetotle").text(ot);
 			//服务费
@@ -1732,37 +1729,4 @@ var TotleUtils  = {
 			$("#alltotle").text(ct+ot+st);
 			//$("#carttotle").text(ct*0.1);
 		}	
-}
-
-//构建套餐菜蓝
-function buildSetmealBasket(cp){
-	var id = cp.id +"_"+cp.index;
-	_html = '';
-	_html += '<div id="' + id +'" class="cartli" type="012">';
-	_html += '<div class="carttitle">' + cp.name + '</div>';
-	/*_html += '<div class="cartprice"><div class="left">'
-			+ price
-			+ '元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartpackd1(\''
-			+ id + '\')" /> ' + num
-			+ ' <img src="images/img_jia.gif" onclickw="cartpackp1(\'' + id
-			+ '\')" /> ';*/
-	_html += '<div class="cartprice"><div class="left">'
-		+ cp.price
-		+ '元</div><div class="right num">' + cp.num;
-	_html += '<span  onclick="delcartSetmeal(\'' + id
-			+ '\');">X</span></div></div>';
-	_html += '</div>';
-	 $('#cartbox').prepend(_html)
-
-}
-//删除套餐
-function delcartSetmeal(n){
-	var cartdish = {};
-	cartdish = eval('(' + $.cookie("cartpack") + ')');
-	if(cartdish[n] != null ){
-		delete cartdish[n];
-	}
-	$('#'+n+'').remove();
-	$.cookie("cartpack",JSON.stringify(cartdish), { expires: 30 });
-	getcartfee();
 }

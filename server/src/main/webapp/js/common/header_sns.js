@@ -1,4 +1,4 @@
-var serverAndPort = "http://124.205.75.214:7070/haidilao"; //北京
+var serverAndPort = "http://124.205.75.214:17070/haidilao"; //北京
 //var serverAndPort = "http://hi.haidilao.com"; 				//现网南京
 var sns_url = "/pages/haidl/order_iframe.jsp?url=";
 
