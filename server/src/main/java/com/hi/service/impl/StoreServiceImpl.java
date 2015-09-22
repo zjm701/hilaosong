@@ -25,11 +25,11 @@ public class StoreServiceImpl implements StoreService {
 	@Autowired
 	private SysConfigDao cdao;
 
-	/*
+	/**
 	 * 不带距离
 	 */
-	public List<Store> getStores(String cityId, String orderType) {
-		return getStores(cityId, orderType, null);
+	public List<Store> getStores(String provinceId, String cityId, String orderType) {
+		return getStores(provinceId, cityId, orderType, null);
 	}
 
 	/**
@@ -40,11 +40,11 @@ public class StoreServiceImpl implements StoreService {
 	 * @param cuspoint
 	 * @return
 	 */
-	public List<Store> getStores(String cityId, String orderType, String cuspoint) {
+	public List<Store> getStores(String provinceId, String cityId, String orderType, String cuspoint) {
 		if (cityId == null) {
 			cityId = CityServiceImpl.CITY_BEIJING;
 		}
-		return sdao.getStores(cityId, orderType, cuspoint);
+		return sdao.getStores(provinceId, cityId, orderType, cuspoint);
 	}
 
 	public Store getDefaultStore(String cityId) {

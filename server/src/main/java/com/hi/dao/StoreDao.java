@@ -9,9 +9,9 @@ public interface StoreDao {
 	Store getDefaultStore(String cityId);
 	
 	Store getAreaStore(String storeId);
-	
-	List<Store> getStores(String cityId, String orderType, String cuspoint);
-	
+
+	List<Store> getStores(String provinceId, String cityId, String orderType, String cuspoint);
+
 	Store getStore(String storeId);
 
 	Store getStore(String storeId, String cuspoint);

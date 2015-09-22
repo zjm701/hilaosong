@@ -44,28 +44,13 @@ public class StoreDaoImpl extends AbstractDao implements StoreDao {
 		return this.getFirstBeanBySql(Store.class, sql, params);
 	}
 	
-	/*
-	 * 带 距离
-	 * 
-	 */
-	public List<Store> getStores(String cityId, String orderType, String cuspoint) {
+	public List<Store> getStores(String provinceId, String cityId, String orderType, String cuspoint) {
 		// memo1='1': 网络订餐
 		// orderType : SEND_OUT:s.memo3=1 TAKE_AWAY:s.memo4=1
 
 		StringBuilder sb = new StringBuilder();
 		Map<String, Object> params = new HashMap<String, Object>();
-		boolean isSame = true;
-		if(cityId.contains("_")){
-			String[] ids = cityId.split("_");
-			params.put("provinceId", ids[1]);
-			//如果相同只查省，不相同才会查城市
-			isSame = ids[0].equals(ids[1]);
-			if(!isSame){
-				params.put("cityId", ids[0]);
-			}
-		}else{
-			params.put("cityId", cityId);
-		}
+		
 		sb.append("select s.storeid as \"storeId\", s.storeName as \"storeName\", s.storeAddress as \"storeAddress\", ")
 				.append(" s.storeTele as \"storeTele\", s.storeCode as \"storeCode\", s.storeType as \"storeType\", ")
 				.append(" s.provinceId as \"provinceId\", s.cityId as \"cityId\", s.postCode as \"postCode\", ")
@@ -75,15 +60,21 @@ public class StoreDaoImpl extends AbstractDao implements StoreDao {
 			sb.append(", func_distance(:cuspoint, s.coordinate) as \"distance\"");
 			params.put("cuspoint", cuspoint);
 		}
-		sb.append(" from T_CATER_STORE s ").append(" where s.provinceId = :provinceId ");
+		sb.append(" from T_CATER_STORE s ");
 
-		if(cityId.contains("_")){
-			if(!isSame){
+		if (StringTools.isNotEmpty(provinceId)) {
+			sb.append(" where s.provinceId = :provinceId ");
+			params.put("provinceId", provinceId);
+			// 如果相同只查省，不相同才会查城市
+			if (!provinceId.equals(cityId)) {
 				sb.append(" and s.cityId = :cityId ");
+				params.put("cityId", cityId);
 			}
-		}else{
-			sb.append(" and s.cityId = :cityId ");
+		} else {
+			sb.append(" where s.cityId = :cityId ");
+			params.put("cityId", cityId);
 		}
+		
 		sb.append("and s.deptType='4' and s.memo1= '1' and s.isactive = 'Y' and s.isDisplay = '1'");
 		if (OrderType.SEND_OUT.getKey().equals(orderType)) {
 			sb.append(" and s.memo3 = '1'");

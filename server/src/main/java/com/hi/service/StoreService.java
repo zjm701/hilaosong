@@ -7,9 +7,9 @@ import com.hi.model.Store;
 
 public interface StoreService {
 
-	List<Store> getStores(String cityId, String orderType);
+	List<Store> getStores(String provinceId, String cityId, String orderType);
 
-	List<Store> getStores(String cityId, String orderType, String cuspoint);
+	List<Store> getStores(String provinceId, String cityId, String orderType, String cuspoint);
 
 	Store getDefaultStore(String cityId);
 	

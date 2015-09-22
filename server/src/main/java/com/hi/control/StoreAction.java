@@ -75,11 +75,11 @@ public class StoreAction extends BaseAction {
 	@GET
 	@Path("/getstores0")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStores(@FormParam("cityId") String cityId, @FormParam("address") String address) {
+	public Response getStores(@FormParam("provinceId") String provinceId, @FormParam("cityId") String cityId, @FormParam("address") String address) {
 		try {
 			List<Store> stores = null;
 			if (StringTools.isNotEmpty(address)) {
-				stores = storeService.getStores(cityId, OrderType.SEND_OUT.getKey(),
+				stores = storeService.getStores(provinceId, cityId, OrderType.SEND_OUT.getKey(),
 						BaiduTools.getCusPointByAddress(URLEncoder.encode(address, "ISO-8859-1")));
 				Collections.sort(stores, new Comparator<Store>() {
 					public int compare(Store arg0, Store arg1) {
@@ -87,9 +87,14 @@ public class StoreAction extends BaseAction {
 					}
 				});
 			} else {
-				stores = storeService.getStores(cityId, OrderType.SEND_OUT.getKey());
+				stores = storeService.getStores(provinceId, cityId, OrderType.SEND_OUT.getKey());
 			}
-			return getSuccessJsonResponse(stores);
+			Store s = null;
+			if (stores != null && stores.size() > 0) {
+				s = stores.get(0);
+				s.setDeliveryFee("" + calculateDeliveryFee0(s));
+			}
+			return getSuccessJsonResponse(s);
 		} catch (UnsupportedEncodingException e) {
 			return getFailedJsonResponse(MessageCode.ERROR_ENCODING.getDesc()); // 编码异常
 		}
@@ -98,9 +103,8 @@ public class StoreAction extends BaseAction {
 	@GET
 	@Path("/getstores2")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStores(@FormParam("cityId") String cityId,
-			@FormParam("provinceId") String provinceId,@FormParam("address") String address) {
-		List<Store> stores = storeService.getStores(cityId+"_"+provinceId,OrderType.TAKE_AWAY.getKey());
+	public Response getStores(@FormParam("provinceId") String provinceId, @FormParam("cityId") String cityId) {
+		List<Store> stores = storeService.getStores(provinceId, cityId, OrderType.TAKE_AWAY.getKey());
 		return getSuccessJsonResponse(stores);
 	}
 

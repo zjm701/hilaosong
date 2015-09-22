@@ -74,6 +74,11 @@ public class Store{
 	private String deptName;
 	
 	private BigDecimal distance;
+
+	/**
+	 * 送餐费用
+	 */
+	private String deliveryFee;
 	
 	public String getStoreId() {
 		return storeId;
@@ -201,5 +206,13 @@ public class Store{
 
 	public void setDistance(BigDecimal distance) {
 		this.distance = distance;
+	}
+
+	public String getDeliveryFee() {
+		return deliveryFee;
+	}
+
+	public void setDeliveryFee(String deliveryFee) {
+		this.deliveryFee = deliveryFee;
 	}
 }
