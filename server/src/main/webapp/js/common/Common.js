@@ -130,7 +130,7 @@ function hideLoading(){
 	$(".loadingBox").remove();
 	clearInterval(loadingTimer);
 }
-function goLocation(locStr) {
+function goLocation1(locStr) {
 //	this.location.href = locStr;
 	var url = serverAndPort+sns_url;
 	var gotoaction = (locStr.indexOf("?")>0)?(rootUrl+locStr+"&newweb=1"):(rootUrl+locStr+"?newweb=1");

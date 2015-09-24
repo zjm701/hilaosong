@@ -41,23 +41,25 @@ $(document).ready(function(e) {
 		//getcurrentuser();
 		var logintmp = GetQueryString('loginId');
 		//alert(logintmp);
-		$.ajax({
-			url: apiurl+'getuserinfo?loginId='+logintmp,
-			type: 'GET',
-			dataType: 'JSON',//here
-			success: function (data) {
-				
-		        //alert(JSON.stringify(data));
-				
-				if(typeof(data.loginId)=='undefined'){
-					$.cookie("userid", data.user.user_entity_id, { expires: 30 }); 
-	                $.cookie("username", data.user.nickname, { expires: 30 }); 
-					$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
-				} else {
-					//未登录或者未返回
+		if(typeof(logintmp) != 'undefined' && logintmp !=null && logintmp !='null'){
+			$.ajax({
+				url: apiurl+'getuserinfo?loginId='+logintmp,
+				type: 'GET',
+				dataType: 'JSON',//here
+				success: function (data) {
+					
+					//alert(JSON.stringify(data));
+					
+					if(typeof(data.loginId)=='undefined'){
+						$.cookie("userid", data.user.user_entity_id, { expires: 30 }); 
+						$.cookie("username", data.user.nickname, { expires: 30 }); 
+						$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
+					} else {
+						//未登录或者未返回
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 	$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
 });
@@ -1155,6 +1157,9 @@ function getorderinfo(n,m){
 }
 
 function citylist(){
+	if(storeid1 == storeid && (storeid1 != null || typeof(storeid1) != 'undefined')){
+		return ;
+	}
 	$.fancybox(
 		'<div> <ul id="cities"></ul><div class="clear"></div></div>',
 		{
@@ -1662,11 +1667,11 @@ window.onload=function(){
 
     //document.documentElement.style.webkitUserSelect = "none";//禁止选中
 
-	/*addScript("js/common/Common.js");
+	addScript("js/common/Common.js");
 	addScript("js/common/base64.js");
 	addScript("js/common/header_iframe.js");
 	addScript("js/common/header_sns.js");
-	addScript("js/common/o_code.js");*/
+	addScript("js/common/o_code.js");
 
 };
 
@@ -1678,7 +1683,9 @@ var CookUtils = {
 		return CookUtils.getUserform().orderType;
 	},
 	getUserform:function(){
-		return  eval('(' + $.cookie("userformjson") + ')');
+		var ufs = $.cookie("userformjson");
+		
+		return  eval('(' + ufs==null?"{}":ufs + ')');
 	},
 	//统一校验用户session
 	checkUser:function(){
@@ -1715,7 +1722,7 @@ var TotleUtils  = {
 				ot = 0;
 				var potN = $("#potNumber").val();
 				var panN = $("#panNumber").val();
-				if(potNumber && panNumber){
+				if(potN && panN){
 						ot = parseInt(panN)*100+parseInt(potN)*400;
 				//菜品列表页面
 				}
@@ -1748,7 +1755,7 @@ function buildSetmealBasket(cp){
 			+ '\')" /> ';*/
 	_html += '<div class="cartprice"><div class="left">'
 		+ cp.price
-		+ '元</div><div class="right num">' + cp.num;
+		+ '元</div><div class="right num packnum">' + cp.num;
 	_html += '<span  onclick="delcartSetmeal(\'' + id
 			+ '\');">X</span></div></div>';
 	_html += '</div>';

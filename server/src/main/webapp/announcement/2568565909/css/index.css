@@ -1,0 +1,23 @@
+@charset "UTF-8";
+/**
+ *
+ * @authors ¶­Ïè
+ * @date    2014-11-06 18:13:12
+ */
+
+
+body{
+	background:url(../images/bg.png) no-repeat center bottom;
+}
+
+.center{
+	position:relative;
+	width:999px;
+	margin:0 auto;
+	padding-bottom:54px;
+}
+.center span{
+	position:absolute;
+	left:-157px;
+	top:127px;
+}

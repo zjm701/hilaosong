@@ -83,7 +83,7 @@ function addcartpack(n) {
 		//TotleUtils.all(0.1);
 		// $('#'+id+'').remove();
 		//$('#cartpackbox').html(_html);
-		// goLocationWithCity("pack.html");
+		 goLocationWithCity("pack.html");
 	}
 
 }

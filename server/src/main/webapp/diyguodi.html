@@ -1,2241 +1,2241 @@
- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-
-
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-
-
-
-
-<head>
-
-
-
-
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-
-
-
-
-<meta http-equiv="x-ua-compatible" content="ie=7" /> 
-
-
-
-
-
-<title>DIY锅底</title>
-
-
-
-
-
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
-
-
-
-
-
-<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
-
-
-
-
-
-<link rel="stylesheet" type="text/css" href="style/base.css"/>
-
-
-
-
-
-<link rel="stylesheet" type="text/css" href="style/index.css"/>
-
-
-
-
-
-<script type="text/javascript"src="js/json2.js"></script>
-
-
-
-
-
-<script src="js/jquery.min.js"></script>
-
-
-
-
-
-<script src="js/jquery-migrate.min.js"></script>
-
-
-
-
-
-<script src="js/jquery-ui.min.js"></script>
-
-
-
-
-
-<script src="js/jquery.cookie.js"></script>
-
-
-
-
-
-<script src="js/jquery.fancybox-1.3.4.js"></script>
-
-
-
-
-
-<script src="js/jquery.mousewheel.js"></script>
-
-
-
-
-
-<script src="js/jquery.easing.js"></script>
-
-
-
-
-
-<script src="js/jquery.pager.js"></script>
-
-
-
-
-
-<script type="text/javascript" src="js/md5.js"></script>
-
-
-
-
-
-<script src="js/common.js"></script>
-
-
-
-
-
-<script src="js/config.js"></script>
-
-
-
-
-
-<style>
-
-
-
-
-
-
-
-
-
-
-
-</style>
-
-
-
-
-
-<script>
-
-
-
-
-
-nowpage ='diyguodi';
-
-
-
-
-
-var diyguodijson = {};
-
-
-
-
-
-
-
-
-userid = $.cookie('userid');//
-
-
-
-
-
-function editdiyguodi(n){
-
-
-
-
-
-	var _html;
-
-
-
-
-
-	var id = $(n).attr('data-id');
-
-
-
-
-
-	var name = $(n).attr('data-name');
-
-
-
-
-
-	var id1 = $(n).attr('data-id1');
-
-
-
-
-
-	var id2 = $(n).attr('data-id2');
-
-
-
-
-
-	diyguodijson = {};
-
-
-
-
-
-	diyguodijson['id'] = id;
-
-
-
-
-
-	diyguodijson['name'] = name;
-
-
-
-
-
-	diyguodijson['id1'] = null;
-
-
-
-
-
-	diyguodijson['id2'] = null;
-
-
-	
-
-
-	storeid = $.cookie('storeid');
-
-
-	
-
-
-	$.fancybox(
-
-
-
-
-
-					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div id="diyguodipager"></div><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center >'+name+'（修改）</center><center ><div class="btn btn-success" onclick="diyguodiupdate(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
-
-
-
-
-
-					{
-
-
-
-
-
-							'onComplete'		: function() {
-
-
-
-
-
-								//getcities('#cities');
-
-
-
-
-
-								//alert(_html);
-
-
-								getNowDish('001','1',storeid);
-
-
-
-
-
-								
-
-
-
-
-
-							}
-
-
-
-
-
-					}
-
-
-
-
-
-				);
-
-
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-
-}
-
-
-
-
-
-function diyguodiupdate(n,j){
-
-
-
-
-
-	var content = {
-
-
-
-
-
-				guodiId: $.trim(j.id),
-
-
-
-
-
-				guodiName: $.trim(j.name),
-
-
-
-
-
-				dishId: $.trim(j.id1),
-
-
-
-
-
-				dishId2: $.trim(j.id2)
-
-
-
-
-
-			};
-
-
-
-
-
-			//alert("login response:"+JSON.stringify(content));
-
-
-
-
-
-		$.ajax({
-
-
-
-
-
-			url: apiurl+'updategd',//要访问的后台地址
-
-
-
-
-
-			data: JSON.stringify(content),//要发送的数据
-
-
-
-
-
-			type: "post", //使用post方法访问后台
-
-
-
-
-
-			dataType: "json", //返回json格式的数据
-
-
-
-
-
-			async: true,
-
-
-
-
-
-			contentType: "application/json;charset=utf-8", 
-
-
-
-
-
-			success: function(msg){//msg为返回的数据，在这里做数据绑定
-
-
-
-
-
-				if(typeof(msg)=='undefined'){
-
-
-
-
-
-				}else {
-
-
-
-
-
-					//alert("login response:"+JSON.stringify(msg));
-
-
-
-
-
-					alert(msg.respMsg);
-
-
-
-
-
-					getdiyguodi(userid,'#diyguodilist','1');
-
-
-
-
-
-					$.fancybox.close();
-
-
-
-
-
-				}
-
-
-
-
-
-			}
-
-
-
-
-
-		});
-
-
-
-
-
-}
-
-
-
-
-
-function diyguodisel(n){
-
-
-
-
-
-	var id = $(n).attr('data-id');
-
-
-
-
-
-	var title = $(n).attr('data-name');
-
-
-
-
-
-	//diyguodijson = j;
-
-
-
-
-
-	if(diyguodijson['id1'] == id  || diyguodijson['id2'] == id){
-
-
-
-
-
-		return false;
-
-
-
-
-
-	}
-
-
-	//处理图片效果
-	var cu = getImgTypes(title);
-	if((diyguodijson['id1'] == null) || (diyguodijson['id1'] != null  && diyguodijson['id2'] != null)){
-		diyguodijson['id1'] = id;
-		$('#guo1').show();
-		$('#guo1').attr("src","images/4803/"+cu+"_left_img@2x.png");
-		$('#guodititle1').html(title);
-	} else {
-		diyguodijson['id2'] = id;
-		$('#guo2').attr("src","images/4803/"+cu+"_right_img@2x.png");
-		$('#guo2').show();
-		$('#guodititle2').html(title);
-	}
-
-
-
-
-
-}
-
-
-
-
-
-function deldiyguodi(n,me){
-
-	$.ajax({
-
-
-
-
-
-        url: apiurl+'deletegd?id='+n+'',
-
-
-
-
-
-        type: 'GET',
-
-
-
-
-
-        dataType: 'JSON',//here
-
-
-
-
-
-        success: function (data) {
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-			if(typeof(data.error)=='undefined'){
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-				var tmp = data.respMsg;
-
-
-
-
-
-				noticeinfo(tmp);
-
-
-
-
-			}else{
-				//zs:删除行
-				$(me).parent().remove();
-				window.history.go(0);//lt:20150920 刷新界面 
-			}
-
-
-
-
-
-        }
-
-
-
-
-
-    });
-
-
-
-
-
-}
-//zs:锅底图片获取类型
-function getImgTypes(name){
-	var ts = {
-	       	"豆花":"1",
-	        "骨":"2",
-	        "全青椒":"3",
-	        "全藿香鱼":"3",
-	        "菌":"3",
-	        "江团":"6",
-	        "酸菜鱼":"7",
-	        "蹄花":"1",             //蹄花
-	        "无渣":"9",             //无图
-	        "番":"10",             //无图
-	        "海鲜":"11",            //无图
-	        "双椒":"12",            //无图
-	        "特色简州跳跳鱼红油火锅":"20",
-	        "全清油香辣火锅":"23",
-	        "精品全家红锅":"21",
-	        "全家红火锅":"22",
-	        "麻辣":"5", 
-			"红油":"5",
-	        "全清油":"5",
-	        "全牛油":"5",
-	        "牛油":"5",
-	        "全家红":"5",
-	        "红汤":"5",
-	        "正宗川味":"5",
-	        "清油":"5"
-		};
-	 for (var t in ts) {
-		//alert(t +"  indexOf"+name.indexOf(t))
-		if(name.indexOf(t)>=0){
-			return ts[t];
-		}
-	} 
-	//alert(ts[name] +"  indexOf"+tv)
-	return tv==null?"15":tv;
-}
-
-
-function adddiyguodi(){
-
-	var _html;
-
-
-
-
-
-	diyguodijson = {};
-
-
-
-
-
-	diyguodijson['name'] = null;
-
-
-
-
-
-	diyguodijson['id1'] = null;
-
-
-
-
-
-	diyguodijson['id2'] = null;
-
-
-	
-
-
-	storeid = $.cookie('storeid');
-
-
-
-
-
-	$.fancybox(
-
-
-
-
-
-					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div id="diyguodipager"></div><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center ><div class="btn btn-success" onclick="diyguodicreat(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
-
-
-
-
-
-					{
-
-
-
-
-
-							'onComplete'		: function() {
-
-
-
-
-
-								//getcities('#cities');
-
-
-
-
-
-								//alert(_html);
-
-
-
-
-
-								getNowDish('001','1',storeid);
-
-
-
-
-
-							}
-
-
-
-
-
-					}
-
-
-
-
-
-				);
-
-
-
-
-
-}
-
-
-
-
-
-function diyguodicreat(n,j){
-
-
-
-
-
-	var content = {
-
-
-
-
-
-				guodiName: $.trim(j.name),
-
-
-
-
-
-				dishId: $.trim(j.id1),
-
-
-
-
-
-				dishId2: $.trim(j.id2)
-
-
-
-
-
-			};
-
-
-
-
-
-			//alert(""+JSON.stringify(content));
-
-
-
-
-
-		
-
-
-
-
-
-		$.ajax({
-
-
-
-
-
-        url: apiurl+'getgdname?userId='+userid,
-
-
-
-
-
-        type: 'GET',
-
-
-
-
-
-        dataType: 'JSON',//here
-
-
-
-
-
-        success: function (data) {
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-			if(typeof(data.guodiName)=='undefined'){
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-				alert(data.respMsg);
-
-
-
-
-
-				
-
-
-
-
-
-			
-
-
-
-
-
-			} else {
-
-
-
-
-
-				var name = data.guodiName;
-
-
-
-
-
-				content['guodiName'] = name;
-
-
-
-
-
-				$.ajax({
-
-
-
-
-
-					url: apiurl+'creategd',//要访问的后台地址
-
-
-
-
-
-					data: JSON.stringify(content),//要发送的数据
-
-
-
-
-
-					type: "post", //使用post方法访问后台
-
-
-
-
-
-					dataType: "json", //返回json格式的数据
-
-
-
-
-
-					async: true,
-
-
-
-
-
-					contentType: "application/json;charset=utf-8", 
-
-
-
-
-
-					success: function(msg){//msg为返回的数据，在这里做数据绑定
-
-
-
-
-
-						if(typeof(msg)=='undefined'){
-
-
-
-
-
-						}else {
-
-
-
-
-
-							//alert("login response:"+JSON.stringify(msg));
-
-
-
-
-
-							alert(msg.respMsg);
-
-
-
-
-
-							getdiyguodi(userid,'#diyguodilist','1');
-
-
-
-
-
-							$.fancybox.close();
-
-
-
-
-
-						}
-
-
-
-
-
-					}
-
-
-
-
-
-				});
-
-
-
-
-
-			}
-
-
-
-
-
-        }
-
-
-
-
-
-    });	
-
-
-
-
-
-		
-
-
-
-
-
-}
-
-
-
-
-
-function getdiyguodi(n,m,l){
-
-
-
-
-
-	var num = 0;
-
-
-    var cartdiyguodi = getcartdiyguodiinfo();
-
-
-	$.ajax({
-
-
-
-
-
-        url: apiurl+'getgds?userId='+n+'&pageIndex='+l,
-
-
-
-
-
-        type: 'GET',
-
-
-
-
-
-        dataType: 'JSON',//here
-
-
-
-
-
-        success: function (data) {
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-			if(typeof(data.error)=='undefined'){
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-				var _html = '';
-
-
-
-
-
-				$.each(data,function(index,obj){
-
-
-
-
-
-					num = 0;
-
-
-					if(typeof(cartdiyguodi[obj.guodiId]) == 'undefined' || cartdiyguodi[obj.guodiId] == null || cartdiyguodi[obj.guodiId] == 'null' || cartdiyguodi[obj.guodiId] == '' ){
-
-
-					} else {
-
-
-						num = cartdiyguodi[obj.guodiId]['num'];
-
-
-					}
-
-
-					
-
-
-					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
-
-
-
-
-
-					_html += '<li><span style=" width:150px; height:36px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+obj.guodiName+'</span>    '; //lt:20150921diy锅底显示购物车
-
-
-					                    
-
-
-
-
-
-					_html += '<span title="'+obj.dishName+'" style=" width:150px; height:36px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+obj.dishName+'</span>';//lt:20150921//lt:20150921diy锅底显示购物车
-
-
-
-
-
-					_html += '<span style=" width:50px; height:36px; color:#c6000a;">￥'+obj.unitPrice+'</span>';
-
-
-
-
-
-					_html += '';
-
-
-
-
-
-					_html += '<a class="btn btn-danger" data-id="'+obj.guodiId+'" data-name="'+obj.guodiName+'" data-id1="'+obj.dishId+'" data-id2="'+obj.dishId2+'" onclick="editdiyguodi(this)">修改</a> ';
-
-
-
-
-
-					_html += '<a class="btn btn-danger" onclick="deldiyguodi(\''+obj.guodiId+'\',this)">删除</a> ';
-
-
-					
-
-
-					_html += '<a class="num">'+num+'</a> ';
-
-
-
-
-
-					_html += '<a class="btn btn-danger" data-id="'+obj.guodiId+'" data-name="'+obj.guodiName+'" data-price="'+obj.unitPrice+'"   onclick="cartdiyguodi(this)">选取</a>';
-
-
-
-
-
-					_html += '';
-
-
-
-
-
-					_html += '</li>';
-
-
-
-
-
-					
-
-
-
-
-
-					
-
-
-
-
-
-				});
-
-
-
-
-
-				
-
-
-
-
-
-				//alert(_html);
-
-
-
-
-
-				$(m).html(_html);
-
-
-
-
-
-				if(_html == ''){
-
-
-
-
-
-					$(m).html('<div id="noticecon">暂无</div>');
-
-
-
-
-
-				}
-
-
-
-
-
-				
-
-
-
-
-
-				$.ajax({
-
-
-
-
-
-				  url: apiurl+'cntgds?userId='+n+'',
-
-
-
-
-
-				  type: 'GET',
-
-
-
-
-
-				  dataType: 'JSON',//here
-
-
-
-
-
-				  success: function (data) {
-
-
-
-
-
-						  //alert(JSON.stringify(data));
-
-
-
-
-
-					  if(typeof(data.error)=='undefined'){
-
-
-
-
-
-						  var pagetotal = data.totalPagesCount;
-
-
-
-
-
-						  $("#pager").pager({ pagenumber: l, pagecount: pagetotal, buttonClickCallback: PageClick });
-
-
-
-
-
-		  
-
-
-
-
-
-					  
-
-
-
-
-
-					  }
-
-
-
-
-
-				  }
-
-
-
-
-
-			  });
-
-
-
-
-
-			
-
-
-
-
-
-			}
-
-
-
-
-
-        }
-
-
-
-
-
-    });
-
-
-
-
-
-}
-
-
-function getNowDish(n,l,p){
-
-
-	$.ajax({
-
-
-
-
-
-        url: apiurl+'getdishes?storeId='+p+'&catId=001&pageSize=8&pageIndex='+l,
-
-
-
-
-
-        type: 'GET',
-
-
-
-
-
-        dataType: 'JSON',//here
-
-
-
-
-
-        success: function (data) {
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-			if(typeof(data.error)=='undefined'){
-
-
-
-
-
-				//alert(JSON.stringify(data));
-
-
-
-
-
-				var _html = '';
-
-
-
-
-
-				$.each(data,function(index,obj){
-
-
-
-
-
-					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
-
-
-
-
-
-					
-
-
-
-
-
-					                    
-
-
-
-
-
-					_html += '<dl onclick="diyguodisel(this);" data-name="'+obj.storeDishName+'" data-id="'+obj.dishId+'" data-price="'+obj.unitPrice+'" ><dd><img src="'+obj.bigImageAddr+'" width=100 height="100">'+obj.storeDishName+'</dd><dt><span class="f_c6000a">'+obj.unitPrice+'元</span></dt></dl>';
-
-
-
-
-
-					
-
-
-
-
-
-					
-
-
-
-
-
-				});
-
-
-
-
-
-				$('#guodilist').html(_html);
-
-
-				$.ajax({
-
-
-				  url: apiurl+'cntdishes?storeId='+p+'&catId='+catid+'&pageSize=8',
-
-
-				  type: 'GET',
-
-
-				  dataType: 'JSON',//here
-
-
-				  success: function (data) {
-
-
-						  //alert(JSON.stringify(data));
-
-
-					  if(typeof(data.error)=='undefined'){
-
-
-						  var pagetotal = data.totalPagesCount;
-
-
-						  $("#diyguodipager").pager({ pagenumber: l, pagecount: pagetotal, buttonClickCallback: newDishPageClick });
-
-
-		  
-
-
-					  
-
-
-					  }
-
-
-				  }
-
-
-			  });
-
-
-
-
-
-		     $.fancybox.resize();
-
-
-
-
-
-			
-
-
-
-
-
-			}
-
-
-
-
-
-        }
-
-
-
-
-
-    });
-
-
-}
-
-
-$(document).ready(function(e) {
-
-
-
-
-
-    getcategories(cityid,'#catul',cityname);
-
-
-
-
-
-	if(typeof(userid) == 'undefined' || userid == 'null' || userid == null){ //如果没有登录报错
-
-
-
-
-
-		window.history.go(-1);
-
-
-
-
-
-	}
-
-
-
-
-
-	//userid = '23675';
-
-
-
-
-
-	getdiyguodi(userid,'#diyguodilist','1');
-
-
-
-
-
-});
-
-
-
-
-
-PageClick = function(pageclickednumber) {
-
-
-
-
-
-	getdiyguodi(userid,'#diyguodilist',pageclickednumber);
-
-
-
-
-
-}
-
-
-newDishPageClick = function(pageclickednumber) {
-
-
-
-
-
-	getNowDish('001',pageclickednumber,storeid);
-
-
-
-
-
-}
-
-
-
-
-
-</script>
-
-
-
-
-
-</head>
-
-
-
-
-
-
-
-
-
-
-
-<body>
-
-
-
-
-
-<div id="top1">
-
-
-
-
-
-<div id="header">
-
-
-
-
-
-<a href="http://hi.haidilao.com:80/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0"><img src="http://hi.haidilao.com:80/pages/haidl/images/logo.png" alt="" id="logo" /></a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<ul id="nav">
-
-
-
-
-
-
-
-
-
-
-
-	<li><a href="http://hi.haidilao.com/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0#height=362" id="indexTop">Hi捞汇首页</a></li>
-
-
-
-
-
-	<li>
-
-
-
-
-
-		<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbS9DYXRlci9zdG9yZWxpc3QuYWN0aW9uP29yZGVyVHlwZT0xJnNzb2lkPW51bGwmY3VzdG9tZXJLZXk9JmxvZ2luSWQ9MCZ0eXBlPTM=#height=920" >Hi订餐</a>
-
-
-
-
-
-	</li>
-
-
-
-
-
-	<li><a href="./"  class="now">Hi捞送</a></li>
-
-
-
-
-
-	<li>
-
-
-
-
-
-		<a style="cursor:pointer"  href="http://hi.haidilao.com/pages/haidl/member.jsp?ssoid=null&customerKey=&loginId=0">Hi地盘</a>
-
-
-
-
-
-	
-
-
-
-
-
-	</li>
-
-
-
-
-
-	<li><a style="cursor:pointer"  href="http://hi.haidilao.com:80/pages/promotion/promotion_index.jsp?ssoid=null&customerKey=&loginId=0">Hi活动</a></li>
-
-
-
-
-
-	<li><a style="cursor:pointer"  href="http://cater.haidilao.com/hifarm/index.html">Hi农场</a></li>
-
-
-
-
-
-		
-
-
-
-
-
-</ul>
-
-
-
-
-
-<div id="user_nav">
-
-
-
-
-
-	   
-
-
-
-
-
-	
-
-
-
-
-
-	欢迎来到Hi捞汇社区！ 
-
-
-
-
-
-	<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0w" style="cursor:pointer;border-left:1px dotted #FFFFFF;">iPhone版</a>
-
-
-
-
-
-	<a style="border:none;cursor:pointer" href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0x">Android版</a>
-
-
-
-
-
-	<a id ="loginTop" style="cursor:pointer;border-left:1px dotted #FFFFFF;" onclick="loginshow()">登录</a><a href="logins/registerJump.action">注册</a>
-
-
-
-
-
-	
-
-
-
-
-
-	<a href="http://hi.haidilao.com:80/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci9oZWxwL3ByZUhlbHBJbmZvLmFjdGlvbg==">帮助</a>
-
-
-
-
-
-	<a href="./historyorder.html">订单查询</a>
-
-
-
-
-
-	<a href="http://www.haidilao.com" style="border:none;cursor:pointer">企业门户</a>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-
-<div class="box_01"> 
-
-
-
-
-
-<div class="left left_01 m_t_15" >
-
-
-
-
-
-<img src="images/left_img.jpg" width="144" border="0" usemap="#Map" id="id_left_01"/>
-
-
-
-
-
-  <map name="Map" id="Map">
-
-
-
-
-
-    <area shape="circle" coords="134,11,8" href="#" onclick="ceng()" />
-
-
-
-
-
-  </map>
-
-
-
-
-
-</div>
-
-
-
-
-
-<div class="left mid">
-
-
-
-
-
-<div class="mid_left left">
-
-
-
-
-
-<div class="m_l_title">选择城市</div>
-
-
-
-
-
-<div class="m_l_menu">
-
-
-
-
-
-<div class="m_diqu" id="cityname" onclick="citylist()">北京市</div>
-
-
-
-
-
-<!--<div class="m_adv m_t_10"><img src="images/left_adv_01.jpg" /></div>-->
-
-
-
-
-
-<ul id="catul">
-
-
-
-
-
-</ul>
-
-
-
-
-
-</div>
-
-
-
-
-
-<div class="sc_date">
-
-
-
-
-
-送餐时间：11:30-23:00<br />
-
-
-
-
-
-电话订餐时间：08:00-23：00
-
-
-
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-<div class="mid_mid left" style="padding-top:0;">
-
-
-
-<div class="dd_xiangqing m_t_20">
-
-
-
-
-
-<div class="dd_nav"> <span onclick="adddiyguodi();" style="float:right; margin:0 20px;">添加</span>DIY锅底</div>
-
-
-
-
-
-<div class="ls_list">
-
-
-
-
-
-<ul id="diyguodilist">
-
-
-
-
-
-</ul>
-
-
-
-
-
-</div>
-
-
-
-
-
-<div class="clear"></div>
-
-
-
-
-
-<div id="pager" ></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-<div class="mid_right m_t_20" >
-
-
-
-<div class="title">开始订餐</div>
-
-
-
-<div id="userinfo">
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-<div class="mid_right m_t_5">
-
-
-
-<div class="tishi"><span class="f_red ">提示</span></div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="clear"></div>
-
-
-
-
-
-<div class="foot">
-
-
-
-
-
-<span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
-
-
-
-
-
-<span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>
-
-
-
-
-
-<span class="p_l_15"><!--<select></select>--></span>
-
-
-
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
-
-
-
-
-
-  <map name="id_right_01Map" id="id_right_01Map">
-
-
-
-
-
-    <area shape="rect" coords="1,4,24,22" href="#" onclick="right_ceng()" />
-
-
-
-
-
-    <area shape="rect" coords="8,222,87,242" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes" />
-
-
-
-
-
-    <area shape="rect" coords="92,223,163,241" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes"  />
-
-
-
-
-
-  </map>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-</body>
-
-
-
-
-
-</html>
-
-
-
-
-
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+
+
+<head>
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+
+
+
+<meta http-equiv="x-ua-compatible" content="ie=7" /> 
+
+
+
+
+
+<title>DIY锅底</title>
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="style/base.css"/>
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="style/index.css"/>
+
+
+
+
+
+<script type="text/javascript"src="js/json2.js"></script>
+
+
+
+
+
+<script src="js/jquery.min.js"></script>
+
+
+
+
+
+<script src="js/jquery-migrate.min.js"></script>
+
+
+
+
+
+<script src="js/jquery-ui.min.js"></script>
+
+
+
+
+
+<script src="js/jquery.cookie.js"></script>
+
+
+
+
+
+<script src="js/jquery.fancybox-1.3.4.js"></script>
+
+
+
+
+
+<script src="js/jquery.mousewheel.js"></script>
+
+
+
+
+
+<script src="js/jquery.easing.js"></script>
+
+
+
+
+
+<script src="js/jquery.pager.js"></script>
+
+
+
+
+
+<script type="text/javascript" src="js/md5.js"></script>
+
+
+
+
+
+<script src="js/common.js"></script>
+
+
+
+
+
+<script src="js/config.js"></script>
+
+
+
+
+
+<style>
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+
+
+
+<script>
+
+
+
+
+
+nowpage ='diyguodi';
+
+
+
+
+
+var diyguodijson = {};
+
+
+
+
+
+
+
+
+userid = $.cookie('userid');//
+
+
+
+
+
+function editdiyguodi(n){
+
+
+
+
+
+	var _html;
+
+
+
+
+
+	var id = $(n).attr('data-id');
+
+
+
+
+
+	var name = $(n).attr('data-name');
+
+
+
+
+
+	var id1 = $(n).attr('data-id1');
+
+
+
+
+
+	var id2 = $(n).attr('data-id2');
+
+
+
+
+
+	diyguodijson = {};
+
+
+
+
+
+	diyguodijson['id'] = id;
+
+
+
+
+
+	diyguodijson['name'] = name;
+
+
+
+
+
+	diyguodijson['id1'] = null;
+
+
+
+
+
+	diyguodijson['id2'] = null;
+
+
+	
+
+
+	storeid = $.cookie('storeid');
+
+
+	
+
+
+	$.fancybox(
+
+
+
+
+
+					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div id="diyguodipager"></div><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center >'+name+'（修改）</center><center ><div class="btn btn-success" onclick="diyguodiupdate(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
+
+
+
+
+
+					{
+
+
+
+
+
+							'onComplete'		: function() {
+
+
+
+
+
+								//getcities('#cities');
+
+
+
+
+
+								//alert(_html);
+
+
+								getNowDish('001','1',storeid);
+
+
+
+
+
+								
+
+
+
+
+
+							}
+
+
+
+
+
+					}
+
+
+
+
+
+				);
+
+
+
+
+
+	
+
+
+
+
+
+	
+
+
+
+
+
+}
+
+
+
+
+
+function diyguodiupdate(n,j){
+
+
+
+
+
+	var content = {
+
+
+
+
+
+				guodiId: $.trim(j.id),
+
+
+
+
+
+				guodiName: $.trim(j.name),
+
+
+
+
+
+				dishId: $.trim(j.id1),
+
+
+
+
+
+				dishId2: $.trim(j.id2)
+
+
+
+
+
+			};
+
+
+
+
+
+			//alert("login response:"+JSON.stringify(content));
+
+
+
+
+
+		$.ajax({
+
+
+
+
+
+			url: apiurl+'updategd',//要访问的后台地址
+
+
+
+
+
+			data: JSON.stringify(content),//要发送的数据
+
+
+
+
+
+			type: "post", //使用post方法访问后台
+
+
+
+
+
+			dataType: "json", //返回json格式的数据
+
+
+
+
+
+			async: true,
+
+
+
+
+
+			contentType: "application/json;charset=utf-8", 
+
+
+
+
+
+			success: function(msg){//msg为返回的数据，在这里做数据绑定
+
+
+
+
+
+				if(typeof(msg)=='undefined'){
+
+
+
+
+
+				}else {
+
+
+
+
+
+					//alert("login response:"+JSON.stringify(msg));
+
+
+
+
+
+					alert(msg.respMsg);
+
+
+
+
+
+					getdiyguodi(userid,'#diyguodilist','1');
+
+
+
+
+
+					$.fancybox.close();
+
+
+
+
+
+				}
+
+
+
+
+
+			}
+
+
+
+
+
+		});
+
+
+
+
+
+}
+
+
+
+
+
+function diyguodisel(n){
+
+
+
+
+
+	var id = $(n).attr('data-id');
+
+
+
+
+
+	var title = $(n).attr('data-name');
+
+
+
+
+
+	//diyguodijson = j;
+
+
+
+
+
+	if(diyguodijson['id1'] == id  || diyguodijson['id2'] == id){
+
+
+
+
+
+		return false;
+
+
+
+
+
+	}
+
+
+	//处理图片效果
+	var cu = getImgTypes(title);
+	if((diyguodijson['id1'] == null) || (diyguodijson['id1'] != null  && diyguodijson['id2'] != null)){
+		diyguodijson['id1'] = id;
+		$('#guo1').show();
+		$('#guo1').attr("src","images/4803/"+cu+"_left_img@2x.png");
+		$('#guodititle1').html(title);
+	} else {
+		diyguodijson['id2'] = id;
+		$('#guo2').attr("src","images/4803/"+cu+"_right_img@2x.png");
+		$('#guo2').show();
+		$('#guodititle2').html(title);
+	}
+
+
+
+
+
+}
+
+
+
+
+
+function deldiyguodi(n,me){
+
+	$.ajax({
+
+
+
+
+
+        url: apiurl+'deletegd?id='+n+'',
+
+
+
+
+
+        type: 'GET',
+
+
+
+
+
+        dataType: 'JSON',//here
+
+
+
+
+
+        success: function (data) {
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+			if(typeof(data.error)=='undefined'){
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+				var tmp = data.respMsg;
+
+
+
+
+
+				noticeinfo(tmp);
+
+
+
+				//zs:删除行
+				$(me).parent().remove();
+
+			}else{
+				window.history.go(0);//lt:20150920 刷新界面 
+			}
+
+
+
+
+
+        }
+
+
+
+
+
+    });
+
+
+
+
+
+}
+//zs:锅底图片获取类型
+function getImgTypes(name){
+	var ts = {
+	       	"豆花":"1",
+	        "骨":"2",
+	        "全青椒":"3",
+	        "全藿香鱼":"3",
+	        "菌":"3",
+	        "江团":"6",
+	        "酸菜鱼":"7",
+	        "蹄花":"1",             //蹄花
+	        "无渣":"9",             //无图
+	        "番":"10",             //无图
+	        "海鲜":"11",            //无图
+	        "双椒":"12",            //无图
+	        "特色简州跳跳鱼红油火锅":"20",
+	        "全清油香辣火锅":"23",
+	        "精品全家红锅":"21",
+	        "全家红火锅":"22",
+	        "麻辣":"5", 
+			"红油":"5",
+	        "全清油":"5",
+	        "全牛油":"5",
+	        "牛油":"5",
+	        "全家红":"5",
+	        "红汤":"5",
+	        "正宗川味":"5",
+	        "清油":"5"
+		};
+	 for (var t in ts) {
+		//alert(t +"  indexOf"+name.indexOf(t))
+		if(name.indexOf(t)>=0){
+			return ts[t];
+		}
+	} 
+	//alert(ts[name] +"  indexOf"+tv)
+	return "15";
+}
+
+
+function adddiyguodi(){
+
+	var _html;
+
+
+
+
+
+	diyguodijson = {};
+
+
+
+
+
+	diyguodijson['name'] = null;
+
+
+
+
+
+	diyguodijson['id1'] = null;
+
+
+
+
+
+	diyguodijson['id2'] = null;
+
+
+	
+
+
+	storeid = $.cookie('storeid');
+
+
+
+
+
+	$.fancybox(
+
+
+
+
+
+					'<center ></center><div> <ul id="guodilist"></ul><div class="clear"></div><div id="diyguodipager"></div><div class="clear"></div><div class="tc g_img"><div id="guodititle1" class="guotitle1"></div><div id="guodititle2" class="guotitle2"></div><div class="guodibox1"><img class="guo1" id="guo1" onclick="$(this).hide();diyguodijson[\'id1\']=null;$(\'#guodititle1\').html(\'\');" src="images/diy_guo1.png"></div><div class="guodibox2"><img id="guo2" class="guo2" onclick="$(this).hide();diyguodijson[\'id2\']=null;$(\'#guodititle2\').html(\'\');" src="images/diy_guo2.png"></div><img src="images/diy_guo.jpg"></div><center ><div class="btn btn-success" onclick="diyguodicreat(this,diyguodijson);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选好了&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></center><div class="clear"></div></div>',
+
+
+
+
+
+					{
+
+
+
+
+
+							'onComplete'		: function() {
+
+
+
+
+
+								//getcities('#cities');
+
+
+
+
+
+								//alert(_html);
+
+
+
+
+
+								getNowDish('001','1',storeid);
+
+
+
+
+
+							}
+
+
+
+
+
+					}
+
+
+
+
+
+				);
+
+
+
+
+
+}
+
+
+
+
+
+function diyguodicreat(n,j){
+
+
+
+
+
+	var content = {
+
+
+
+
+
+				guodiName: $.trim(j.name),
+
+
+
+
+
+				dishId: $.trim(j.id1),
+
+
+
+
+
+				dishId2: $.trim(j.id2)
+
+
+
+
+
+			};
+
+
+
+
+
+			//alert(""+JSON.stringify(content));
+
+
+
+
+
+		
+
+
+
+
+
+		$.ajax({
+
+
+
+
+
+        url: apiurl+'getgdname?userId='+userid,
+
+
+
+
+
+        type: 'GET',
+
+
+
+
+
+        dataType: 'JSON',//here
+
+
+
+
+
+        success: function (data) {
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+			if(typeof(data.guodiName)=='undefined'){
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+				alert(data.respMsg);
+
+
+
+
+
+				
+
+
+
+
+
+			
+
+
+
+
+
+			} else {
+
+
+
+
+
+				var name = data.guodiName;
+
+
+
+
+
+				content['guodiName'] = name;
+
+
+
+
+
+				$.ajax({
+
+
+
+
+
+					url: apiurl+'creategd',//要访问的后台地址
+
+
+
+
+
+					data: JSON.stringify(content),//要发送的数据
+
+
+
+
+
+					type: "post", //使用post方法访问后台
+
+
+
+
+
+					dataType: "json", //返回json格式的数据
+
+
+
+
+
+					async: true,
+
+
+
+
+
+					contentType: "application/json;charset=utf-8", 
+
+
+
+
+
+					success: function(msg){//msg为返回的数据，在这里做数据绑定
+
+
+
+
+
+						if(typeof(msg)=='undefined'){
+
+
+
+
+
+						}else {
+
+
+
+
+
+							//alert("login response:"+JSON.stringify(msg));
+
+
+
+
+
+							alert(msg.respMsg);
+
+
+
+
+
+							getdiyguodi(userid,'#diyguodilist','1');
+
+
+
+
+
+							$.fancybox.close();
+
+
+
+
+
+						}
+
+
+
+
+
+					}
+
+
+
+
+
+				});
+
+
+
+
+
+			}
+
+
+
+
+
+        }
+
+
+
+
+
+    });	
+
+
+
+
+
+		
+
+
+
+
+
+}
+
+
+
+
+
+function getdiyguodi(n,m,l){
+
+
+
+
+
+	var num = 0;
+
+
+    var cartdiyguodi = getcartdiyguodiinfo();
+
+
+	$.ajax({
+
+
+
+
+
+        url: apiurl+'getgds?userId='+n+'&pageIndex='+l,
+
+
+
+
+
+        type: 'GET',
+
+
+
+
+
+        dataType: 'JSON',//here
+
+
+
+
+
+        success: function (data) {
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+			if(typeof(data.error)=='undefined'){
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+				var _html = '';
+
+
+
+
+
+				$.each(data,function(index,obj){
+
+
+
+
+
+					num = 0;
+
+
+					if(typeof(cartdiyguodi[obj.guodiId]) == 'undefined' || cartdiyguodi[obj.guodiId] == null || cartdiyguodi[obj.guodiId] == 'null' || cartdiyguodi[obj.guodiId] == '' ){
+
+
+					} else {
+
+
+						num = cartdiyguodi[obj.guodiId]['num'];
+
+
+					}
+
+
+					
+
+
+					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
+
+
+
+
+
+					_html += '<li><span style=" width:150px; height:36px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+obj.guodiName+'</span>    '; //lt:20150921diy锅底显示购物车
+
+
+					                    
+
+
+
+
+
+					_html += '<span title="'+obj.dishName+'" style=" width:150px; height:36px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+obj.dishName+'</span>';//lt:20150921//lt:20150921diy锅底显示购物车
+
+
+
+
+
+					_html += '<span style=" width:50px; height:36px; color:#c6000a;">￥'+obj.unitPrice+'</span>';
+
+
+
+
+
+					_html += '';
+
+
+
+
+
+					_html += '<a class="btn btn-danger" data-id="'+obj.guodiId+'" data-name="'+obj.guodiName+'" data-id1="'+obj.dishId+'" data-id2="'+obj.dishId2+'" onclick="editdiyguodi(this)">修改</a> ';
+
+
+
+
+
+					_html += '<a class="btn btn-danger" onclick="deldiyguodi(\''+obj.guodiId+'\',this)">删除</a> ';
+
+
+					
+
+
+					_html += '<a class="num">'+num+'</a> ';
+
+
+
+
+
+					_html += '<a class="btn btn-danger" data-id="'+obj.guodiId+'" data-name="'+obj.guodiName+'" data-price="'+obj.unitPrice+'"   onclick="cartdiyguodi(this)">选取</a>';
+
+
+
+
+
+					_html += '';
+
+
+
+
+
+					_html += '</li>';
+
+
+
+
+
+					
+
+
+
+
+
+					
+
+
+
+
+
+				});
+
+
+
+
+
+				
+
+
+
+
+
+				//alert(_html);
+
+
+
+
+
+				$(m).html(_html);
+
+
+
+
+
+				if(_html == ''){
+
+
+
+
+
+					$(m).html('<div id="noticecon">暂无</div>');
+
+
+
+
+
+				}
+
+
+
+
+
+				
+
+
+
+
+
+				$.ajax({
+
+
+
+
+
+				  url: apiurl+'cntgds?userId='+n+'',
+
+
+
+
+
+				  type: 'GET',
+
+
+
+
+
+				  dataType: 'JSON',//here
+
+
+
+
+
+				  success: function (data) {
+
+
+
+
+
+						  //alert(JSON.stringify(data));
+
+
+
+
+
+					  if(typeof(data.error)=='undefined'){
+
+
+
+
+
+						  var pagetotal = data.totalPagesCount;
+
+
+
+
+
+						  $("#pager").pager({ pagenumber: l, pagecount: pagetotal, buttonClickCallback: PageClick });
+
+
+
+
+
+		  
+
+
+
+
+
+					  
+
+
+
+
+
+					  }
+
+
+
+
+
+				  }
+
+
+
+
+
+			  });
+
+
+
+
+
+			
+
+
+
+
+
+			}
+
+
+
+
+
+        }
+
+
+
+
+
+    });
+
+
+
+
+
+}
+
+
+function getNowDish(n,l,p){
+
+
+	$.ajax({
+
+
+
+
+
+        url: apiurl+'getdishes?storeId='+p+'&catId=001&pageSize=8&pageIndex='+l,
+
+
+
+
+
+        type: 'GET',
+
+
+
+
+
+        dataType: 'JSON',//here
+
+
+
+
+
+        success: function (data) {
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+			if(typeof(data.error)=='undefined'){
+
+
+
+
+
+				//alert(JSON.stringify(data));
+
+
+
+
+
+				var _html = '';
+
+
+
+
+
+				$.each(data,function(index,obj){
+
+
+
+
+
+					obj.unitPrice = (Math.round(obj.unitPrice*100)/100);
+
+
+
+
+
+					
+
+
+
+
+
+					                    
+
+
+
+
+
+					_html += '<dl onclick="diyguodisel(this);" data-name="'+obj.storeDishName+'" data-id="'+obj.dishId+'" data-price="'+obj.unitPrice+'" ><dd><img src="'+obj.bigImageAddr+'" width=100 height="100">'+obj.storeDishName+'</dd><dt><span class="f_c6000a">'+obj.unitPrice+'元</span></dt></dl>';
+
+
+
+
+
+					
+
+
+
+
+
+					
+
+
+
+
+
+				});
+
+
+
+
+
+				$('#guodilist').html(_html);
+
+
+				$.ajax({
+
+
+				  url: apiurl+'cntdishes?storeId='+p+'&catId='+catid+'&pageSize=8',
+
+
+				  type: 'GET',
+
+
+				  dataType: 'JSON',//here
+
+
+				  success: function (data) {
+
+
+						  //alert(JSON.stringify(data));
+
+
+					  if(typeof(data.error)=='undefined'){
+
+
+						  var pagetotal = data.totalPagesCount;
+
+
+						  $("#diyguodipager").pager({ pagenumber: l, pagecount: pagetotal, buttonClickCallback: newDishPageClick });
+
+
+		  
+
+
+					  
+
+
+					  }
+
+
+				  }
+
+
+			  });
+
+
+
+
+
+		     $.fancybox.resize();
+
+
+
+
+
+			
+
+
+
+
+
+			}
+
+
+
+
+
+        }
+
+
+
+
+
+    });
+
+
+}
+
+
+$(document).ready(function(e) {
+
+
+
+
+
+    getcategories(cityid,'#catul',cityname);
+
+
+
+
+
+	if(typeof(userid) == 'undefined' || userid == 'null' || userid == null){ //如果没有登录报错
+
+
+
+
+
+		window.history.go(-1);
+
+
+
+
+
+	}
+
+
+
+
+
+	//userid = '23675';
+
+
+
+
+
+	getdiyguodi(userid,'#diyguodilist','1');
+
+
+
+
+
+});
+
+
+
+
+
+PageClick = function(pageclickednumber) {
+
+
+
+
+
+	getdiyguodi(userid,'#diyguodilist',pageclickednumber);
+
+
+
+
+
+}
+
+
+newDishPageClick = function(pageclickednumber) {
+
+
+
+
+
+	getNowDish('001',pageclickednumber,storeid);
+
+
+
+
+
+}
+
+
+
+
+
+</script>
+
+
+
+
+
+</head>
+
+
+
+
+
+
+
+
+
+
+
+<body>
+
+
+
+
+
+<div id="top1">
+
+
+
+
+
+<div id="header">
+
+
+
+
+
+<a href="http://hi.haidilao.com:80/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0"><img src="http://hi.haidilao.com:80/pages/haidl/images/logo.png" alt="" id="logo" /></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="nav">
+
+
+
+
+
+
+
+
+
+
+
+	<li><a href="http://hi.haidilao.com/pages/haidl/index.jsp?ssoid=null&customerKey=&loginId=0#height=362" id="indexTop">Hi捞汇首页</a></li>
+
+
+
+
+
+	<li>
+
+
+
+
+
+		<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbS9DYXRlci9zdG9yZWxpc3QuYWN0aW9uP29yZGVyVHlwZT0xJnNzb2lkPW51bGwmY3VzdG9tZXJLZXk9JmxvZ2luSWQ9MCZ0eXBlPTM=#height=920" >Hi订餐</a>
+
+
+
+
+
+	</li>
+
+
+
+
+
+	<li><a href="./"  class="now">Hi捞送</a></li>
+
+
+
+
+
+	<li>
+
+
+
+
+
+		<a style="cursor:pointer"  href="http://hi.haidilao.com/pages/haidl/member.jsp?ssoid=null&customerKey=&loginId=0">Hi地盘</a>
+
+
+
+
+
+	
+
+
+
+
+
+	</li>
+
+
+
+
+
+	<li><a style="cursor:pointer"  href="http://hi.haidilao.com:80/pages/promotion/promotion_index.jsp?ssoid=null&customerKey=&loginId=0">Hi活动</a></li>
+
+
+
+
+
+	<li><a style="cursor:pointer"  href="http://cater.haidilao.com/hifarm/index.html">Hi农场</a></li>
+
+
+
+
+
+		
+
+
+
+
+
+</ul>
+
+
+
+
+
+<div id="user_nav">
+
+
+
+
+
+	   
+
+
+
+
+
+	
+
+
+
+
+
+	欢迎来到Hi捞汇社区！ 
+
+
+
+
+
+	<a href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0w" style="cursor:pointer;border-left:1px dotted #FFFFFF;">iPhone版</a>
+
+
+
+
+
+	<a style="border:none;cursor:pointer" href="http://hi.haidilao.com/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci93ZWIvY29tbW9uL2FwcE1haW5Eb3dubG9hZC5qc3A/dHlwZT0x">Android版</a>
+
+
+
+
+
+	<a id ="loginTop" style="cursor:pointer;border-left:1px dotted #FFFFFF;" onclick="loginshow()">登录</a><a href="logins/registerJump.action">注册</a>
+
+
+
+
+
+	
+
+
+
+
+
+	<a href="http://hi.haidilao.com:80/pages/haidl/order_iframe.jsp?url=aHR0cDovL2NhdGVyLmhhaWRpbGFvLmNvbTo4MC9DYXRlci9oZWxwL3ByZUhlbHBJbmZvLmFjdGlvbg==">帮助</a>
+
+
+
+
+
+	<a href="./historyorder.html">订单查询</a>
+
+
+
+
+
+	<a href="http://www.haidilao.com" style="border:none;cursor:pointer">企业门户</a>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="box_01"> 
+
+
+
+
+
+<div class="left left_01 m_t_15" >
+
+
+
+
+
+<img src="images/left_img.jpg" width="144" border="0" usemap="#Map" id="id_left_01"/>
+
+
+
+
+
+  <map name="Map" id="Map">
+
+
+
+
+
+    <area shape="circle" coords="134,11,8" href="#" onclick="ceng()" />
+
+
+
+
+
+  </map>
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="left mid">
+
+<div class="step"><img src="images/step3.jpg" /></div>
+
+
+
+<div class="mid_left left">
+
+
+
+
+
+<div class="m_l_title">选择城市</div>
+
+
+
+
+
+<div class="m_l_menu">
+
+
+
+
+
+<div class="m_diqu" id="cityname" onclick="citylist()">北京市</div>
+
+
+
+
+
+<!--<div class="m_adv m_t_10"><img src="images/left_adv_01.jpg" /></div>-->
+
+
+
+
+
+<ul id="catul">
+
+
+
+
+
+</ul>
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="sc_date">
+
+
+
+
+
+送餐时间：11:30-23:00<br />
+
+
+
+
+
+电话订餐时间：08:00-23：00
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+<div class="mid_mid left" style="padding-top:0;">
+
+
+
+<div id="diydd" class="dd_xiangqing m_t_20">
+
+
+
+
+
+<div class="dd_nav"> <span onclick="adddiyguodi();" style="float:right; margin:0 20px;">添加</span>DIY锅底</div>
+
+
+
+
+
+<div class="ls_list">
+
+
+
+
+
+<ul id="diyguodilist">
+
+
+
+
+
+</ul>
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="clear"></div>
+
+
+
+
+
+<div id="pager" ></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<div class="mid_right m_t_20" >
+
+
+
+<div class="title">开始订餐</div>
+
+
+
+<div id="userinfo">
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+<div class="mid_right m_t_5">
+
+
+
+<div class="tishi"><span class="f_red ">提示</span></div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="clear"></div>
+
+
+
+
+
+<div class="foot">
+
+
+
+
+
+<span><a href="#">法律条款</a>| <a href="#">隐私条款</a>|<a href="#">联系我们</a>|<a href="#">加入我们</a></span>
+
+
+
+
+
+<span class="p_l_20">京ICP备14061536号 Copyright 2015 海鸿达（北京）餐饮管理有限公司，All rights reserved</span>
+
+
+
+
+
+<span class="p_l_15"><!--<select></select>--></span>
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="left right_01 m_t_15"><img src="images/right_img.jpg" width="170" border="0" usemap="#id_right_01Map" id="id_right_01"/>
+
+
+
+
+
+  <map name="id_right_01Map" id="id_right_01Map">
+
+
+
+
+
+    <area shape="rect" coords="1,4,24,22" href="#" onclick="right_ceng()" />
+
+
+
+
+
+    <area shape="rect" coords="8,222,87,242" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes" />
+
+
+
+
+
+    <area shape="rect" coords="92,223,163,241" href="tencent://message/?uin=你的号码&Site=QQ客服&Menu=yes"  />
+
+
+
+
+
+  </map>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+
+
+</html>
+
+
+
+
+

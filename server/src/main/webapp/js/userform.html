@@ -187,21 +187,24 @@ function setcity(n,m,l){
 	
 	var k = '#citynameinput';
 	var j = '#cityidinput';
-	var i = '#provinceinput';
 	var tmp = $(j).val();
 	var q = $("input[name='detailAddress']");
 	
 	if(tmp != n){
 		if(confirm('修改城市需要您重新填写地址信息')){
-			$("input[name='detailAddress']").val('');
 		} else {
 			return false;
 		}
 	}
+	$.cookie("cityname", m, { expires: 30 }); 
+	$.cookie("cityid", n, { expires: 30 }); 
+	$.cookie("provinceid", l, { expires: 30 });
+	cityid = $.cookie("cityid");
+    provinceid = $.cookie("provinceid");
+    cityname = $.cookie("cityname");
 	$(j).val(n);
 	$(k).val(m);
-	$(i).val(l);
-	//ordertype0addr(q);
+	ordertype0addr(q);
 	$.fancybox.close();
 }
 //lt:20150923 重新设置city  end
@@ -375,19 +378,10 @@ function ordertype0addr(){
 
 
 	var cityid = $("input[name='cityId']").val();
-	var cityname = $("input[name='cityname']").val();
 
 	
 
 	if(addr && cityid){
-		//不包含市
-		if(addr.indexOf("市")==-1 ){
-			var vnival = $("#citynameinput").val();
-			//并且地址里不是以选择的市的前缀开始，将地址拼起来
-			if(addr.indexOf(vnival.replace("市",""))!=0){
-				addr = vnival+addr;
-			}
-		}
 
 
 
@@ -395,7 +389,7 @@ function ordertype0addr(){
 
 	
 
-			url: apiurl+'getstores0?cityId='+cityid+'&provinceId='+provinceid+'&address='+cityname+addr+'',
+			url: apiurl+'getstores0?cityId='+cityid+'&provinceId='+provinceid+'&address='+addr+'',
 
 	
 
@@ -1372,8 +1366,8 @@ $(document).ready(function(e) {
 
 			if( tmp !=  userformjson['storeId']){////lt:20150920 根据门店id判断是否清空购物篮，不根据地址判断
 
-				//alert(tmp);
-				//alert(userformjson['storeId']);
+				alert(tmp);
+				alert(userformjson['storeId']);
 				if(confirm('由于您更改了门店，将会清空购物篮？')){
 
 					$.cookie('storeid1', null, { expires: 30 });
@@ -1425,7 +1419,6 @@ $(document).ready(function(e) {
 
 
 				payChannel: $.trim($("input[name='payChannel']").val()),
-				cityName: $.trim($("input[name='cityname']").val()),
 
 
 
@@ -1464,10 +1457,6 @@ $(document).ready(function(e) {
 			$.cookie("storeid1", tmp, { expires: 30 }); 
 
 			$.cookie("userformjson", tmp1, { expires: 30 }); 
-			
-	$.cookie("cityname", $("input[name='cityname']").val(), { expires: 30 }); 
-	$.cookie("cityid", $("input[name='cityId']").val(), { expires: 30 }); 
-	$.cookie("provinceid", $("input[name='provinceId']").val(), { expires: 30 });
 
 			
 
@@ -1809,7 +1798,6 @@ $(document).ready(function(e) {
 
 
 <input type="hidden" id="cityidinput" name="cityId" value="" />
-<input type="hidden" id="provinceinput" name="provinceId" value="" />
 
 
 
