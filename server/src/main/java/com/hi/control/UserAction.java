@@ -39,10 +39,7 @@ public class UserAction extends BaseAction {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(String content) {
-		getSession().removeAttribute(HIConstants.LOGIN_ID);
-		getSession().removeAttribute(HIConstants.CUSTOMER_KEY);
-		getSession().removeAttribute(HIConstants.LOGIN_INFO);
-		getSession().removeAttribute(HIConstants.USER);
+		clearUser();
 		System.out.println("==> content:" + content);
 
 		Gson gson = new Gson();
@@ -105,6 +102,7 @@ public class UserAction extends BaseAction {
 	@Path(value = "/getuserinfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getUserInfo(@FormParam("loginId") String loginId) {
+		clearUser();
 		if (StringUtils.isEmpty(loginId)) {
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_LOGINID);
 		} else {
@@ -169,11 +167,15 @@ public class UserAction extends BaseAction {
 			getSession().setAttribute(HIConstants.USER, resp.getUser());
 
 		} catch (Exception e) {
-			getSession().removeAttribute(HIConstants.LOGIN_ID);
-			getSession().removeAttribute(HIConstants.CUSTOMER_KEY);
-			getSession().removeAttribute(HIConstants.LOGIN_INFO);
-			getSession().removeAttribute(HIConstants.USER);
+			clearUser();
 			e.printStackTrace();
 		}
+	}
+	
+	private void clearUser(){
+		getSession().removeAttribute(HIConstants.LOGIN_ID);
+		getSession().removeAttribute(HIConstants.CUSTOMER_KEY);
+		getSession().removeAttribute(HIConstants.LOGIN_INFO);
+		getSession().removeAttribute(HIConstants.USER);
 	}
 }
