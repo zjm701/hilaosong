@@ -79,13 +79,18 @@ public class StoreAction extends BaseAction {
 		try {
 			List<Store> stores = null;
 			if (StringTools.isNotEmpty(address)) {
-				stores = storeService.getStores(provinceId, cityId, OrderType.SEND_OUT.getKey(),
-						BaiduTools.getCusPointByAddress(URLEncoder.encode(address, "ISO-8859-1")));
-				Collections.sort(stores, new Comparator<Store>() {
-					public int compare(Store arg0, Store arg1) {
-						return arg0.getDistance().compareTo(arg1.getDistance());
-					}
-				});
+				String cusPoint = BaiduTools.getCusPointByAddress(URLEncoder.encode(address, "ISO-8859-1"));
+				if(StringTools.isNotEmpty(cusPoint)){
+					stores = storeService.getStores(provinceId, cityId, OrderType.SEND_OUT.getKey(),
+							BaiduTools.getCusPointByAddress(URLEncoder.encode(address, "ISO-8859-1")));
+					Collections.sort(stores, new Comparator<Store>() {
+						public int compare(Store arg0, Store arg1) {
+							return arg0.getDistance().compareTo(arg1.getDistance());
+						}
+					});
+				}else{
+					return getFailedJsonResponse(MessageCode.ERROR_NO_DATA); // 未取到地址
+				}
 			} else {
 				stores = storeService.getStores(provinceId, cityId, OrderType.SEND_OUT.getKey());
 			}
@@ -96,7 +101,7 @@ public class StoreAction extends BaseAction {
 			}
 			return getSuccessJsonResponse(s);
 		} catch (UnsupportedEncodingException e) {
-			return getFailedJsonResponse(MessageCode.ERROR_ENCODING.getDesc()); // 编码异常
+			return getFailedJsonResponse(MessageCode.ERROR_ENCODING); // 编码异常
 		}
 	}
 

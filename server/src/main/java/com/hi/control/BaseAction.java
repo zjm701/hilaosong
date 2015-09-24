@@ -34,6 +34,10 @@ public abstract class BaseAction {
 		return b.build();
 	}
 
+	protected Response getFailedJsonResponse(MessageCode error) {
+		return getFailedJsonResponse(new com.hi.json.Response(error.getKey(), error.getDesc()));
+	}
+
 	protected String getJsonString(MessageCode error) {
 		return "{\"respCode\":\"" + error.getKey() + "\",\"respMsg\":\"" + error.getDesc() + "\"}";
 	}
