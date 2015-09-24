@@ -21,6 +21,10 @@ public class SystemSetting {
 
 	private static String APP_ID = "app.id";
 
+	private static String DELAY_DISTANCES = "delay.distances";
+	
+	private static String DELAY_MINS = "delay.mins";
+
 	private static String FILENAME = "system.properties";
 	
 	private static Properties prop = null;
@@ -67,6 +71,14 @@ public class SystemSetting {
 
 	public static String getAppId() {
 		return getSetting(APP_ID);
+	}
+	
+	public static String[] getDelayDistances() {
+		return getSetting(DELAY_DISTANCES).split(",");
+	}
+	
+	public static String[] getDelayMins() {
+		return getSetting(DELAY_MINS).split(",");
 	}
 
 	public static String getSetting(String key) {

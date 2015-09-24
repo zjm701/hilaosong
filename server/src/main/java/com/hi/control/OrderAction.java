@@ -15,12 +15,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.hi.common.HIConstants;
 import com.hi.common.MessageCode;
 import com.hi.common.OrderType;
+import com.hi.common.SystemSetting;
 import com.hi.model.DeliveryLimit;
 import com.hi.model.Order;
 import com.hi.model.OrderAddress;
@@ -128,16 +130,38 @@ public class OrderAction extends BaseAction {
 			if (StringUtils.isEmpty(order.getDinningTime())) {
 				return getJsonString(MessageCode.VERIFICATION_EMPTY_DINNINGTIME);
 			} else {
+				Date now = CalendarTools.now();
 				dinningTime = CalendarTools.timeStr2Date(order.getDinningTime(), CalendarTools.DATETIME_DEFAULT);
-				if (dinningTime.before(CalendarTools.now())) {
+				if (dinningTime.before(now)) {
 					return getJsonString(MessageCode.VERIFICATION_PASSED_DINNINGTIME);
 				}else{
 					Store s = storeService.getStore(order.getStoreId());
 					if (s != null) {
 						String cityId = CityTools.isDirectMunicipalities(s.getProvinceId()) ? s.getProvinceId() : s.getCityId();
 						DeliveryLimit dl = cityService.getDeliveryLimit(order.getStoreId(), cityId, order.getOrderType());
-						if(!CalendarTools.isValidDinningTime(dinningTime, dl)){
+						if (!CalendarTools.isValidDinningTime(dinningTime, dl)) {
 							return getJsonString(MessageCode.VERIFICATION_NO_SERVICE_DINNINGTIME);
+						}
+
+						//add delaytime check on today
+						if (OrderType.SEND_OUT.getKey().equals(order.getOrderType())) {
+							Double dis = (Double) getSession().getAttribute(HIConstants.DISTANCE);
+							if (dis != null) {
+								String[] distances = SystemSetting.getDelayDistances();
+								int index = distances.length;
+								for (int i = 0; i < distances.length; i++) {
+									if (Double.parseDouble(distances[i]) >= dis.doubleValue()) {
+										index = i;
+										break;
+									}
+								}
+								String[] mins = SystemSetting.getDelayMins();
+								Date delayTime = CalendarTools.addMinutes(now, Integer.parseInt(mins[index]));
+								System.out.println("==> distance:" + dis + ", delay:"+ Integer.parseInt(mins[index]));
+								if (dinningTime.before(delayTime)) { // 当天送餐时，订餐时间早于最早可能的送餐时间
+									return getJsonString(MessageCode.VERIFICATION_SO_EARLY_DINNINGTIME);
+								}
+							}
 						}
 					}
 				}

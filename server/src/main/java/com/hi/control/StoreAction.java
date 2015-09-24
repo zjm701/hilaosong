@@ -146,6 +146,7 @@ public class StoreAction extends BaseAction {
 				if (dis.compareTo(1d) < 0) {
 					dis = 1d;
 				}
+				getSession().setAttribute(HIConstants.DISTANCE, dis);
 				Double totalPrice = unitPrice * dis;
 				// 总价四舍五入到整数位
 				return Integer.parseInt(new DecimalFormat("0").format(totalPrice));

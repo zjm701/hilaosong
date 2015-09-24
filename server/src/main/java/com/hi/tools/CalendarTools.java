@@ -185,8 +185,8 @@ public class CalendarTools {
 
 				Calendar tmp = Calendar.getInstance();
 				tmp.setTime(dinningTime);
-				if (startDay == 0 && DateUtils.isSameDay(dinningTime, now)) { // first
-																				// day
+				//first day
+				if (startDay == 0 && DateUtils.isSameDay(dinningTime, now)) { 
 					if (StringTools.isNotEmpty(limit.getFirstDayStartTime())) {
 						String[] firstDayStartTimeStrs = limit.getFirstDayStartTime().split(":");
 						tmp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(firstDayStartTimeStrs[0]));

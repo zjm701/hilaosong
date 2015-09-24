@@ -116,7 +116,7 @@ $(function() {
 								<td>
 									省Id：<input type="text" name="provinceId" style="width: 50px" value="110000">
 									市Id：<input type="text" name="cityId" style="width: 50px" value="110105">
-									详细地址:<input type="text" name="detailAddress" style="width: 180px" value="某某路100号">110000-北京市，110105-朝阳区
+									详细地址:<input type="text" name="detailAddress" style="width: 180px" value="北京市朝阳区平房路12号">110000-北京市，110105-朝阳区
 								</td>
 							</tr>
 							<tr>

@@ -24,4 +24,6 @@ public interface HIConstants {
 	static final String PRE_IMAGE = "http://cater.haidilao.com";
 	
 	static final String DEFALUT_IMAGE = "/Cater/images/dishes/default.png";
+
+	static final String DISTANCE = "distance";
 }
