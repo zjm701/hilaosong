@@ -1,10 +1,14 @@
 package com.hi.service.impl;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.hi.common.OrderDeliveryType;
 import com.hi.common.OrderPayStatus;
@@ -135,4 +139,66 @@ public class OrderServiceImpl implements OrderService {
 		orderId = OrderSrc.WEBSITE.getKey() + orderId;
 		return orderId;
 	}
+
+	/**
+	 * 银联回调跟新订单支付状态
+	 */
+	@Override
+	public boolean unionBackUpdateOrderPayStatus(String orderId,int payStatus) {
+		return odao.updateOrderPayStatus(orderId,payStatus);
+	}
+	
+	
+	/**
+	 * 检查订单知否可以支付
+	 * @param orderId
+	 * @return
+	 */
+	@Override
+	public Map<String, Object> checkOrderIsCanPay(String orderId,Integer txAmt){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			//检查订单号
+			if(!StringUtils.hasLength(orderId) || null==txAmt || txAmt.compareTo(new Integer(0))==0){
+				map.put("resultCode", 0);
+				map.put("resultMsg", "订单号或交易金额缺省!");
+				return map;
+			}
+			//检查订单
+			Order order = this.getOrderInfo(orderId);
+			if(null == order){
+				map.put("resultCode", 0);
+				map.put("resultMsg", "订单不存在!");
+				return map;
+			}
+			//检查订单是否已经支付
+			if("1".equals(order.getPayStatus())){
+				map.put("resultCode", 0);
+				map.put("resultMsg", "订单已支付完成!");
+				return map;
+			}
+			//判断订单价格是否匹配
+			if(null == order.getExpenses() || null == order.getExpenses().getTotalPrice() || order.getExpenses().getTotalPrice().compareTo(new BigDecimal(txAmt/100)) != 0){
+				map.put("resultCode", 0);
+				map.put("resultMsg", "订单价格存在错误!");
+				return map;
+			}
+			map.put("resultCode", 1);
+			//订单价格
+			map.put("orderTolPrice", order.getExpenses().getTotalPrice().intValue()*100);
+			//下单时间
+			String orderCreateTime = order.getCreatedDt();
+			orderCreateTime = orderCreateTime.replace(" ", "");
+			orderCreateTime = orderCreateTime.replace(":", "");
+			orderCreateTime = orderCreateTime.replace("-", "");
+			map.put("orderCreateTime", orderCreateTime);
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resultCode", 0);
+			map.put("resultMsg", "操作错误!");
+			return map;
+		}
+	}
+	
 }

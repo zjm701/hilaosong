@@ -1,6 +1,7 @@
 package com.hi.control;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -97,6 +98,8 @@ public class StoreAction extends BaseAction {
 			Store s = null;
 			if (stores != null && stores.size() > 0) {
 				s = stores.get(0);
+				//距离加1
+				s.setDistance(s.getDistance().add(new BigDecimal(1)));//("" + calculateDeliveryFee0(s));
 				s.setDeliveryFee("" + calculateDeliveryFee0(s));
 			}
 			return getSuccessJsonResponse(s);

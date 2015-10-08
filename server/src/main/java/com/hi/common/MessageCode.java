@@ -31,6 +31,11 @@ public enum MessageCode {
 	 * 用户未登录或已过期
 	 */
 	ERROR_NO_LOGGEDIN_USER("101", "\u7528\u6237\u672a\u767b\u5f55\u6216\u5df2\u8fc7\u671f"),
+	/**
+	 * 退出成功
+	 */
+	LOGING_OUT("102", "\u9000\u51fa\u6210\u529f"),
+
 
 	/**
 	 * 用户名不能为空

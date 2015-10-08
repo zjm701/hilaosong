@@ -18,7 +18,8 @@ import com.hi.model.PackDish;
 @Repository("dishDao")
 public class DishDaoImpl extends AbstractDao implements DishDao {
 	
-	private static String sql1 = " and storeId = :storeId and dishsourcetype = '2' and isDisplay in ('2','3') and isStopped = '1'";
+//	private static String sql1 = " and storeId = :storeId and dishsourcetype = '2' and isDisplay in ('2','3') and isStopped = '1'";
+	private static String sql1 = " and storeId = :storeId and isDisplay in ('2','3') and isStopped = '1'";
 
 	private static String sql2 = " and dishcategory = :categoryId " + sql1;
 
@@ -48,11 +49,26 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	}
 	
 	public int countDishes(String storeId, String categoryId) {
-		String sql = "select * from T_CATER_DISH d where d.type = '1' and d.dishShareType in ('1', '3') " + sql2;
+		String sql = "select * from T_CATER_DISH d where d.type = '1'  and d.dishShareType in ('1', '3') " + sql2;
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);
 		params.put("categoryId", categoryId);
+
+		return this.countBySql(sql, params);
+	}
+	public int countDishesByDishCass(String storeId, String categoryId) {
+		String sql = "select * from T_CATER_DISH d where d.type = '1' and d.dishclass = :dishclass and d.dishShareType in ('1', '3') " + sql2;
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);
+		if(categoryId.indexOf("006") == 0){
+			params.put("categoryId", "006");
+			params.put("dishclass", categoryId);
+		}else{
+			params.put("categoryId", categoryId);
+			params.put("dishclass", categoryId+"001");
+		}
 
 		return this.countBySql(sql, params);
 	}
@@ -67,11 +83,12 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 	            + " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
 				+ "		where d2.type = '1' and d2.dishShareType = '2' " + sql2 + " ) hd"
 				+ "	on hd.linkStoreDishId = d.storeDishId "
-				+ " where d.type = '1' and d.dishShareType in ('1', '3') " + sql2 + " order by dishSort asc, d.dishId asc";
+				+ " where d.type = '1'  and d.dishShareType in ('1', '3') " + sql2 + " order by dishSort asc, d.dishId asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("storeId", storeId);
+		params.put("storeId", storeId);//dishclass
 		params.put("categoryId", categoryId);
+//		params.put("dishclass", categoryId+"001");
 
 		Pagination pagn = new Pagination();
 		pagn.setPageIndex(pageIndex);
@@ -79,7 +96,73 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 
 		return this.getBeansBySql(Dish.class, sql, params, pagn);
 	}
-	
+
+	public List<Dish> getDishesByDishCass(String storeId, String categoryId, int pageIndex, int pageSize) {
+		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
+		String sql = "select d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
+				+ " i.imgurl as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
+				+ " from T_CATER_DISH d "
+				+ " inner join t_cater_dishtype dt on d.dishCategory = dt.dishTypeID "
+				+ "	left join T_CATER_IMAGE i on d.dishId = i.dishId "
+	            + " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
+				+ "		where d2.type = '1' and d2.dishclass = :dishclass and d2.dishShareType = '2' " + sql2 + " ) hd"
+				+ "	on hd.linkStoreDishId = d.storeDishId "
+				+ " where d.type = '1' and d.dishclass = :dishclass and d.dishShareType in ('1', '3') " + sql2 + " order by dishSort asc, d.dishId asc";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);//dishclass
+		if(categoryId.indexOf("006") == 0){
+			params.put("categoryId", "006");
+			params.put("dishclass", categoryId);
+		}else{
+			params.put("categoryId", categoryId);
+			params.put("dishclass", categoryId+"001");
+		}
+
+		Pagination pagn = new Pagination();
+		pagn.setPageIndex(pageIndex);
+		pagn.setPageSize(pageSize);
+
+		return this.getBeansBySql(Dish.class, sql, params, pagn);
+	}
+	private static String DIY_SQL1 = " and dishclass = '001006' and storeId = :storeId and isDisplay in ('2','3') and isStopped = '1'";
+
+	//private static String DIY_SQL2 = " and dishcategory = :categoryId " + DIY_SQL1;
+	/**
+	 * diy锅底
+	 *  d.storeid = '020115'                                     
+        and d.dishClass = '001006'                    
+        and d.isstopped = 1 
+        and d.type = 1;
+	 */
+	@Override
+	public List<Dish> getDiyDishes(String storeId, String categoryId, int pageIndex,
+			int pageSize) {
+		
+		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
+		String sql = "select d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", d.unitPrice as \"unitPrice\", "
+				+ " i.imgurl as \"bigImageAddr\", d.type as \"type\", hd.dishId as \"halfDishId\", hd.storeDishId as \"halfStoreDishId\", hd.unitPrice as \"halfPrice\" "
+				+ " from T_CATER_DISH d "
+				+ " inner join t_cater_dishtype dt on d.dishCategory = dt.dishTypeID "
+				+ "	left join T_CATER_IMAGE i on d.dishId = i.dishId "
+	            + " left join (select d2.linkStoreDishId, d2.dishId, d2.storeDishId, d2.unitPrice from T_CATER_DISH d2"
+				+ "		where d2.type = '1' and d2.dishShareType = '2' " + DIY_SQL1 + " ) hd"
+				+ "	on hd.linkStoreDishId = d.storeDishId "
+				+ " where d.dishType='01' and d.type = '1' and d.dishShareType in ('1', '3') " 
+				+ DIY_SQL1 + " order by dishSort asc, d.dishId asc";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeId", storeId);
+//		params.put("categoryId", "012");
+//		params.put("dishClass", "001006");
+//		params.put("isStopped", "01");
+
+		Pagination pagn = new Pagination();
+		pagn.setPageIndex(pageIndex);
+		pagn.setPageSize(pageSize);
+
+		return this.getBeansBySql(Dish.class, sql, params, pagn);
+	}
 	public Dish getDishDetail(String dishId) {
 		String sql = "select d.dishid as \"dishId\", d.dishname as \"dishName\", d.guideprice as \"guidePrice\", d.unitprice as \"unitPrice\", "
 				+ " d.description as \"description\", d.isrequired as \"isRequired\", d.dishunit as \"dishUnit\", d.dishweight as \"dishWeight\", "

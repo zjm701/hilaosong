@@ -18,4 +18,11 @@ public interface OrderDao {
 	long getOrderSerialId();
 	
 	boolean createOrder(Order order);
+	
+	/**
+	 * 根据订单号跟新订单状态
+	 * @param orderId
+	 * @return
+	 */
+	boolean updateOrderPayStatus(String orderId,int payStatus);
 }

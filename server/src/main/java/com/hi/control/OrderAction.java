@@ -19,6 +19,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hi.common.HIConstants;
 import com.hi.common.MessageCode;
 import com.hi.common.OrderType;
@@ -86,6 +87,11 @@ public class OrderAction extends BaseAction {
 	@Path("/gethistoryorders")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getHistoryOrders(@FormParam("userId") String userId, @FormParam("pageIndex") int pageIndex) {
+		userId = (String)getSession().getAttribute(HIConstants.LOGIN_ID);
+		logger.info(userId);
+		if(userId == null){
+			return getSuccessJsonResponse(MessageCode.ERROR_NO_LOGGEDIN_USER);
+		}
 		List<Order> orders = orderService.getHistoryOrders(userId, pageIndex);
 		return getSuccessJsonResponse(orders);
 	}
@@ -100,6 +106,11 @@ public class OrderAction extends BaseAction {
 	@Path("/getorderinfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOrderInfo(@FormParam("orderId") String orderId) {
+		String userId = (String)getSession().getAttribute(HIConstants.LOGIN_ID);
+		logger.info(userId);
+		if(userId == null){
+			return getSuccessJsonResponse(MessageCode.ERROR_NO_LOGGEDIN_USER);
+		}
 		Order order = orderService.getOrderInfo(orderId);
 		return getSuccessJsonResponse(order);
 	}
@@ -196,8 +207,13 @@ public class OrderAction extends BaseAction {
 
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("orderId", orderId);
+				m.put("payAmt", order.getExpenses().getTotalPrice().intValue()*100);
+				m.put("payChannel", order.getPayChannel());
 				m.put("respCode", MessageCode.SUCCESS_CREATE_ORDER.getKey());
 				m.put("respMsg", MessageCode.SUCCESS_CREATE_ORDER.getDesc());
+				if("0".equals(order.getPayChannel())){
+					
+				}
 				return getJsonString(m);
 			} else {
 				return getJsonString(MessageCode.ERROR_CREATE_ORDER);

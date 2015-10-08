@@ -45,11 +45,23 @@ public class DishServiceImpl implements DishService {
 	
 	@Override
 	public int countDishes(String storeId, String catId) {
-		return ddao.countDishes(storeId, catId);
+		if("001".equals(catId) || catId.indexOf("006")==0){
+			return ddao.countDishesByDishCass(storeId, catId);
+		}else{
+			return ddao.countDishes(storeId, catId);
+		}
 	}
 	
 	public List<Dish> getDishes(String storeId, String catId, int pageIndex,  int pageSize) {
-		return ddao.getDishes(storeId, catId, pageIndex, pageSize);
+		if("001".equals(catId) || catId.indexOf("006")==0){
+			return ddao.getDishesByDishCass(storeId, catId, pageIndex, pageSize);
+		}else{
+			return ddao.getDishes(storeId, catId, pageIndex, pageSize);
+		}
+	}
+	
+	public List<Dish> getDiyDishes(String storeId, String catId, int pageIndex,  int pageSize) {
+		return ddao.getDiyDishes(storeId, catId, pageIndex, pageSize);
 	}
 
 	public Dish getDishDetail(String dishId) {

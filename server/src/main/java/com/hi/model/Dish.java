@@ -42,6 +42,17 @@ public class Dish extends Pagenation{
 	
 	// if this dish has half, then set the price of half dish
 	private String halfPrice;
+	
+	private String dishClass;
+	
+
+	public String getDishClass() {
+		return dishClass;
+	}
+
+	public void setDishClass(String dishClass) {
+		this.dishClass = dishClass;
+	}
 
 	public String getDishId() {
 		return dishId;

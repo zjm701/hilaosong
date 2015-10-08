@@ -2,6 +2,7 @@ package com.hi.service;
 
 import java.util.List;
 
+import com.hi.common.MessageCode;
 import com.hi.model.Dish;
 import com.hi.model.DishType;
 import com.hi.model.DiyGuodi;
@@ -32,4 +33,8 @@ public interface DishService {
 	String updateDiyGuodi(DiyGuodi guodi);
 
 	boolean deleteDiyGuodi(long id);
+
+	//diy锅底查询
+	List<Dish> getDiyDishes(String storeId, String categoryId, int pageIndex,
+			int pageSize);
 }

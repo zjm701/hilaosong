@@ -15,6 +15,10 @@ public interface DishDao {
 	int countDishes(String storeId, String categoryId);
 
 	List<Dish> getDishes(String storeId, String categoryId, int pageIndex, int pageSize);
+	
+
+	int countDishesByDishCass(String storeId, String categoryId);
+	List<Dish> getDishesByDishCass(String storeId, String categoryId, int pageIndex, int pageSize) ;
 
 	Dish getDishDetail(String dishId);
 	
@@ -23,4 +27,7 @@ public interface DishDao {
 	List<Pack> getPacks(String storeId, String categoryId, int pageIndex);
 
 	List<PackDish> getPackDishes(String packId);
+
+	List<Dish> getDiyDishes(String storeId, String catId, int pageIndex,
+			int pageSize);
 }

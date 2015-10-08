@@ -29,6 +29,15 @@ import com.hi.tools.StringTools;
 @Path("/")
 public class UserAction extends BaseAction {
 
+	@POST
+	@Path(value = "/loginout")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String loginOut(String content) {
+		clearUser();
+		return getJsonString(MessageCode.LOGING_OUT);
+	}
+
 	/**
 	 * "/wap/login" (Mobile version)
 	 * 
@@ -70,8 +79,8 @@ public class UserAction extends BaseAction {
 				if (StringTools.isNotEmpty(resp.getLoginID())) {
 					getSession().setAttribute(HIConstants.LOGIN_ID, resp.getLoginID());
 					getSession().setAttribute(HIConstants.CUSTOMER_KEY, resp.getCustomerKey());
+					return getUserInfo( resp.getLoginID());
 				}
-
 				return respString;
 			} catch (Exception e) {
 				return getJsonString(MessageCode.ERROR_USER);
@@ -93,17 +102,24 @@ public class UserAction extends BaseAction {
 		}
 	}
 
+	@GET
+	@Path(value = "/getuserinfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getUserInfo() {
+		return getUserInfo((String)getSession().getAttribute(HIConstants.LOGIN_ID));
+	}
 	/**
 	 * function getCustomerInfo() (Mobile version)
 	 * 
 	 * 获取用户信息
 	 */
-	@GET
-	@Path(value = "/getuserinfo")
-	@Produces(MediaType.APPLICATION_JSON)
+	//@GET
+	//@Path(value = "/getuserinfo")
+	//@Produces(MediaType.APPLICATION_JSON)
 	public String getUserInfo(@FormParam("loginId") String loginId) {
-		clearUser();
+		logger.info(loginId);
 		if (StringUtils.isEmpty(loginId)) {
+			clearUser();
 			return getJsonString(MessageCode.VERIFICATION_EMPTY_LOGINID);
 		} else {
 			User user = (User) getSession().getAttribute(HIConstants.USER);
@@ -115,6 +131,7 @@ public class UserAction extends BaseAction {
 				if (StringTools.isNotEmpty(respString)) {
 					return respString;
 				} else {
+					clearUser();
 					return getJsonString(MessageCode.ERROR_USER);
 				}
 			}
@@ -152,7 +169,7 @@ public class UserAction extends BaseAction {
 		// 调用sns查询用户信息
 		GetUserInfoReq userInfoReq = new GetUserInfoReq();
 		userInfoReq.setReqInfo(new ReqForm("getUserInfoReq"));
-		userInfoReq.setFromUid(Long.valueOf(loginId));
+		userInfoReq.setFromUid(StringUtils.isEmpty(loginId)?0:Long.valueOf(loginId));
 		userInfoReq.setToUid(Long.valueOf(loginId));
 
 		String userInfoReqString = gson.toJson(userInfoReq);

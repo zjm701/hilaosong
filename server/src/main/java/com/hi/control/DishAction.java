@@ -52,6 +52,15 @@ public class DishAction extends BaseAction {
 		return getSuccessJsonResponse(dishService.getDishes(storeId, categoryId, pageIndex, pageSize));
 	}
 
+
+	@GET
+	@Path("/getdiydishes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDiyDishes(@FormParam("storeId") String storeId, @FormParam("catId") String categoryId,
+			@FormParam("pageIndex") int pageIndex, @FormParam("pageSize") int pageSize) {
+		return getSuccessJsonResponse(dishService.getDiyDishes(storeId, categoryId, pageIndex, pageSize));
+	}
+	
 	@GET
 	@Path("/getdishdetail")
 	@Produces(MediaType.APPLICATION_JSON)

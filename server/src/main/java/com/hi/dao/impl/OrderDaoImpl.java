@@ -269,4 +269,19 @@ public class OrderDaoImpl extends AbstractDao implements OrderDao {
 		}
 		return saveflag;
 	}
+	
+	
+	/**
+	 * 根据订单号跟新订单状态
+	 * @param orderId
+	 * @return
+	 */
+	@Override
+	public boolean updateOrderPayStatus(String orderId,int payStatus){
+		String sql = "update T_CATER_ORDERMAININFO set PAYSTATUS=:payStatus where orderId=:orderId";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("payStatus", payStatus);
+		params.put("orderId", orderId);
+		return  this.executiveSql(sql, params)==1;
+	}
 }
