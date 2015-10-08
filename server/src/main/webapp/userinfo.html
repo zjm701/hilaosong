@@ -1,499 +1,769 @@
-<script>
-
-var carttotal = 0;
-
-var putconfig = 258;
-
-
-
-$(document).ready(function(e) {
-
-
-
-	userid = $.cookie("userid");
-
-	username = $.cookie("username");
-
-	//alert(userid);
-
-	//alert(username);
-
-
-	if(typeof(userid) == 'undefined' || userid == 'null' || userid == null){
-
-
-
-	     //alert(userid);		
-
-
-
-		$('#usernow').hide();
-
-
-
-		$('#cartinfo').hide();
-
-
-
-		$('#userlogin').show();
-
-
-
-	} else {
-
-
-
-		$('#usernow').show();
-
-
-
-		$('#userlogin').hide();
-
-
-
-		$('#userid').text(userid);
-
-
-
-	}
-
-
-
-
-
-	if(username == 'undefined' || username == 'null' || username == null){
-
-
-
-		
-
-
-
-	} else {
-
-
-
-		$('#username').text(username);
-
-
-
-	}
-	if(nowpage == 'orderform1'){
-		$('#overcart').show();
-	} else{
-		$('#overcart').hide();
-	}
-
-
-
-	getcartdishinfo();
-
-
-
-	getcartpackinfo();
-
-
-
-	getcartdiyguodiinfo();
-
-	getcartfee();
-
-	//alert(carttotal);
-
-
-
-	//cartdiyguodi = getcartdiyguodiinfo();
-
-
-
-	//alert(JSON.stringify(cartdiyguodi));
-
-
-
-	//getdishes(catid,'#dishul','1');
-
-
-
-
-	$.ajax({
-
-		url: apiurl+'getdeliverylimitmoney?storeId='+storeid+'',
-
-		type: 'GET',
-
-		dataType: 'JSON',//here
-
-		success: function (data) {
-
-				//alert(JSON.stringify(data));
-
-			if(typeof(data.deliveryLimitMoney)=='undefined'){
-
-			} else {
-
-				putconfig = data.deliveryLimitMoney;
-
-				
-
-			}
-
-		}
-
-	});
-
-
-
-});
-
-
-
-function logout(){
-
-
-
-	//$.cookie("cartdish",null);
-
-
-
-	//$.cookie("cartpack",null);
-
-	//$.cookie("cartdiyguodi",null);
-
-	//$.cookie("cartpack",null);
-
-	//$.cookie("cartpack",null);
-
-
-
-	$.cookie("userid",null);
-
-
-
-	$.cookie("username",null);
-
-
-
-	//window.location= './';
-
-	goLocationWithCity('index.html');
-
-
-
-}
-
-
-//zs:进入结算
-function checkcarttotl(){
-
-	if(carttotal == 0){
-
-		carttotal = $('#carttotle').text();
-
-		carttotal = (Math.round(carttotal*100)/100);
-
-	}
-
-
-	//菜品判断
-	var cartbox = $("#cartbox")
-	if(cartbox.children().length==0){
-		alert("您没有选择任何菜品！");
-		return false;
-	}
-
-	//锅底数量大于等于3,
-	var count1 = getGuodiCount();
-	var pc = putconfig;
-	if(count1>=3){
-		pc *= count1;
-	}
-	if(carttotal < pc){
-
-		alert('点餐费未达到'+pc+'元的起送标准！');
-
-		return false;
-
-	}
-	//判断是否选择了锅底
-	if(checkOnself('001')){
-		return false;
-	}
-	//判断是否选择了小料
-	if(checkOnself('007')){
-		return false;
-	}
-	
-}
-
-function checkOnself(n){
-	var ose = _onself[n];
-	var isSelect = $.cookie("onselfClick"+n)=='true';
-	var cou = getCountByType(n);
-	if(n=='001'){
-		cou = getGuodiCount();
-	}
-//	alert(isSelect+"  cou:"+cou
-//	没有选择自备锅底并没有选择锅底
-	if(cou==0 && !isSelect){
-		alert(ose.adder2);
-		return true;
-	}
-	return false;
-}
-
-
-</script>
-
-<style>
-
-#cartallbox{  max-height: 385px;
-
-  padding-right: 5px;
-
-  overflow-y: scroll;
-  /*overflow-x:scroll; overflow-y:auto;*/
-  }
-
-</style>
-
-<div class="menu">
-
-
-
-<div id="userlogin">
-
-
-
-<span>请输入手机号:</span>
-
-
-
-<span><input name="username" type="text" value="13161695955" /></span>
-
-
-
-<span>请输入密码:</span>
-
-
-
-<span><input name="password" type="password" value="111111" /></span>
-
-
-
-<div class="jizhu">
-
-
-
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-
-
-
-<tr>
-
-
-
-<td width="15px" class="p_l_5"><input type="checkbox" checked="checked" readonly style="border:none; height:13px; width:13px;"/></td>
-
-
-
-<td width="95px"><span >记住我</span></td>
-
-
-
-<td></td></tr>
-
-
-
-<tr><td colspan="3" class="p_t_15"><img src="images/btn_denglu.jpg" style="cursor:pointer;" onclick="userlogin();" /></td></tr>
-
-
-
-<tr><td colspan="3" align="right"><a href="#">没有账号？免费注册</a></td></tr>
-
-
-
-</table>
-
-
-
-</div>
-
-
-
-<span class="f_red m_t_20">友情提示</span>
-
-
-
-<span class="f_868686">如果您曾使用我们的订餐服务，请输入您上次使用的手机号码</span>
-
-
-
-</div>
-
-
-
-<div id="usernow">
-
-
-
-欢迎您：<span id="username"></span>
-
-
-
-<span id="userid" style="display:none;"></span>
-
-
-
-<a href="javascript:;" onClick="if(confirm('填写或者修改订餐信息？')){goLocationWithCity('userform.html'); }">订餐信息</a>
-
-
-
-<div class="blank5"></div>
-
-
-
-<a href="historyorder.html" class="btn btn-danger blcok">历史订单</a>
-
-
-
-<div class="blank5"></div>
-
-<div id="diyguodibtn">
-
-<a href="diyguodi.html" class="btn btn-danger blcok">DIY锅底</a>
-
-
-
-<div class="blank5"></div>
-</div>
-
-
-
-<span class="btn btn-danger" onClick="logout();">退出</span>
-
-
-
-
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-<div id="cartinfo">
-
-
-
-<div class="title">购物篮</div>
-
-
-
-<div class="car_gw">
-
-
-
-<div class="blank10"></div>
-
-<div id="cartallbox">
-
-<div id="cartcallboxin">
-<div id="overcart"></div>
-<div id="cartbox">
-
-
-
-
-
-
-
-</div>
-
-
-
-<div id="cartpackbox">
-
-
-
-
-
-
-
-</div>
-
-
-
-<div id="cartdiyguodibox">
-
-
-
-
-
-
-
-</div>
-</div>
-</div>
-
-<div class="blank10"></div>
-
-
-
-<div class="xyh_box">
-
-
-
-<div class="clear"></div>
-
-
-
-<span class="sp_hx"></span>
-
-
-
-<div class="cart" ><div class="left">菜品</div><div id="carttotle" class="right">0</div></div>
-<div class="blank5"></div>
-<div class="cart" ><div class="left">外送费</div><div id="ousidetotle" class="right">0</div></div>
-<div class="blank5"></div>
-<div class="cart" id="servicetotleDiv" ><div class="left">服务费</div><div id="servicetotle" class="right">0</div></div>
-<div class="blank5"></div>
-<div class="cart" ><div class="left">合计</div><div id="alltotle" class="right">0</div></div>
-
-
-
-<div class="blank5"></div>
-
-
-
-<a href="orderform1.html" onClick="return checkcarttotl();"><span class=" btn btn-danger block"  >进入结算 <i class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></i></span></a>
-
-
-
-<div class="clear"></div>
-
-
-
-
-
-
-
-<span class="m_t_30"><strong style="color:#FF0000;">提醒：具体送达时间以客服电话或短信回复的时间为准。</strong></span>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
+<script>
+
+var carttotal = 0;
+
+var putconfig = 258;
+
+$(document).ready(function(e) {
+	//lt:20151001 购物篮显示
+	$(window).scroll(function(){
+		if ($(window).scrollTop()>204 && $('html').height() > 1001){
+			$("#cartinfo").addClass('nfix');
+		}
+		else
+		{
+			$("#cartinfo").removeClass('nfix');
+		}
+	});
+	//end
+	
+	userid = $.cookie("userid");
+
+	username = $.cookie("username");
+
+	//alert(userid);
+
+	//alert(username);
+
+	if(typeof(userid) == 'undefined' || userid == 'null' || userid == null){
+
+
+		$('#usernow').hide();
+
+
+
+		$('#cartinfo').hide();
+
+
+
+		$('#userlogin').show();
+
+
+
+	} else {
+
+
+
+		$('#usernow').show();
+
+
+
+		$('#userlogin').hide();
+
+
+
+		$('#userid').text(userid);
+
+
+
+	}
+
+
+
+
+
+	if(username == 'undefined' || username == 'null' || username == null){
+
+
+
+		
+
+
+
+	} else {
+
+
+
+		$('#username').text(username);
+
+
+
+	}
+	if(nowpage == 'orderform1'){
+		$('#overcart').show();
+	} else{
+		$('#overcart').hide();
+	}
+
+
+
+	getcartdishinfo();
+
+
+
+	getcartpackinfo();
+
+
+
+	getcartdiyguodiinfo();
+
+	getcartfee();
+
+	//alert(carttotal);
+
+
+
+	//cartdiyguodi = getcartdiyguodiinfo();
+
+
+
+	//alert(JSON.stringify(cartdiyguodi));
+
+
+
+	//getdishes(catid,'#dishul','1');
+
+
+
+
+	$.ajax({
+
+		url: apiurl+'getdeliverylimitmoney?storeId='+storeid+'',
+
+		type: 'GET',
+
+		dataType: 'JSON',//here
+
+		success: function (data) {
+
+				//alert(JSON.stringify(data));
+
+			if(typeof(data.deliveryLimitMoney)=='undefined'){
+
+			} else {
+
+				putconfig = data.deliveryLimitMoney;
+
+				
+
+			}
+
+		}
+
+	});
+
+
+//alert(1)
+	addUserInfoListenter();
+	initCookie();
+});
+//初始化cookie的值
+function initCookie(){
+	var gc = $.cookie("guoju_checked");
+	if(gc == "true"){
+		$("#guojuC").click();
+	}
+	var lc = $.cookie("luju_checked");
+	if(lc == "true"){
+		$("#lujuC").click();
+	}
+	var gc = $.cookie("guoju_num");
+	//alert(gc)
+	if(!$.isEmpty(gc)){
+		$("#potNumber").text(gc);
+	}
+	var lc = $.cookie("luju_num");
+	if(!$.isEmpty(lc)){
+		$("#panNumber").text(lc);
+	}
+}
+//退出
+function logout(){
+
+
+
+	//$.cookie("cartdish",null);
+
+
+
+	//$.cookie("cartpack",null);
+
+	//$.cookie("cartdiyguodi",null);
+
+	//$.cookie("cartpack",null);
+
+	//$.cookie("cartpack",null);
+
+
+	$.ajax({
+		url: apiurl+"loginout",//要访问的后台地址
+	//	data: JSON.stringify(content),//要发送的数据
+		type: "post", //使用post方法访问后台
+		dataType: "json", //返回json格式的数据
+		//async: true,
+		contentType: "application/json;charset=utf-8", 
+
+		success: function (data) {
+
+				//alert(JSON.stringify(data));
+
+			if(typeof(data)=='undefined'){
+
+			} else {
+
+				$.cookie("userid",null);
+
+
+
+				$.cookie("username",null);
+
+
+
+				//window.location= './';
+
+				goLocationWithCity('index.html');
+				
+
+			}
+
+		}
+
+	});
+
+
+
+}
+
+
+//zs:进入结算
+function checkcarttotl(){
+
+	//检查自备炉具
+	if(checkUncheck()){
+		return false;
+	}
+
+	if(carttotal == 0){
+
+		carttotal = $('#carttotle').text();
+
+		carttotal = (Math.round(carttotal*100)/100);
+
+	}
+
+
+	//菜品判断
+	var cartbox = $("#cartbox")
+	if(cartbox.children().length==0){
+		alert("您没有选择任何菜品！");
+		return false;
+	}
+
+	//锅底数量大于等于3,
+	var count1 = getGuodiCount();
+	var pc = putconfig;
+	if(count1>=3){
+		pc *= count1;
+	}
+	if(carttotal < pc){
+
+		alert('点餐费未达到'+pc+'元的起送标准！');
+
+		return false;
+
+	}
+	//判断是否选择了锅底
+	if(checkOnself('001')){
+		return false;
+	}
+	//判断是否选择了小料
+	if(checkOnself('007')){
+		return false;
+	}
+
+	goLocationWithCity('orderform1.html');
+	
+}
+
+function checkOnself(n){
+	var ose = _onself[n];
+	var isSelect = $.cookie("onselfClick"+n)=='true';
+	var cou = getCountByType(n);
+	if(n=='001'){
+		cou = getGuodiCount();
+	}
+//	alert(isSelect+"  cou:"+cou
+//	没有选择自备锅底并没有选择锅底
+	if(cou==0 && !isSelect){
+		alert(ose.adder2);
+		return true;
+	}
+	return false;
+}
+
+var Lis = {
+		imgjian:function(){
+			var tmp = $('#potNumber').text();
+			tmp = parseInt(tmp);
+			// zs:服务费
+			if (tmp == 1) {
+				calculateServiceTotle('del', 1);
+			}
+			// end..
+			if (tmp > 0) {
+				tmp--;
+				$('#potNumber').text(tmp);
+			} else {
+				$('#potNumber').text('0');
+			}
+			getFfeeYfee();
+		},
+		imgjian1:function() {
+		
+			var tmp = $('#panNumber').text();
+		
+			tmp = parseInt(tmp);
+		
+			// zs:服务费
+			if (tmp == 1) {
+				calculateServiceTotle('del', 2);
+			}
+			// end....
+			if (tmp > 0) {
+		
+				tmp--;
+		
+				$('#panNumber').text(tmp);
+		
+			} else {
+		
+				$('#panNumber').text('0');
+		
+			}
+			getFfeeYfee();
+		
+		},
+
+		imgjia:function() {
+
+			var tmp = $('#potNumber').text();
+
+			tmp = parseInt(tmp);
+			// zs: 判断锅底数量
+			if (checkGoudiCount(tmp, 1)) {
+				return;
+			}
+			;
+
+			if (tmp > 0) {
+
+				tmp++;
+
+				$('#potNumber').text(tmp);
+
+			} else {
+
+				$('#potNumber').text('1');
+
+			}
+			getFfeeYfee();
+
+		},
+		imgjia1:function() {
+
+			var tmp = $('#panNumber').text();
+
+			tmp = parseInt(tmp);
+
+			// zs: 判断锅底数量
+			if (checkGoudiCount(tmp, 2)) {
+				return;
+			}
+			;
+
+			if (tmp > 0) {
+
+				tmp++;
+
+				$('#panNumber').text(tmp);
+
+			} else {
+
+				$('#panNumber').text('1');
+
+			}
+			getFfeeYfee();
+
+		}
+}
+
+function getFfeeYfee(){
+	//zs:
+	var usecup = $('#lujuC');//$('input[name="usecup"]:checked').val();
+	var usecup2 = $('#guojuC');//$('input[name="usecup2"]:checked').val();
+	//都选是外卖费清零
+	if(usecup.attr("checked") == 'checked' && usecup2.attr("checked") == 'checked'){
+		TotleUtils.all(0);
+	}else{
+		calculateServiceTotle();
+	}
+}
+
+//zs: 判断锅底数量
+function checkGoudiCount(tmp,type){
+	var count = getGuodiCount();
+	if(count<=tmp){
+		 alert("请不要超过锅底数量");
+		 return true;
+	}
+	
+	//计算服务费
+	//if(tmp==0){
+		calculateServiceTotle('and',type);
+	//}
+	return false;
+}
+
+function calculateServiceTotle(t,type){
+	//总费用计算
+	setTimeout(function(){
+		var potNum = $("#potNumber").text();
+		var panNum = $("#panNumber").text();
+		//alert(potNum+ "   "+panNum);
+		CookUtils.addCookie("guoju_num",potNum);
+		CookUtils.addCookie("luju_num",panNum);
+		TotleUtils.all(0.1);
+	}, 100)
+}
+function addUserInfoListenter() {
+	// 自备锅具
+	$("#guojuC").unbind("click");
+	$('#guojuC').click(function() {
+		var me = $(this);
+		if (me.attr("checked") == 'checked') {
+			$('#cartlu').hide();
+			$('#potNumber').text('0');
+			CookUtils.addCookie("guoju_checked","true");
+		} else {
+			$('#cartlu').show();
+			CookUtils.addCookie("guoju_checked","false");
+		}
+		getFfeeYfee();
+	});
+
+	// 自备炉具
+	$("#luju").unbind("click");
+	$('#lujuC').click(function() {
+		var me = $(this);
+		if (me.attr("checked") == 'checked') {
+			$('#cartgu').hide();
+			$('#panNumber').text('0');
+			CookUtils.addCookie("luju_checked","true");
+		} else {
+			$('#cartgu').show();
+			CookUtils.addCookie("luju_checked","false");
+		}
+		getFfeeYfee();
+	});
+
+
+	$(".title").unbind("click");
+	$(".title").click(function(){
+		var usernow = $("#usernow");
+		if(usernow.css("display")!="none"){
+			usernow.css("display","none");
+		}else{
+			usernow.css("display","");
+		}
+	});
+}
+
+//检查自备炉具
+function checkUncheck(){
+	if($("#guojuC").attr("checked") != 'checked' && $("input[name='potNumber']").text() == 0 ){
+		alert('如果不选炉具，请选择自备炉具');
+		return true;
+	}
+	if($("#lujuC").attr("checked") != 'checked'  && $("input[name='panNumber']").text() == 0){
+
+		alert('如果不选锅具，请选择自备锅具');
+		return true;
+	}
+	return false;
+}
+
+</script>
+
+<style>
+/*//lt:20151001 购物篮显示*/
+
+.nfix{ 
+  position: fixed;
+  top:0;
+  z-index:9999;
+}
+#cartinfo{ background:#FFFFFF;}
+#cartallbox{  max-height: 235px;
+
+  padding-right: 5px;
+
+  overflow-y: scroll;
+  /*overflow-x:scroll; overflow-y:auto;*/
+  }
+.cart em{ font-style:normal;}
+.wi50{ width:45%;padding-left: 5%;}
+em.dis{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px; }
+em.num{ border:1px solid #CCCCCC; border-left:0; border-right:0; padding:3px; font-size:10px;}
+em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
+.cart em{padding:4px;}
+.cart{font: 12px/1.5 "\5b8b\4f53","宋体"}
+/*end*/
+/*//lt:20151001 购物篮菜品修改为同一行*/
+.cartli{ height:30px;}
+.carttitle{ float:left; width:60%; text-overflow:ellipsis; white-space:nowrap}
+.cartprice{ float:left; width:40%;}
+/*end*/
+</style>
+
+<div class="menu">
+
+
+
+<div id="userlogin">
+
+
+
+<span class="login">账号:</span>
+
+
+
+<span class="login"><input name="username" type="text" value="13161695955" /></span>
+
+
+<br/>
+
+<span class="login">密码:</span>
+
+
+
+<span class="login"><input name="password" type="password" value="111111" /></span>
+
+
+
+<div class="jizhu login">
+
+
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+
+
+
+<tr>
+
+
+
+<td width="15px" class="p_l_5"><input type="checkbox" checked="checked" readonly style="border:none; height:13px; width:13px;"/></td>
+
+
+
+<td width="95px"><span >记住我</span></td>
+
+
+
+<td></td></tr>
+
+
+
+<tr><td colspan="3" class="p_t_15"><img src="images/btn_denglu.jpg" style="cursor:pointer;" onclick="userlogin();" /></td></tr>
+
+
+
+<tr style="display: none;"><td colspan="3" align="right"><a href="#">没有账号？免费注册</a></td></tr>
+
+
+
+</table>
+
+
+
+
+</div>
+
+
+
+<span class="f_red m_t_20">友情提示</span>
+
+
+
+<span class="f_868686">如果您曾使用我们的订餐服务，请输入您上次使用的手机号码</span>
+
+
+
+</div>
+
+
+
+<div id="usernow">
+
+
+
+欢迎您：<span id="username"></span>
+
+
+
+<span id="userid" style="display:none;"></span>
+
+
+
+<a class="user_info_change" href="javascript:;" onClick="if(confirm('填写或者修改订餐信息？')){goLocationWithCity('userform.html'); }">订餐信息</a>
+
+
+
+<div class="blank5"></div>
+
+
+
+<a href="historyorder.html" class="btn btn-danger blcok">历史订单</a>
+
+
+
+<div class="blank5"></div>
+
+<div id="diyguodibtn">
+
+<a href="diyguodi.html" class="btn btn-danger blcok">DIY锅底</a>
+
+
+
+<div class="blank5"></div>
+</div>
+
+
+
+<span class="btn btn-danger" onClick="logout();">退出</span>
+
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<div id="cartinfo" >
+
+
+
+<div class="title">购物篮</div>
+
+
+
+<div class="car_gw">
+
+
+
+<div class="blank10"></div>
+
+<div id="cartallbox">
+
+<div id="cartcallboxin">
+<div id="overcart"></div>
+<div id="cartbox">
+
+
+
+
+
+
+
+</div>
+
+
+
+<div id="cartpackbox">
+
+
+
+
+
+
+
+</div>
+
+
+
+<div id="cartdiyguodibox">
+
+
+
+
+
+
+
+</div>
+</div>
+</div>
+
+<div class="blank10"></div>
+
+
+
+<div class="xyh_box">
+
+
+
+<div class="clear"></div>
+
+
+
+<span class="sp_hx"></span>
+<div class="cart">
+<div class="left wi50" id="cartluz">自备炉具 <input id="guojuC" name="" type="checkbox"></div>
+<div class="right wi50" id="cartguz">自备锅具 <input id="lujuC" name="" type="checkbox"></div>
+</div>
+<div class="blank5"></div>
+<div class="cart">
+<div class="left wi50" id="cartlu">电磁炉具 <em class="dis" id="imgjian" onclick="Lis.imgjian()">-</em><em id="potNumber" class="num">0</em><em class="plu" onclick="Lis.imgjia()" id="imgjia">+</em></div>
+<div class="right wi50" id="cartgu">锅具数量 <em class="dis" id="imgjian1" onclick="Lis.imgjian1()">-</em><em id="panNumber" class="num">0</em><em class="plu" onclick="Lis.imgjia1()" id="imgjia1">+</em></div>
+</div>
+<div class="blank5"></div>
+<span class="sp_hx"></span>
+
+<div class="cart" ><div class="left">菜品</div><div id="carttotle" class="right">0</div></div>
+<div class="blank5"></div>
+<div class="cart" ><div class="left">外送费</div><div id="ousidetotle" class="right">0</div></div>
+<div class="blank5"></div>
+<div class="cart" id="servicetotleDiv" ><div class="left">服务费</div><div id="servicetotle" class="right">0</div></div>
+<div class="blank5"></div>
+<div class="cart" ><div class="left">合计</div><div id="alltotle" class="right">0</div></div>
+
+
+
+<div class="blank5"></div>
+
+
+
+<a href="#" onClick="checkcarttotl();"><span class=" btn btn-danger block"  >进入结算 <i class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></i></span></a>
+
+
+
+<div class="clear"></div>
+
+
+
+
+
+
+
+<span class="m_t_30"><strong style="color:#FF0000;">提醒：具体送达时间以客服电话或短信回复的时间为准。</strong></span>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+

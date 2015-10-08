@@ -1,116 +1,116 @@
- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="x-ua-compatible" content="ie=7" /> 
-<title>API</title>
-<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="style/bootstrap-theme.css"/>
-<link rel="stylesheet" type="text/css" href="style/index.css"/>
-<link rel="stylesheet" type="text/css" href="style/base.css"/>
-<link rel="stylesheet" type="text/css" href="style/index.css"/>
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery-migrate.min.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/common.js"></script>
-<script src="js/config.js"></script>
-<style>
-#cities li:hover{ cursor:pointer; font-weight:bold;}
-#catul li:hover{ cursor:pointer; font-weight:bold;}
-#dishul li:hover{ cursor:pointer; font-weight:bold;}
-</style>
-</head>
-
-<body>
-
-1、api调用<br />
-
-<div>
-城市
-<ul id="cities"></ul>
-</div>
-<hr /><br />
-<div>
-菜品分类
-<ul id="catul"></ul>
-</div>
-<hr /><br />
-<div>
-菜品
-<ul id="dishul"></ul>
-</div>
-<hr /><br />
-
-2、api登录<br />
-<div>
-<script type="text/javascript" >
-$(function() {
-	$("input[name='save']").click(function() {
-		var username = $("input[name='username']");
-		var password = $("input[name='password']");
-		var content = {
-				username: $.trim(username.val()),
-				password: $.trim(password.val())
-			};
-				$('#userinfo').html('读取中...');
-		$.ajax({
-			url: apiurl+"login",//要访问的后台地址
-			data: JSON.stringify(content),//要发送的数据
-			type: "post", //使用post方法访问后台
-			dataType: "json", //返回json格式的数据
-			async: true,
-			contentType: "application/json;charset=utf-8", 
-			success: function(msg){//msg为返回的数据，在这里做数据绑定
-				//alert("login response:"+JSON.stringify(msg));
-				//location.href = "welcome.jsp";
-				//alert("login response:"+JSON.stringify(msg));
-				if(typeof(msg.loginID) != 'undefined'){
-				$.getJSON(''+apiurl+'getuserinfo?loginId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
-					//alert(json.content);JSON.stringify(json)
-					$('#userinfo').html('用户名：'+json.user.nickname+' 用户ID：'+ msg.loginID);
-					//setTimeout("loadMainok()",1000);
-				});
-				}
-			}
-		});
-	});
-});
-</script>
-<div id="userinfo">
-<table class="insert-tab" width="100%">
-							<tr>
-								<th width="120">用户名:</th>
-								<td><input type="text" name="username" class="form-control" value="13585947701" style="width: 200px" >13585947701</td>
-							</tr>
-							<tr>
-								<th width="120">密码:</th>
-								<td><input type="password" name="password" class="form-control" value="123456" style="width: 200px" >123456</td>
-							</tr>
-							<tr>
-								<th></th>
-								<td><input type="button" name="save" class="btn btn-default" value="提  交" ></td>
-							</tr>
-						</table>
-</div>
-</div>
-<hr /><br />
-
-
-n、DIY锅底<br />
-n、api历史订单<br />
-
-n、api历史订单详情<br />
-
-
-<hr><br />
-说明：<br />
-需要存储内容：cookie存储userid<br />
-order信息
-<script>
-//1
-getcities('#cities');
-
-</script>
-
-</body>
-</html>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=7" /> 
+<title>API</title>
+<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="style/bootstrap-theme.css"/>
+<link rel="stylesheet" type="text/css" href="style/index.css"/>
+<link rel="stylesheet" type="text/css" href="style/base.css"/>
+<link rel="stylesheet" type="text/css" href="style/index.css"/>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-migrate.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/config.js"></script>
+<style>
+#cities li:hover{ cursor:pointer; font-weight:bold;}
+#catul li:hover{ cursor:pointer; font-weight:bold;}
+#dishul li:hover{ cursor:pointer; font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+1、api调用<br />
+
+<div>
+城市
+<ul id="cities"></ul>
+</div>
+<hr /><br />
+<div>
+菜品分类
+<ul id="catul"></ul>
+</div>
+<hr /><br />
+<div>
+菜品
+<ul id="dishul"></ul>
+</div>
+<hr /><br />
+
+2、api登录<br />
+<div>
+<script type="text/javascript" >
+$(function() {
+	$("input[name='save']").click(function() {
+		var username = $("input[name='username']");
+		var password = $("input[name='password']");
+		var content = {
+				username: $.trim(username.val()),
+				password: $.trim(password.val())
+			};
+				$('#userinfo').html('读取中...');
+		$.ajax({
+			url: apiurl+"login",//要访问的后台地址
+			data: JSON.stringify(content),//要发送的数据
+			type: "post", //使用post方法访问后台
+			dataType: "json", //返回json格式的数据
+			async: true,
+			contentType: "application/json;charset=utf-8", 
+			success: function(msg){//msg为返回的数据，在这里做数据绑定
+				//alert("login response:"+JSON.stringify(msg));
+				//location.href = "welcome.jsp";
+				//alert("login response:"+JSON.stringify(msg));
+				if(typeof(msg.loginID) != 'undefined'){
+				$.getJSON(''+apiurl+'getuserinfo?loginId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
+					//alert(json.content);JSON.stringify(json)
+					$('#userinfo').html('用户名：'+json.user.nickname+' 用户ID：'+ msg.loginID);
+					//setTimeout("loadMainok()",1000);
+				});
+				}
+			}
+		});
+	});
+});
+</script>
+<div id="userinfo">
+<table class="insert-tab" width="100%">
+							<tr>
+								<th width="120">用户名:</th>
+								<td><input type="text" name="username" class="form-control" value="13585947701" style="width: 200px" >13585947701</td>
+							</tr>
+							<tr>
+								<th width="120">密码:</th>
+								<td><input type="password" name="password" class="form-control" value="123456" style="width: 200px" >123456</td>
+							</tr>
+							<tr>
+								<th></th>
+								<td><input type="button" name="save" class="btn btn-default" value="提  交" ></td>
+							</tr>
+						</table>
+</div>
+</div>
+<hr /><br />
+
+
+n、DIY锅底<br />
+n、api历史订单<br />
+
+n、api历史订单详情<br />
+
+
+<hr><br />
+说明：<br />
+需要存储内容：cookie存储userid<br />
+order信息
+<script>
+//1
+getcities('#cities');
+
+</script>
+
+</body>
+</html>

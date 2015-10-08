@@ -31,13 +31,13 @@
 .box_01 .mid .step{ padding:0 0 10px 0;  border-bottom:solid 2px #c6000a;}
 .box_01 .mid .step img{ display:block; margin:0 auto;}
 
-.box_01 .mid .mid_left{ width:200px; border:solid 1px #9d9d9d; margin-top:20px;}
-.box_01 .mid .mid_left .m_l_title{ width:185px; color:#fff; height:30px; line-height:30px; padding-left:15px; background-color:#c6000a;}
-.box_01 .mid .mid_left .m_l_menu{ width:192px; padding:5px 4px;}
-.box_01 .mid .mid_left .m_l_menu .m_diqu{ width:192px; height:49px; background:url(../images/bj_bg.gif) no-repeat left center; color:#333; font-size:14px; text-align:center; line-height:49px;}
-.box_01 .mid .mid_left .m_l_menu ul li{ background:url(../images/left_nav_Bg_01.jpg) no-repeat left center; width:192px; color:#fff; font-size:14px; height:29px; line-height:29px; padding-left:20px; margin-top:8px;}
+.box_01 .mid .mid_left{ width:97px; border:solid 1px #9d9d9d; margin-top:20px;}
+.box_01 .mid .mid_left .m_l_title{ width:82px; color:#fff; height:30px; line-height:30px; padding-left:15px; background-color:#c6000a;}
+.box_01 .mid .mid_left .m_l_menu{ width:70px; padding:5px 4px;}
+.box_01 .mid .mid_left .m_l_menu .m_diqu{ width:88px;border-radius: 5px; height:39px; line-height:39px; background:#aaa; color:#333; font-size:14px; text-align:center;}
+.box_01 .mid .mid_left .m_l_menu ul li{ background:url(../images/left_nav_Bg_01.jpg) no-repeat left center; width:70px; color:#fff; font-size:14px; height:29px; line-height:29px; padding-left:20px; margin-top:8px;}
 .box_01 .mid .mid_left .m_l_menu ul li.li_hover{ background-image:url(../images/left_nav_Bg.jpg);}
-.box_01 .mid .mid_left  .sc_date{ padding:15px; border-top:solid 1px #9d9d9d; margin-top:10px; line-height:24px; color:#bd1c22;}
+.box_01 .mid .mid_left  .sc_date{ padding:5px; border-top:solid 1px #9d9d9d; margin-top:10px; line-height:24px; color:#bd1c22;}
 
 
 
@@ -45,17 +45,19 @@
 .right_01{ width:170px;}
 .mid_mid{ width:558px; padding:10px 15px;}
 
-.mid_right{ width:200px; float:left;}
-.mid_right .title{ width:185px; height:32px; line-height:32px; float:left; background-color:#c6000a; font-size:16px; font-weight:bold; padding-left:15px; color:#fff;}
-.mid_right .menu{ width:188px; height:auto; color:#5e5e5e; padding:15px 5px; border:solid 1px #9d9d9d;}
-.mid_right .menu input{ width:184px; height:24px; border:solid 1px #e5e5e5;}
+.mid_right{ width:281px; float:left;}
+.mid_right .title{ width:281px; height:32px; line-height:32px; float:left; background-color:#c6000a; font-size:16px; font-weight:bold; padding-left:15px; color:#fff;}
+.mid_right .menu{ width:285px; height:auto; color:#5e5e5e; padding:15px 5px; border:solid 1px #9d9d9d;}
+.mid_right .menu input{margin:5px; width:184px; height:24px; border:solid 1px #e5e5e5;}
 .mid_right .menu span{ display:block; }
+.mid_right .menu .login{ display:inline-block; margin-left: 5px;}
+.p_t_15 img{padding-left: 50px;}
 
 .jizhu span{ font-size:14px; float:left; color:#868686; height:24px; line-height:24px;}
 .jizhu span input{ border:none; width:3px; height:3px;}
 .jizhu table tr td a{ color:#e37f14; font-size:14px; text-decoration:underline;}
 
-.tishi{width:188px; height:122px; color:#5e5e5e;  padding:10px 5px; border:solid 1px #9d9d9d;}
+.tishi{width:285px; height:122px; color:#5e5e5e;  padding:10px 5px; border:solid 1px #9d9d9d;}
 
 
 
@@ -65,7 +67,7 @@
 
 
 /*套餐选择*/
-.car_gw{ width:188px; padding-top:10px; color:#5e5e5e; padding:15px 5px; border:solid 1px #9d9d9d;}
+.car_gw{ width:285px; padding-top:10px; color:#5e5e5e; padding:15px 5px; border:solid 1px #9d9d9d;}
 .car_gw span{ display:block; }
 
 .xyh_box{ padding-top:0px;}
@@ -280,12 +282,12 @@ display:none;
   padding-left: 15px;
   color: #fff;}
 #dishul .alert{margin-top:10px;}
-#dishul li img{ width:169px; height:178px; background:#CCCCCC;}
+#dishul li img{ width:179px; height:178px; background:#CCCCCC;}
 #dishul li {
-width: 169px;
+width: 179px;
 margin-top: 10px;
-margin-right: 8px;
-margin-left: 7px;
+margin-right: 2px;
+margin-left: 2px;
 float: left;
 height: 270px;
 border:solid 1px #9d9d9d;
@@ -562,3 +564,24 @@ background: #d51c2a;}
 #cartcallboxin{ position:relative;}
 #cartallbox{ position:relative;}
 #overcart{ position:absolute; top:0; left:0; width:100%; height:100%;}
+
+#usernow{
+	font-weight: 700;
+}
+#username{
+	font-weight: 300;
+	padding-left: 13px;
+}
+#usernow .user_info_change{
+	padding-left: 65px;
+}
+#citynameinput{
+	background: #aaa;
+	width:80px;
+	padding-left:0px;
+	border:0; 
+	text-align: center;
+}
+#cartinfo{
+	margin-top: 2px;
+}

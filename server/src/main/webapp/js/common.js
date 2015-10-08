@@ -27,7 +27,7 @@ var packprice;
 var carttotal = 0;
 
 //alert(cityname);
-
+var Constant = {};		//常量
 $(document).ready(function(e) {
 	 $.ajaxSetup ({
 	   cache: false 
@@ -37,31 +37,46 @@ $(document).ready(function(e) {
 		//getcurrentuser();
 		//if(getuser()){return false;}
 	}
-	if(nowpage == 'index'){
+	//if(nowpage != 'index'){
 		//getcurrentuser();
 		var logintmp = GetQueryString('loginId');
 		//alert(logintmp);
-		if(typeof(logintmp) != 'undefined' && logintmp !=null && logintmp !='null'){
+		//if(typeof(logintmp) != 'undefined' && logintmp !=null && logintmp !='null' && logintmp !='0' && logintmp !=''){
 			$.ajax({
-				url: apiurl+'getuserinfo?loginId='+logintmp,
+				url: apiurl+'getuserinfo',//?loginId='+logintmp,
 				type: 'GET',
 				dataType: 'JSON',//here
 				success: function (data) {
 					
 					//alert(JSON.stringify(data));
 					
-					if(typeof(data.loginId)=='undefined'){
+					if(typeof(data.user)!='undefined'){
 						$.cookie("userid", data.user.user_entity_id, { expires: 30 }); 
 						$.cookie("username", data.user.nickname, { expires: 30 }); 
 						$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
 					} else {
 						//未登录或者未返回
+						$.cookie("userid",null);
+						$.cookie("username",null);
+
+						if(!(nowpage == 'index' || nowpage=='pack' || nowpage=='dish')){
+							goLocationWithCity('index.html')
+						}
 					}
 				}
 			});
-		}
-	}
+		//}
+	//}
 	$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
+/*
+	if(storeid1 == storeid && (storeid1 != null || typeof(storeid1) != 'undefined')){
+		return ;
+	}*/
+	//没有填写信息
+	if(!$.isEmpty(storeid1) || Constant.isUserForm){
+		$("#cityname").remove();
+		$(".m_l_title").text('菜品类型');
+	}
 });
 
 function getcurrentuser(){
@@ -254,6 +269,7 @@ function getareastore(n){
     });
 
 }
+//
 function getcategories(n,m,l,q){//lt:20150915
 	var content;
 	var needrefresh = 0;
@@ -594,12 +610,7 @@ function getcartdishinfo(){
 			if(typeof(obj) == 'undefined' ||  obj == null){
 			} else {
 			//alert(obj);
-			var	_html ='';
-			_html +='<div id="'+obj.id+'" type="'+obj.type+'" class="cartli">';
-			_html +='<div class="carttitle">'+obj.name+'</div>';
-			_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+obj.id+'\')" /> ';
-			_html +='<span onclick="delcart(\''+obj.id+'\');">X</span></div></div>';
-			_html +='</div>';
+			var	_html = buildCartinfo(obj);
 			}
 			$('#cartbox').prepend(_html)
 		});
@@ -609,6 +620,21 @@ function getcartdishinfo(){
 	return cartdish;
 }
 
+//构建菜品
+function buildCartinfo(obj){
+	var	_html ='';
+	_html +='<div id="'+obj.id+'" type="'+obj.type+'" class="cartli">';
+	/*_html +='<div class="carttitle">'+obj.name+'</div>';
+	_html +='<div class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+obj.id+'\')" /> ';
+	_html +='<span onclick="delcart(\''+obj.id+'\');">X</span></div></div>';*/
+	
+	_html +='<span class="carttitle">'+obj.name+'</span>';
+	_html +='<span class="cartprice"><div class="left">'+obj.price+'元</div><div class="right num"><img src="images/img_jian.gif" onclick="cartdishd1(\''+obj.id+'\')" /> '+obj.num+' <img src="images/img_jia.gif" onclick="cartdishp1(\''+obj.id+'\')" /> ';
+	_html +='<span onclick="delcart(\''+obj.id+'\');">X</span></div></span>';
+
+	_html +='</div>';
+	return _html
+}
 function addcarthalf(n){
 	if(getuser()){return false;}
 	if(getuserform()){return false;}
@@ -1016,12 +1042,12 @@ function delcartdiyguodi(n){
 	getcartfee();
 }
 function getuser(){
-	var tmp0 = $.cookie("firstorder");
+	/**var tmp0 = $.cookie("firstorder");
 	if(typeof(tmp0) == 'undefined' || tmp0 == 'null' || tmp0 == null || tmp0 == ''){
 		$("body").append('<div id="xuzhi"></div>');
 		$('#xuzhi').load('xuzhi.html');
 		return true;
-	}
+	}*/
 	var tmp = $.cookie("userid");
 	if(typeof(tmp) == 'undefined' || tmp == 'null' || tmp == null || tmp == ''){
 		
@@ -1125,6 +1151,11 @@ function getorderinfo(n,m){
 				_html += '<dl><dt>下单日期：</dt><dd> '+data.createdDt+'</dd></dl>';
 				_html += '<dl><dt>人数：</dt><dd> '+data.participantNumber+'位</dd></dl>';
 				_html += '<dl><dt>外送费用：</dt><dd> '+data.expenses.deliveryFee+'元 </dd></dl>';
+				if("0"!=data.payChannel){
+					_html += '<dl><dt>支付状态：</dt><dd>餐到付款</dd></dl>';
+				}else{
+					_html += '<dl><dt>支付状态：</dt><dd>'+(data.payStatus==1?'支付成功':'支付失败')+'</dd></dl>';
+				}
 				_html += '<dl><dt>合计：</dt><dd> '+data.expenses.totalPrice+'元</dd></dl>';
 				_html += '<div class="clear"></div>';
 				_html += '</div>';
@@ -1164,11 +1195,25 @@ function citylist(){
 		'<div> <ul id="cities"></ul><div class="clear"></div></div>',
 		{
         		'onComplete'		: function() {
-					getcities('#cities');
+					getcities('#cities');					
+					//lt:20150928  弹出居中					
+	                $('#fancybox-wrap').delay(500).queue(function(){$('#fancybox-wrap').css({"top":"313px"});$('this').clearQueue();});
 				}
 		}
 	);
 }
+
+//lt:20150910 增加须知调用函数
+function getxuzhi(){
+	var tmp0 = $.cookie("firstorder");
+	if(typeof(tmp0) == 'undefined' || tmp0 == 'null' || tmp0 == null || tmp0 == ''){
+		$("body").append('<div id="xuzhi"></div>');
+		$('#xuzhi').load('xuzhi.html');
+		return true;
+	}
+}
+
+//用户登录
 function userlogin() {
 	var username = $("input[name='username']");
 	var password = $("input[name='password']");
@@ -1185,27 +1230,30 @@ function userlogin() {
 		data: JSON.stringify(content),//要发送的数据
 		type: "post", //使用post方法访问后台
 		dataType: "json", //返回json格式的数据
-		async: true,
+		//async: true,
 		contentType: "application/json;charset=utf-8", 
-		success: function(msg){//msg为返回的数据，在这里做数据绑定
+		success: function(json){//msg为返回的数据，在这里做数据绑定
 			//alert("login response:"+JSON.stringify(msg));
 			//location.href = "welcome.jsp";
 			//alert("login response:"+JSON.stringify(msg));
 			
-			if(typeof(msg.loginID) != 'undefined'){
-				$.cookie("userid", msg.loginID, { expires: 30 }); 
+			if(typeof(json.respInfo) != 'undefined'){
+				$.cookie("userid", json.user.user_entity_id, { expires: 30 }); 
 				//$('#userinfo').html(' 用户ID：'+ msg.loginID);
-				$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
-				$.getJSON(''+apiurl+'getuserinfo?loginId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
+				//alert(msg.loginID);
+				//$('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
+				//$.getJSON(''+apiurl+'getuserinfo?loginId='+msg.loginID+'&randnum='+Math.random()+'',function(json){
 					//alert(json.content);JSON.stringify(json)
 					$.cookie("username", json.user.nickname, { expires: 30 });
 					$.cookie("hi_username", hi_username, { expires: 30 });
 					$.cookie("hi_password", hi_password, { expires: 30 });
+					getxuzhi();//lt:20151001 登陆后增加须知
 					//$('#userinfo').html('用户名：'+json.user.nickname+' 用户ID：'+ msg.loginID);
 				    $('#userinfo').load('userinfo.html?&randnum='+Math.random()+'');
-					
+				    //alert(json.user.nickname);
+					//window.location.reload();
 					//setTimeout("loadMainok()",1000);
-				});
+				//});
 			} else {
 				//$('#userinfo').html('登录失败！');
 				noticeinfo('登录失败！');
@@ -1685,7 +1733,13 @@ var CookUtils = {
 	getUserform:function(){
 		var ufs = $.cookie("userformjson");
 		
-		return  eval('(' + ufs==null?"{}":ufs + ')');
+		//return  eval('(' + ufs==null?"{}":ufs + ')');
+		if(ufs == null || ufs == 'null' || ufs == '' || typeof(ufs) == 'undefined'){
+			ufs = {};
+		}
+		//alert('(' + ufs==null?"{}":ufs + ')');
+		//alert('(' + (ufs==null)?"{}":ufs + ')')
+		return eval('(' + ufs + ')'); 
 	},
 	//统一校验用户session
 	checkUser:function(){
@@ -1696,6 +1750,21 @@ var CookUtils = {
 			return true;
 		}
 		return false;
+	},
+	getUserInfo:function(){
+		var ui = $.cookie("user_info");
+		return  eval('(' + ui==null?"{}":ui + ')');
+	},
+	//用户ID
+	getLoginId:function(){
+		return 	$.cookie("userid");
+	},
+	//外送费
+	getDeliveryFee:function(){
+		return 	$.cookie("deliveryFee");
+	},
+	addCookie:function(key,value){
+		 $.cookie(key,value, { expires: 30 });
 	}
 }
 //计算金额
@@ -1707,11 +1776,13 @@ var TotleUtils  = {
 			//外送费  公里数乘基数
 			
 			var uf = CookUtils.getTakeOutType();
-			var ot = 9;
+			var ot =  CookUtils.getDeliveryFee();
 			//0是外卖  
 			if(uf=='0'){
 				//锅底数量大于等于3,
 				var count1 = getGuodiCount();
+				ot =  parseFloat(ot).toFixed(0);
+				ot = parseInt(ot);
 				if(count1>=3){
 					ot *= count1;
 				}
@@ -1732,7 +1803,6 @@ var TotleUtils  = {
 			$("#ousidetotle").text(ot);
 			//服务费
 			var st = parseFloat(ct*off).toFixed(0);
-//			var st = parseFloat($("#servicetotle").text());
 			st = parseInt(st);
 			$("#servicetotle").text(st);
 			//总计
@@ -1740,7 +1810,12 @@ var TotleUtils  = {
 			//$("#carttotle").text(ct*0.1);
 		}	
 }
-
+$.extend({   
+		//判断是空
+	  	isEmpty:function(obj){
+	  		return obj == null || obj == 'null' || obj == '' || typeof(obj) == 'undefined';
+	  	}   
+	});
 //构建套餐菜蓝
 function buildSetmealBasket(cp){
 	var id = cp.id +"_"+cp.index;

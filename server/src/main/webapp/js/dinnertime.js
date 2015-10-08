@@ -1,5 +1,5 @@
 // JavaScript Document
-alert(timeLimit.uphour);
+//alert(timeLimit.uphour);
 var lastNumberInt = null;
 var oHour="";
 var oMin="";
