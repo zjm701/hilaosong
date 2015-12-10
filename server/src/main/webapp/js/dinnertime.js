@@ -333,6 +333,16 @@ function dateBoxChange(){
 	$("#selHour").val("");
 	$("#selMin").val("");
 }
+// 在首日最早时间 之前
+function firstDayLowHour(){
+	var fir = timeLimit.firstDayLowHour.replace(":",".");
+	fir = fir.substring(0,fir.lastIndexOf(":"));
+	fir = parseFloat(fir);
+	var sta = timeLimit.lowhour.replace(":",".");
+	sta = sta.substring(0,sta.lastIndexOf(":"));
+	sta = parseFloat(sta);
+	return fir>sta;
+}
 function showDate(date){
 	var oTrueTime=date;
 	oLastSelTime=date;
@@ -350,9 +360,11 @@ function showDate(date){
 	var a = timeLimit;
 	iHour = iHour<10?"0"+iHour:iHour;
 	iMinute = iMinute<10?"0"+iMinute:iMinute;
-	kai=timeLimit.lowhour;
+	kai=timeLimit.lowhour;	
+	var time = new Date(kai);
+    
 	if(oLastSelTime == currentYear.replace(/\-/g,"")){
-		var oNowtime=iHour+""+iMinute;
+		var oNowtime=iHour+""+iMinute;					//当前时间
 		var oLowtime=timeLimit.lowhour.replace(":","");
 		if(parseInt(oNowtime)>parseInt(oLowtime)){
 			if(iHour<10){
@@ -362,20 +374,51 @@ function showDate(date){
 				iMinute="0"+iMinute;
 			}
 			if(parseInt(kai.replace(":",""))<=parseInt(oNowtime)){
-				kai = oNowtime.substring(0,2)+":"+oNowtime.substring(2,4);
+				var distance = $.cookie('distance');
+
+				var uf = CookUtils.getTakeOutType();
+				var ho = oNowtime.substring(0,2);		//时
+				var mi = oNowtime.substring(2,4);		//分
+				//外卖
+				if(uf=='0'){
+					if(distance!=null && distance!=''){
+						distance = parseInt(distance);
+
+						//delay.distances=5,10
+						//delay.mins=60,90,120
+						ho = parseInt(ho);
+						ho = distance<10?ho+1:ho+2;
+						mi = parseInt(mi);
+						if(distance<10&&distance>5){
+							if(mi<30){
+								mi = mi+30
+							}else{
+								mi = mi-30;
+								ho = ho+1;
+							}
+						}
+					}
+				}else{
+					ho+=1;
+				}
+				kai = ho+":"+mi;
 			}else{
 				kai=iHour+":"+iMinute;
 			}
 			
 		}
 	}
+	//当前时间，在首日最早时间 之前
+	if(date==currentYear &&  firstDayLowHour()){
+		//kai = timeLimit.firstDayLowHour.substring(0,timeLimit.firstDayLowHour.lastIndexOf(":"));
+	}
 	$("#selMin").empty();
 	$("#selHour").empty();
-	selHour=oTrueTime;	
+	//selHour=oTrueTime;	
 	//timeArr = abc(a.busytimelist,selHour,kai,timeLimit.uphour);
 	$("#selHour").append("<option value=''>小时</option>");
 	$("#selMin").append("<option value=''>分钟</option>");
-	createTimes(a.busytimelist,selHour,kai,timeLimit.uphour);
+	createTimes(a.busytimelist,oTrueTime,kai,timeLimit.uphour);
 //		for(var i=0 ; i<timeArr.length; i++){
 //			var key = timeArr[i].key.length==1?"0"+timeArr[i].key:timeArr[i].key;
 //			$("#selHour").append("<option value='"+key+"'>"+key+"</option>");

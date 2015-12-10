@@ -18,8 +18,8 @@ function caluteIFrameHeight()
 	//{
 //		var h = h+tempoff;
 		var h = tempH;
-		$("body").append('<iframe id="showIFrameHeight" style="display:none;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="'+serverAndPort+'/pages/haidl/order_agent.jsp?t='+ new Date().getTime()+'#height=' + h + '" ></iframe>');
-		
+		//$("body").append('<iframe id="showIFrameHeight" style="display:none;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="'+serverAndPort+'/pages/haidl/order_agent.jsp?t='+ new Date().getTime()+'#height=' + h + '" ></iframe>');
+		$(window.parent.document).find("#iframeLaosong").height(h+'px');
 	//}
 }
 caluteIFrameHeight();

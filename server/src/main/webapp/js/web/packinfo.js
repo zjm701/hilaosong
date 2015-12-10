@@ -468,6 +468,8 @@ function packguodi(n) {
 						'onComplete' : function() {
 							$('#guodilist').html(Packinfo.buildGoudiList(Packinfo.data));
 							Packinfo.isCloseGoudi=true;
+							 $('#fancybox-wrap').delay(500).queue(function(){$('#fancybox-wrap').css({"top":"113px"});$('this').clearQueue();});
+
 						},
 						'onClosed' : function() {
 							//通过关闭按钮关闭的
@@ -494,6 +496,7 @@ function packxiaoliao(n) {
 						'onComplete' : function() {
 							$('#xiaoliaolist').html(Packinfo.buildXiaoliaoList(Packinfo.data));
 							Packinfo.isCloseXiaoliao = true;
+							  $('#fancybox-wrap').delay(500).queue(function(){$('#fancybox-wrap').css({"top":"113px"});$('this').clearQueue();});
 
 						},
 						'onClosed' : function() {

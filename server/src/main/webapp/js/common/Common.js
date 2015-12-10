@@ -140,12 +140,12 @@ function goLocation(locStr) {
 }
 
 var goonUrl = "";
-function goLocationWithCity22(locStr) {
+function goLocationWithCity1(locStr) {
 //	this.location.href = locStr;
 	var tprm="pid99="+$(".order_active").val();
     __ozfac2(tprm,"#getstore");
 	var url = serverAndPort+sns_url;
-	var gotoaction = (locStr.indexOf("?")>0)?(rootUrl+locStr+"&newweb=1"):(rootUrl+locStr+"?newweb=1");
+	var gotoaction = (locStr.indexOf("?")>0)?(rootUrl+locStr+"&newweb=1&type=4"):(rootUrl+locStr+"?newweb=1&type=4");
 	gotoaction = encodeURI(gotoaction);
 	var base64Encode = encode64(gotoaction);
 	goonUrl = url+base64Encode;
