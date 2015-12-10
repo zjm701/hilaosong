@@ -27,6 +27,19 @@ public class SystemSetting {
 
 	private static String FILENAME = "system.properties";
 	
+	/**
+	 * sms 短信服务URL
+	 */
+	private static String SMS_SERVICE_URL = "sms.service.url";
+	/**
+	 * 下订单通知顾客短信内容
+	 */
+	private static String PLACE_ORDER_SMS_CONTENT = "place.order.sms.content";
+	/**
+	 * 获取手机验证码短信内容
+	 */
+	private static String PLACE_ORDER_SMS_PHONECODE = "place.order.sms.phoneCode";
+	
 	private static Properties prop = null;
 
 	private SystemSetting() {
@@ -83,5 +96,29 @@ public class SystemSetting {
 
 	public static String getSetting(String key) {
 		return getProperties().getProperty(key);
+	}
+	
+	/**
+	 * 获得短信服务地址
+	 * @return
+	 */
+	public static String getSmsServiceURL(){
+		return getProperties().getProperty(SMS_SERVICE_URL);
+	}
+	
+	/**
+	 * 下订单通知顾客短信内容
+	 * @return
+	 */
+	public static String getPlaceOrderSuccuesSmsContent(){
+		return getProperties().getProperty(PLACE_ORDER_SMS_CONTENT);
+	}
+	
+	/**
+	 * 获取手机验证码短信内容
+	 * @return
+	 */
+	public static String getPlaceOrderPhoneCodeSmsContent(){
+		return getProperties().getProperty(PLACE_ORDER_SMS_PHONECODE);
 	}
 }

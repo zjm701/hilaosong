@@ -108,7 +108,7 @@ public class UnionPayProvider extends UnionPayBase {
 		// 业务类型
 		data.put("bizType", "000000");
 		// 渠道类型，07-PC，08-手机
-		data.put("channelType", "08");
+		data.put("channelType", "07");
 		// 接入类型，商户接入填0 0- 商户 ， 1： 收单， 2：平台商户
 		data.put("accessType", "0");
 		// 商户号码，请改成自己的商户号

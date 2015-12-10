@@ -19,6 +19,33 @@ public enum MessageCode {
 	 */
 	ERROR_NO_DATA("002", "\u672a\u53d6\u5230\u6570\u636e"),
 
+	/**
+	 * 保存成功
+	 */
+	SAVE_SUCCESS("004","\u4fdd\u5b58\u6210\u529f"),
+
+	/**
+	 * 保存失败
+	 */
+	SAVE_FAILED("005","\u4fdd\u5b58\u5931\u8d25"),
+	/**
+	 * 删除成功
+	 */
+	DELETE_SUCCESS("005","\u5220\u9664\u6210\u529f"),
+
+	/**
+	 * 删除失败
+	 */
+	DELETE_FAILED("006","\u5220\u9664\u5931\u8d25"),
+	/**
+	 * 成功
+	 */
+	SUCCESS("011","\u6210\u529f"),
+
+	/**
+	 * 失败
+	 */
+	FAILED("012","\u5931\u8d25"),
 	/*
 	 * 100~199: 用户系统 (100~109: Error 110~119: Success 120~199: Verification)
 	 */
@@ -35,7 +62,6 @@ public enum MessageCode {
 	 * 退出成功
 	 */
 	LOGING_OUT("102", "\u9000\u51fa\u6210\u529f"),
-
 
 	/**
 	 * 用户名不能为空

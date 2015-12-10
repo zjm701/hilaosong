@@ -1,6 +1,8 @@
 package com.hi.common;
 
 public interface HIConstants {
+	static final String LOGIN_OUT_ID = "0";		//表示用户已经退出的ID
+	
 	static final String LOGIN_ID = "loginId";
 	
 	static final String CUSTOMER_KEY = "customerKey";

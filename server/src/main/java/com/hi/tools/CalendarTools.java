@@ -161,6 +161,7 @@ public class CalendarTools {
 		return null;
 	}
 
+	//时间校验
 	public static boolean isValidDinningTime(Date dinningTime, DeliveryLimit limit) {
 		if (dinningTime == null) {
 			return false;
@@ -187,7 +188,8 @@ public class CalendarTools {
 				tmp.setTime(dinningTime);
 				//first day
 				if (startDay == 0 && DateUtils.isSameDay(dinningTime, now)) { 
-					if (StringTools.isNotEmpty(limit.getFirstDayStartTime())) {
+					//getFirstDayStartTime 没有后台配置
+					/*if (StringTools.isNotEmpty(limit.getFirstDayStartTime())) {
 						String[] firstDayStartTimeStrs = limit.getFirstDayStartTime().split(":");
 						tmp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(firstDayStartTimeStrs[0]));
 						tmp.set(Calendar.MINUTE, Integer.parseInt(firstDayStartTimeStrs[1]));
@@ -195,7 +197,7 @@ public class CalendarTools {
 						if (dinningTime.before(tmp.getTime())) { // 在首日最早时间 之前
 							return false;
 						}
-					}
+					}*/
 				} else {
 					if (StringTools.isNotEmpty(limit.getStartTime())) {
 						String[] startTimeStrs = limit.getStartTime().split(":");

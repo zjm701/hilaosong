@@ -185,19 +185,22 @@ public class DishDaoImpl extends AbstractDao implements DishDao {
 
 		return this.countBySql(sql, params);
 	}
-	
+	/**
+	 * 套餐
+	 */
 	public List<Pack> getPacks(String storeId, String categoryId, int pageIndex) {
 		System.out.println("==> storeId:" + storeId + ", categoryId:" + categoryId);
 		String sql = "select d.dishId as \"packId\", d.dishId as \"dishId\", d.storeDishId as \"storeDishId\", d.storeDishName as \"storeDishName\", "
 				+ "  d.unitPrice as \"unitPrice\", i.imgurl as \"bigImageAddr\", d.type as \"type\" "
 				+ " from T_CATER_DISH d "
 				+ " inner join T_CATER_DISHTYPE dt on d.dishCategory = dt.dishTypeID "
+				+ " inner join T_CATER_DISHTYPE dt on d.dishCategory = dt.dishTypeID "
 				+ "	left join T_CATER_IMAGE i on d.dishId = i.dishId "
-				+ " where d.type = '2' and d.packType = '1' " + sql2 + " order by d.dishSort asc, d.dishId asc";
+				+ " where d.type = '2' and d.packType = '1' and storeId = :storeId  and isStopped = '1' order by d.dishSort asc, d.dishId asc";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeId", storeId);
-		params.put("categoryId", categoryId);
+		//params.put("categoryId", categoryId);
 
 		Pagination pagn = new Pagination();
 		pagn.setPageIndex(pageIndex);

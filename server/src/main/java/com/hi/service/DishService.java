@@ -30,8 +30,18 @@ public interface DishService {
 
 	String createDiyGuodi(DiyGuodi guodi);
 
+	/**
+	 * 更新用户的DIY锅底
+	 * @param guodi
+	 * @return
+	 */
 	String updateDiyGuodi(DiyGuodi guodi);
 
+	/**
+	 * 删除DIY锅底
+	 * @param id
+	 * @return
+	 */
 	boolean deleteDiyGuodi(long id);
 
 	//diy锅底查询

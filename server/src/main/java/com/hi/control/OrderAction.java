@@ -33,6 +33,7 @@ import com.hi.service.CityService;
 import com.hi.service.OrderService;
 import com.hi.service.RecieptDeptService;
 import com.hi.service.StoreService;
+import com.hi.thread.PlaceOrderSuccuesSmsThread;
 import com.hi.tools.CalendarTools;
 import com.hi.tools.CityTools;
 import com.hi.tools.StringTools;
@@ -214,6 +215,8 @@ public class OrderAction extends BaseAction {
 				if("0".equals(order.getPayChannel())){
 					
 				}
+				//下发短信通知顾客
+				new Thread(new PlaceOrderSuccuesSmsThread(order)).start();
 				return getJsonString(m);
 			} else {
 				return getJsonString(MessageCode.ERROR_CREATE_ORDER);

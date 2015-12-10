@@ -1,0 +1,36 @@
+{
+  "respInfo":{
+    "msgName":"getUserInfoResp",
+    "resp_time":"2015-10-30 17:01:36",
+    "result_code":"300",
+    "result_desc":"success"
+  },
+  "user":{
+    "user_entity_id":22646,
+    "hits":"",
+    "realname":"测试",
+    "nickname":"测试测试",
+    "sex":0,
+    "fullspell":"cs",
+    "shortspell":"CE SHI ",
+    "mobile":"18801135596",
+    "email":"123456@qq.com",
+    "usertype":0,
+    "brithday":"1915-12-31",
+    "intro":"",
+    "area_code":0,
+    "location":"广东省-潮州市-潮安县",
+    "createtime":"2015-04-13 14:38:38",
+    "letter":"C",
+    "follow_num":0,
+    "followed_num":0,
+    "report_num":0,
+    "fav_num":0,
+    "at_num":0,
+    "receivemsg":1,
+    "address":"啊啊啊吧",
+    "postCode":"558888",
+    "hi_laobi":0,
+    "isFriend":0
+  }
+}

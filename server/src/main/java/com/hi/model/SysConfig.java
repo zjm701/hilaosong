@@ -3,6 +3,8 @@ package com.hi.model;
 import java.math.BigDecimal;
 import java.sql.Clob;
 
+import com.hi.tools.StringTools;
+
 /**
  * [简要描述]:系统参数
  * 
@@ -50,6 +52,23 @@ public class SysConfig {
 	 * 参数是否启用（默认0：未启用，1:启用).
 	 */
 	private String status;
+	
+
+	/**
+	 * 转换成时间
+	 */
+	private String startValueS;
+
+	
+	public String getStartValueS() {
+		return startValueS;
+	}
+
+
+	public void setStartValueS(String startValueS) {
+		this.startValueS = StringTools.clobToString(getStartValue());
+	}
+
 
 	public BigDecimal getId() {
 		return id;

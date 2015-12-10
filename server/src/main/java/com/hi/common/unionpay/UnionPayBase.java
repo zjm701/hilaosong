@@ -61,7 +61,7 @@ public class UnionPayBase {
 		StringBuffer sf = new StringBuffer();
 		sf.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head><body>");
 		sf.append("<form id = \"pay_form\" action=\"" + action
-				+ "\" method=\"post\">");
+				+ "\" method=\"post\" target=\"_parent\">");
 		if (null != hiddens && 0 != hiddens.size()) {
 			Set<Entry<String, String>> set = hiddens.entrySet();
 			Iterator<Entry<String, String>> it = set.iterator();
