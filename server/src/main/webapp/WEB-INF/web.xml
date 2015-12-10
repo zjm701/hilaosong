@@ -40,6 +40,13 @@
         <param-value>/WEB-INF/deploy-context.xml</param-value>
     </context-param>
 
+	 <!-- 初始化银联配置到内存 -->
+    <servlet>
+  		<servlet-name>InitServlet</servlet-name>
+  		<servlet-class>com.hi.common.unionpay.InitUnionPayConfigServlet</servlet-class>
+  		<load-on-startup>0</load-on-startup>
+  	</servlet>
+
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
@@ -49,7 +56,7 @@
     <listener>  
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>  
 	</listener>
-
+	
     <servlet>
         <servlet-name>CXFServlet</servlet-name>
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
@@ -71,7 +78,7 @@
         <servlet-name>springMVC</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
+    
 	<session-config>
 		<session-timeout>1200</session-timeout>
 	</session-config>  

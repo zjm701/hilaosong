@@ -1,0 +1,30 @@
+{
+  "respInfo":{
+    "msgName":"getUserInfoResp",
+    "resp_time":"2015-10-30 18:02:41",
+    "result_code":"300",
+    "result_desc":"success"
+  },
+  "user":{
+    "user_entity_id":21517111111,
+    "hits":"0",
+    "nickname":"测试号11111",
+    "sex":0,
+    "mobile":"13161695955",
+    "usertype":0,
+    "intro":"",
+    "area_code":0,
+    "createtime":"2014-05-13 15:17:09",
+    "follow_num":4,
+    "followed_num":0,
+    "report_num":2,
+    "fav_num":0,
+    "at_num":0,
+    "receivemsg":0,
+    "address":"null",
+    "postCode":"null",
+    "hi_laobi":0,
+    "isFriend":0,
+    "taste":""
+  }
+}

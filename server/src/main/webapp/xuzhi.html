@@ -1,34 +1,19 @@
 <!-- //lt:20151001 修改须知为全屏遮罩效果-->
 <style>
-.box_xz_out{ position:fixed; left:0; top:0; width:100%; height:100%;}
+.box_xz_out{ position:fixed; left:0; top:0; width:100%; height:100%;z-index: 700}
 .box_xz_out_bg{ width:100%; height:100%; background:#666666; opacity:0.7;}
 </style>
 <div class="box_xz_out">
 <div class="box_xz_out_bg"></div>
 <div class="box_xz">
-                   <div class="box_xzin">
+			<div class="box_xzin">
                 <h1>外卖须知</h1>
-                <div class="box">
-                  <p>1、Hi捞送收费标准：起送标准+外送费+服务费。<br>
-                  </p>
-                  <p>起送标准——北京258元；上海/深圳/广州268元；西安/苏州/天津/南京/杭州/无锡/合肥/武汉/厦门/青岛/郑州等其余城市238元。(此标准为单个锅底标准，多个锅底起送标准需乘以锅底数量)</p>
-                  <p>外送费——北京/上海/深圳/广州每公里15元；其余城市每公里12元。</p>
-                  <p>服务费——菜品费用*10%。</p>
-                  <p>2、HI捞送送餐时间：</p>
-                  <p>0-5  公里——60分钟</p>
-                  <p>6-10 公里——90分钟</p>
-                  <p>11-20公里——120分钟<br>
-                  </p>
-                  <p>由于外送配送门店有限，建议您周一至周四至少提前2小时以上预订，周五六日及法定假日至少提前3小时以上预订！订单的最终送达时间，以客服人员回复的电话或短信为准！总金额超过2000元需提前收取三分之一的费用作为订金！</p>
-                  <p>3、北京、上海支持刷卡结算，其他城市仅限现金结算。</p>
-                  <p>4、由于餐厅炉具使用套数有限，如您需要，建议您提前预订，炉具用完为止。</p>
-                  <p>5、专人服务200元/名，限时服务4小时，超过4小时按照每小时66元加收，由于服务员有限，如您需要，建议提前3天以上预订。能否提供专人服务以客服人员回复的电话或短信为准！</p>
-                  <p> 6、Hi捞送1-2个锅底收取一次外送费（包括两个），超过两个锅底，即3个锅底及以上，按照每个锅底收一次外送费。</p>
-                  <p> 7、由于网站外送费计算可能存在误差，请以客服人员电话或短信告知的外送费金额为准！</p>
-        <div class="cb"></div>
-        <p class="xzr"><input type="checkbox" onClick="return false;" checked>我已了解以上外卖须知</p>
-                  <p class="xzr"><a class="btn btn-danger" onClick="$.cookie('firstorder','1', { expires: 30 });$('#xuzhi').remove();getuser();">确定点餐</a></p><!--//此处增加跳转至订餐信息填写页面lt:20150920 -->
-                </div>
+                <div class="box" >
+	                <div id="box_xzin"></div>
+	        		<div class="cb"></div>
+        		 </div>
+        		<p class="xzr"><input type="checkbox" onClick="return false;" checked>我已了解以上外卖须知</p>
+                <p class="xzr"><a class="btn btn-danger" onClick="$.cookie('firstorder','1', { expires: 30 });$('#xuzhi').remove();getuser();">立即点餐</a></p><!--//此处增加跳转至订餐信息填写页面lt:20150920 -->
             </div>
         <div class="cb"></div>
     </div>

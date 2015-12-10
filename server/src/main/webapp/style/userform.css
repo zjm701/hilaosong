@@ -1,0 +1,19 @@
+.wm_list dl dd .d_input .user_info{
+	width: 425px
+}
+.wm_list dl dd .d_input .phone_validate_bu{
+	width: 130px;
+	background: #F3F0F0;
+	padding-left:0px;
+	margin-left: 22px;
+}
+#phoneValidate{
+	width: 255px
+}
+#deliveryFee{width: 20px; height:26px; border:0;}
+.delivery_fee{
+	color: red;
+}
+#feiyong dt{ line-height:32px;}
+#feiyong .m_t_10{ float:left; display:block;line-height:32px; margin-top:0;}
+#newstorelist{ width:860px;}

@@ -34,6 +34,7 @@
             <ref bean="dishAction" />
             <ref bean="couponAction" />
             <ref bean="payAction" />
+            <ref bean="sysConfigAction" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
 
@@ -46,6 +47,7 @@
     <bean id="dishAction" class="com.hi.control.DishAction" />
     <bean id="couponAction" class="com.hi.control.CouponAction" />
     <bean id="payAction" class="com.hi.control.PayAction" />
+    <bean id="sysConfigAction" class="com.hi.control.SysConfigAction" />
 
     <context:property-placeholder location="classpath*:/appConfig.properties" />
     
@@ -77,7 +79,8 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager"/>
-
+	
+	
 	<context:component-scan base-package="com.hi"/>
 	
 	<context:annotation-config />

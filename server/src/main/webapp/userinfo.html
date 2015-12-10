@@ -6,7 +6,7 @@ var putconfig = 258;
 
 $(document).ready(function(e) {
 	//lt:20151001 购物篮显示
-	$(window).scroll(function(){
+	/* $(window).scroll(function(){
 		if ($(window).scrollTop()>204 && $('html').height() > 1001){
 			$("#cartinfo").addClass('nfix');
 		}
@@ -14,8 +14,33 @@ $(document).ready(function(e) {
 		{
 			$("#cartinfo").removeClass('nfix');
 		}
-	});
+		
+	}); */
 	//end
+	
+	//自备锅底事件
+	addOnselfListenter('001');
+	addOnselfListenter('007');
+	//自备锅底刷新显示
+	var oc = $.cookie("onselfClick001");
+	if(oc=="true"){
+		_onself["001"].isSelect = true;
+		try{
+			$("#t_001").attr("checked","checked");	
+		}catch(e){
+			
+		}
+	}
+	oc = $.cookie("onselfClick007");
+	if(oc=="true"){
+		_onself["007"].isSelect = true;
+		try{
+			$("#t_007").attr("checked","checked");	
+		}catch(e){
+			
+		}
+	}
+	//end....
 	
 	userid = $.cookie("userid");
 
@@ -61,6 +86,7 @@ $(document).ready(function(e) {
 
 
 
+	//alert(username);
 
 	if(username == 'undefined' || username == 'null' || username == null){
 
@@ -86,14 +112,15 @@ $(document).ready(function(e) {
 	}
 
 
-
-	getcartdishinfo();
-
+	//getcartdishinfo();
 
 
-	getcartpackinfo();
+
+	//getcartpackinfo();
 
 
+
+	//getcartdiyguodiinfo();
 
 	getcartdiyguodiinfo();
 
@@ -115,7 +142,7 @@ $(document).ready(function(e) {
 
 
 
-
+/* 
 	$.ajax({
 
 		url: apiurl+'getdeliverylimitmoney?storeId='+storeid+'',
@@ -141,6 +168,7 @@ $(document).ready(function(e) {
 		}
 
 	});
+ */
 
 
 //alert(1)
@@ -278,10 +306,10 @@ function checkcarttotl(){
 function checkOnself(n){
 	var ose = _onself[n];
 	var isSelect = $.cookie("onselfClick"+n)=='true';
-	var cou = getCountByType(n);
-	if(n=='001'){
+	var cou = getCountByType(n)+getCountByType("012");;
+	/* if(n=='001'){
 		cou = getGuodiCount();
-	}
+	} */
 //	alert(isSelect+"  cou:"+cou
 //	没有选择自备锅底并没有选择锅底
 	if(cou==0 && !isSelect){
@@ -470,11 +498,11 @@ function addUserInfoListenter() {
 
 //检查自备炉具
 function checkUncheck(){
-	if($("#guojuC").attr("checked") != 'checked' && $("input[name='potNumber']").text() == 0 ){
+	if($("#guojuC").attr("checked") != 'checked' && $("#potNumber").text() == 0 ){
 		alert('如果不选炉具，请选择自备炉具');
 		return true;
 	}
-	if($("#lujuC").attr("checked") != 'checked'  && $("input[name='panNumber']").text() == 0){
+	if($("#lujuC").attr("checked") != 'checked'  && $("#panNumber").text() == 0){
 
 		alert('如果不选锅具，请选择自备锅具');
 		return true;
@@ -501,7 +529,7 @@ function checkUncheck(){
   /*overflow-x:scroll; overflow-y:auto;*/
   }
 .cart em{ font-style:normal;}
-.wi50{ width:45%;padding-left: 5%;}
+.wi50{ width:45%;}
 em.dis{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px; }
 em.num{ border:1px solid #CCCCCC; border-left:0; border-right:0; padding:3px; font-size:10px;}
 em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
@@ -510,15 +538,15 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 /*end*/
 /*//lt:20151001 购物篮菜品修改为同一行*/
 .cartli{ height:30px;}
-.carttitle{ float:left; width:60%; text-overflow:ellipsis; white-space:nowrap}
-.cartprice{ float:left; width:40%;}
+.carttitle{ float:left; width:50%; text-overflow:ellipsis; white-space:nowrap}
+.cartprice{ float:left; width:49%;}
 /*end*/
 </style>
 
 <div class="menu">
 
 
-
+<!-- 
 <div id="userlogin">
 
 
@@ -591,13 +619,14 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 
 </div>
 
-
+ -->
 
 <div id="usernow">
 
 
 
-欢迎您：<span id="username"></span>
+<span id="username"></span>您好！
+<div class="user_welcome">Hi捞送欢迎您！</div>
 
 
 
@@ -605,7 +634,7 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 
 
 
-<a class="user_info_change" href="javascript:;" onClick="if(confirm('填写或者修改订餐信息？')){goLocationWithCity('userform.html'); }">订餐信息</a>
+<a class="user_info_change btn btn-danger blcok" href="javascript:;" onClick="if(confirm('填写或者修改订餐信息？')){goLocationWithCity('userform.html'); }">订餐信息</a>
 
 
 
@@ -613,11 +642,11 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 
 
 
-<a href="historyorder.html" class="btn btn-danger blcok">历史订单</a>
+<a href="historyorder.html" class="btn btn-danger blcok">历史订单1</a>
 
 
 
-<div class="blank5"></div>
+<!-- <div class="blank5"></div>
 
 <div id="diyguodibtn">
 
@@ -625,12 +654,12 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 
 
 
-<div class="blank5"></div>
+<div class="blank5"></div> -->
 </div>
 
 
 
-<span class="btn btn-danger" onClick="logout();">退出</span>
+<!-- <span class="btn btn-danger" onClick="logout();">退出</span> -->
 
 
 
@@ -652,7 +681,10 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 
 <div class="title">购物篮</div>
 
-
+<div class="shop_title">
+    <span class="dishes_name">名&nbsp;称</span>
+    <span class="dishes_price">价&nbsp;格</span>
+    <span class="dishes_num">数&nbsp;量</span></div>
 
 <div class="car_gw">
 
@@ -710,7 +742,20 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 
 <div class="clear"></div>
 
+<span class="sp_hx"></span>
+<span class="sp_count" id="spCount1">套餐数：0</span>
+<span class="sp_count" id="spCount2">锅底数：0</span><br>
+<span class="sp_count" id="spCount3">小料数：0</span>
+<span class="sp_count" id="spCount4">菜品数：0</span><br>
+<!-- <span class="sp_count">赠品数：<span id="spCount5">0</span></span> -->
+<div class="blank5"></div>
 
+<span class="sp_hx"></span>
+<div class="cart">
+<div class="left wi50" id="cartluz">自备锅底 <input class="oneself_check" id="t_001" name="" type="checkbox"></div>
+<div class="right wi50" id="cartguz">自备小料 <input class="oneself_check" id="t_007" name="" type="checkbox"></div>
+</div>
+<div class="blank5"></div>
 
 <span class="sp_hx"></span>
 <div class="cart">
@@ -731,7 +776,12 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 <div class="blank5"></div>
 <div class="cart" id="servicetotleDiv" ><div class="left">服务费</div><div id="servicetotle" class="right">0</div></div>
 <div class="blank5"></div>
-<div class="cart" ><div class="left">合计</div><div id="alltotle" class="right">0</div></div>
+<!-- <div class="cart"><span class="youhui">优惠</span><input id="youhui_code" value="" placeholder="请输入优惠券码…" type="text"><input id="youhui_conf" value="提交" type="button"></div>
+<div class="blank5"></div>
+<div class="cart"><span class="youhui_name">大白菜</span><span class="youhui_code_1">I565U6K078</span></div> 
+<div class="blank5"></div>-->
+<div class="cart" ><div class="left" style="font-weight:600">合计</div>
+<div id="alltotle" class="right"  style="color: red;font-weight: 600;">0</div></div>
 
 
 
@@ -739,7 +789,7 @@ em.plu{ border:1px solid #CCCCCC; padding:3px; cursor:pointer; font-size:10px;}
 
 
 
-<a href="#" onClick="checkcarttotl();"><span class=" btn btn-danger block"  >进入结算 <i class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></i></span></a>
+<div onClick="checkcarttotl();"><span class=" btn btn-danger block"  ><i class="glyphicon glyphicon-chevron-right right" aria-hidden="true"></i>进入结算 </span></div>
 
 
 

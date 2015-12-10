@@ -84,6 +84,8 @@
 
 <script src="js/config.js"></script>
 
+<script src="js/web/dish.js"></script>
+
 
 
 <style>
@@ -99,70 +101,6 @@
 
 
 <script>
-
-
-
-nowpage ='dish';
-
-
-
-catid = $.cookie("catid");
-catname = $.cookie("catname");
-
-
-
-$(document).ready(function(e) {
-
-
-
-    getcategories(cityid,'#catul',cityname);
-
-
-
-	if(typeof(catid) == 'undefined' || catid == 'null'){
-
-
-
-		window.history.go(-1);
-
-
-
-	}
-
-
-
-	getdishes(catid,'#dishul','1',storeid,catname);
-
-
-
-	//$(n).parent().find('li').removeClass('li_hover');
-
-
-
-	//
-
-
-
-	
-
-
-
-});
-
-
-
-PageClick = function(pageclickednumber) {
-
-
-
-	getdishes(catid,'#dishul',pageclickednumber,storeid,catname);
-
-
-
-}
-
-
-
 
 
 
@@ -395,7 +333,7 @@ PageClick = function(pageclickednumber) {
 
 
 
-电话订餐时间：08:00-23：00
+订餐时间：08:00-23:00
 
 
 
@@ -408,7 +346,6 @@ PageClick = function(pageclickednumber) {
 
 
 <div class="mid_mid left">
-
 
 
 <ul id="dishul">
@@ -439,7 +376,7 @@ PageClick = function(pageclickednumber) {
 
 
 
-<div class="title">个人信息</div>
+<div class="title" id="userinfoTitle">个人信息</div>
 
 
 
@@ -463,6 +400,7 @@ PageClick = function(pageclickednumber) {
 
 
 
+<div class="m_d_title" id="tishiTitle">温馨提示</div>
 <div class="tishi"><span class="f_red ">提示</span></div>
 
 

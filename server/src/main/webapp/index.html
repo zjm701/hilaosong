@@ -152,6 +152,8 @@
 
 <script src="js/common.js"></script>
 
+<script src="js/web/index.js"></script>
+
 
 
 
@@ -160,45 +162,6 @@
 
 <script src="js/config.js"></script>
 <script src="js/jquery.slides.min.js"></script>
-
-
-
-
-
-
-
-<script>
-$.cookie('firstorder','null');
-    $(function() {
-      $('#slides').slidesjs({
-         width: 558,
-        height: 356,
-		navigation: {
-          effect: "fade"
-        },
-        pagination: {
-          effect: "fade"
-        },
-		effect: {
-          slide: {
-        // Slide effect settings.
-			speed: 1000
-			  // [number] Speed in milliseconds of the slide animation.
-		  },
-		  fade: {
-            speed: 700
-          }
-        },
-        play: {
-          active: true,
-          auto: true,
-          interval: 4000,
-          swap: true,
-		  effect: "fade"
-        }
-      });
-    });
-  </script>
 
  <style>
  #slides{ width:558px; height:356px; text-align:center; position:relative; overflow:hidden;}
@@ -231,39 +194,29 @@ background:none; border:1px solid #FFFFFF;}
 
 
 
-
-
-
-
 nowpage = 'index';
-
-
-
-
-
-
-
-$(document).ready(function(e) {
-
-
-
-
-
-
-
-    
-
-	getcategories(cityid,'#catul',cityname);
-
-
-
-
-
-
-
-});
-
-
+/* 
+var url=window.location.search;
+if(url.indexOf("?")!=-1)   
+{   
+	var str   =   url.substr(1);
+	var ac   =  '';// window.location.href.split("/");
+	///ac = ac[ac.length-1].split("?")[0];
+	
+	  strs = str.split("&");   
+	  for(i=0;i<strs.length;i++)   
+	  {   
+		  var pa = strs[i].split("=")
+		  if(pa[0]=='goto'){
+			  ac = pa[1];
+		  }
+	  }    */
+//	alert(str2);
+//	http://124.205.75.214/takeout/sysConfig/toSysConfigList.action?typeCode=1
+//	window.location = "http://124.205.75.214/takeout/sysConfig/"+ac+"?"+str;
+	//window.location = "http://172.18.112.5:8080/takeout/"+ac+"?"+str;
+//	addScript("js/web/index.js?"+str);
+/* } */
 
 
 
@@ -725,7 +678,7 @@ $(document).ready(function(e) {
 
 
 
-电话订餐时间：08:00-23：00
+订餐时间：08:00-23:00
 
 
 
@@ -774,7 +727,7 @@ $(document).ready(function(e) {
 
 
 <div class="m_t_10"><div id="slides">
-<div class="slidepage"><a href="#"><img src="images/30.jpg" /></a></div>
+<div class="slidepage"><a href="http://weibo.com/hdl4008107107"><img src="images/30.jpg" /></a></div>
 <div class="slidepage"><a href="./announcement/2568565909/index.html"><img src="images/39.jpg" /></a></div>
 <div class="slidepage"><a href="#"><img src="images/42.jpg" /></a></div>
 </div></div>
@@ -817,7 +770,7 @@ $(document).ready(function(e) {
 
 
 
-<div class="title">个人信息</div>
+<div class="title" id="userinfoTitle">个人信息</div>
 
 
 
@@ -864,8 +817,8 @@ $(document).ready(function(e) {
 
 
 
-
-<div class="tishi"><span class="f_red ">提示</span></div>
+<div class="m_d_title" id="tishiTitle">温馨提示</div>
+<div class="tishi"><span class="f_red "></span></div>
 
 
 
