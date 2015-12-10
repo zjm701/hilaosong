@@ -12,7 +12,7 @@
 	</parent>
 	
 	<groupId>com.hilaosong</groupId>
-	<artifactId>delivery</artifactId>
+	<artifactId>hilaosong</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Hi Lao Song Server</name>
@@ -48,6 +48,9 @@
 			</plugin>
 		</plugins>
 		-->
+
+ 
+ 
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -126,6 +129,102 @@
 				                <generatePom>true</generatePom>
 				                <createChecksum>true</createChecksum>
 				                <file>${project.basedir}/src/lib/upacp_sdk-1.0.0.jar</file>
+				            </configuration>
+				        </execution>
+				        <execution>
+				            <id>install-bcprov</id>
+				            <goals>
+				                <goal>install-file</goal>
+				            </goals>
+				            <phase>clean</phase>
+				            <configuration>
+				                <groupId>com.unionpay</groupId>
+				                <artifactId>bcprov-jdk16</artifactId>
+				                <version>1.45</version>
+				                <packaging>jar</packaging>
+				                <generatePom>true</generatePom>
+				                <createChecksum>true</createChecksum>
+				                <file>${project.basedir}/src/lib/bcprov-jdk16-1.45.jar</file>
+				            </configuration>
+				        </execution>
+				        <execution>
+				            <id>install-jackson-annotations</id>
+				            <goals>
+				                <goal>install-file</goal>
+				            </goals>
+				            <phase>clean</phase>
+				            <configuration>
+				                <groupId>com.jackson</groupId>
+				                <artifactId>jackson-annotations</artifactId>
+				                <version>2.5.3</version>
+				                <packaging>jar</packaging>
+				                <generatePom>true</generatePom>
+				                <createChecksum>true</createChecksum>
+				                <file>${project.basedir}/src/lib/jackson-annotations-2.5.3.jar</file>
+				            </configuration>
+				        </execution>
+				        <execution>
+				            <id>install-jackson-core</id>
+				            <goals>
+				                <goal>install-file</goal>
+				            </goals>
+				            <phase>clean</phase>
+				            <configuration>
+				                <groupId>com.jackson</groupId>
+				                <artifactId>jackson-core</artifactId>
+				                <version>2.5.3</version>
+				                <packaging>jar</packaging>
+				                <generatePom>true</generatePom>
+				                <createChecksum>true</createChecksum>
+				                <file>${project.basedir}/src/lib/jackson-core-2.5.3.jar</file>
+				            </configuration>
+				        </execution>
+				        <execution>
+				            <id>install-jackson-databind</id>
+				            <goals>
+				                <goal>install-file</goal>
+				            </goals>
+				            <phase>clean</phase>
+				            <configuration>
+				                <groupId>com.jackson</groupId>
+				                <artifactId>jackson-databind</artifactId>
+				                <version>2.5.3</version>
+				                <packaging>jar</packaging>
+				                <generatePom>true</generatePom>
+				                <createChecksum>true</createChecksum>
+				                <file>${project.basedir}/src/lib/jackson-databind-2.5.3.jar</file>
+				            </configuration>
+				        </execution>
+				        <execution>
+				            <id>install-VAE-mproxy</id>
+				            <goals>
+				                <goal>install-file</goal>
+				            </goals>
+				            <phase>clean</phase>
+				            <configuration>
+				                <groupId>com.huawei</groupId>
+				                <artifactId>VAE-mproxy</artifactId>
+				                <version>1.0</version>
+				                <packaging>jar</packaging>
+				                <generatePom>true</generatePom>
+				                <createChecksum>true</createChecksum>
+				                <file>${project.basedir}/src/lib/VAE-mproxy.jar</file>
+				            </configuration>
+				        </execution>
+				        <execution>
+				            <id>install-wstx-asl</id>
+				            <goals>
+				                <goal>install-file</goal>
+				            </goals>
+				            <phase>clean</phase>
+				            <configuration>
+				                <groupId>com.wstx</groupId>
+				                <artifactId>wstx-asl</artifactId>
+				                <version>3.2.9</version>
+				                <packaging>jar</packaging>
+				                <generatePom>true</generatePom>
+				                <createChecksum>true</createChecksum>
+				                <file>${project.basedir}/src/lib/wstx-asl-3.2.9.jar</file>
 				            </configuration>
 				        </execution>
 				    </executions>
@@ -313,9 +412,39 @@
 	    </dependency>
 	    <dependency>
 	        <groupId>com.unionpay</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.45</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.unionpay</groupId>
 			<artifactId>upacp</artifactId>
 			<version>1.0.0</version>
 	    </dependency>
+	    <dependency>
+	        <groupId>com.jackson</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.5.3</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.jackson</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.5.3</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.jackson</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.3</version>
+	    </dependency>
+	    <dependency>
+			<groupId>com.huawei</groupId>
+			<artifactId>VAE-mproxy</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wstx</groupId>
+			<artifactId>wstx-asl</artifactId>
+			<version>3.2.9</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
