@@ -134,21 +134,16 @@ http://localhost:8080/hilaosong/rest/getlatestaddress?userId=0200000045250449
 response:  {"addressId":203113,"customerPhone":"15201007041","provinceId":"110000","cityId":"110000","detailAddress":"十店测试","village":"朝阳 十店 十店测试"}
 #返回最近的订单地址
 
-41, 支持外卖的最近的门店
-http://localhost:8080/hilaosong/rest/getstores0?provinceId=110000&address=北京市朝阳区平房路12号
-http://localhost:8080/hilaosong/rest/getstores0?cityId=320500&address=北京市朝阳区平房路12号
-http://localhost:8080/hilaosong/rest/getstores0?provinceId=110000&cityId=110000&address=北京市朝阳区平房路12号
-http://localhost:8080/hilaosong/rest/getstores0?provinceId=320000&cityId=320500&address=北京市朝阳区平房路12号
+41, 支持外卖的门店列表
+http://localhost:8082/hilaosong/rest/getstores0?cityId=110000
+http://localhost:8080/hilaosong/rest/getstores0?cityId=110000&address=上海市人民大道
 带address参数，则返回带distance的数据，并且列表按distance升序排列
 不带address参数，则返回不带distance的数据，并且列表按storeId升序排列
 [{"storeId":"020113","storeName":"翠微路店","storeAddress":"海淀区翠微路凯德MALL（原嘉茂购物中心）商场四层","storeTele":"01068218532,01068216579","storeCode":"BJ13","storeType":"2","provinceId":"110000","cityId":"110000","coordinate":"116.308843,39.91883","baiduIid":"1","deptType":"4","deptId":"020113","deptName":"北京十三店","distance":1073.529164594415205125118112735169340777},
  {"storeId":"020111","storeName":"石景山店","storeAddress":"石景山区石景山路乙18号万达广场c栋4楼(近1号线八宝山地铁站) ","storeTele":"01088689558,01088689559","storeCode":"BJ11","storeType":"2","provinceId":"110000","cityId":"110000","coordinate":"116.231073,39.911262","baiduIid":"1","deptType":"4","deptId":"020111","deptName":"北京十一店","distance":1075.856886647553187460427803271185192897}]
 
 42, 支持上门自取的门店列表
-http://localhost:8080/hilaosong/rest/getstores2?provinceId=110000
-http://localhost:8080/hilaosong/rest/getstores2?cityId=320500
-http://localhost:8080/hilaosong/rest/getstores2?provinceId=110000&cityId=110000
-http://localhost:8080/hilaosong/rest/getstores2?provinceId=320000&cityId=320500
+http://localhost:8080/hilaosong/rest/getstores2?cityId=110000
 [{"storeId":"020111","storeName":"石景山店","storeAddress":"石景山区石景山路乙18号万达广场c栋4楼(近1号线八宝山地铁站) ","storeTele":"01088689558,01088689559","storeCode":"BJ11","storeType":"2","provinceId":"110000","cityId":"110000","coordinate":"116.231073,39.911262","baiduIid":"1","deptType":"4","deptId":"020111","deptName":"北京十一店"},
  {"storeId":"020113","storeName":"翠微路店","storeAddress":"海淀区翠微路凯德MALL（原嘉茂购物中心）商场四层","storeTele":"01068218532,01068216579","storeCode":"BJ13","storeType":"2","provinceId":"110000","cityId":"110000","coordinate":"116.308843,39.91883","baiduIid":"1","deptType":"4","deptId":"020113","deptName":"北京十三店"}]
 
